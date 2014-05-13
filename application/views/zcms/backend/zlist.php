@@ -26,7 +26,7 @@ $settings = $obj->get_setting();
         <input type="text" class="input-medium search-query" name="search" placeholder="<?php echo $this->translate->t('Search'); ?>" value="<?php echo $this->input->get('search')?>">
         <button type="submit" class="btn"><?php echo $this->translate->t('Search'); ?></button>
     </form>
-
+    
     <table class="table table-striped table-bordered">
         <thead>
             <tr>

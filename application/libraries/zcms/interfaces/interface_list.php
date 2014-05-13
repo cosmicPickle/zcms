@@ -35,9 +35,11 @@ class Interface_list extends Interface_base {
     private $paterns = array('row_var' => '/\{@(\w*)\}/','row_num' => '/\{#(\w*)\}/');
     
     //Links flags
-    private $link_show_table = 1;
-    private $link_return_get = 0;
-    private $link_tail = '';
+    private $link_settings = array(
+      'show_table_name' => 1,
+      'mode' => 'URI',
+      'additional' => ''
+    );
     
 /**
  * init()
@@ -163,24 +165,7 @@ class Interface_list extends Interface_base {
         return $this->load->view($view,array('data' => $this->pr_data, 'caller' => $this->caller ), $return);
     }
     
-    
-/**
- * set_links()
- * 
- * Sets the flags that are to be used with get_link()
- * 
- * @param boolean if set to TRUE get_link() will work in GET mode
- * @param boolean if set to FALSE the table name will be omited by get_link()
- * @param string any additional parameters that will be inserted befor the actual link
- * 
- */
-    public function set_links($return_get = 0, $show_table = 1, $tail = '')
-    {
-        $this->link_return_get = $return_get;
-        $this->link_show_table = $show_table;
-        $this->link_tail = $tail;
-    }
-    
+
 /*
  * get_link()
  * 
@@ -195,24 +180,26 @@ class Interface_list extends Interface_base {
     
     public function get_link($overrides)
     {
-        $link = $this->backend().$this->router->fetch_class().'/'.$this->router->fetch_method().'/'.$this->link_tail;
-                
-        $link .= ($this->link_show_table) ? ($this->data_table.'/') : NULL;
         
-        if(!$this->link_return_get)
+        $link = $this->backend().$this->router->fetch_class().'/'.$this->router->fetch_method().'/'
+                .(isset($this->list_settings->link_additional) ? $this->list_settings->link_additional : NULL);
+                
+        $link .= isset($this->list_settings->link_show_table) && $this->list_settings->link_show_table ? ($this->data_table.'/') : NULL;
+
+        if(!isset($this->list_settings->link_mode) || strtoupper($this->list_settings->link_mode) == "URI")
         {
             $link .= (isset($overrides['p']) ? $overrides['p'] : $this->list_settings->page). '/';
             $link .= (isset($overrides['ord_by']) ? $overrides['ord_by'] : $this->list_settings->order_column) . '/';
             $link .= (isset($overrides['ord_dir']) ? $overrides['ord_dir'] : $this->list_settings->order_direction) . '/';
-            $link .= '?s='. (isset($overrides['search']) ? $overrides['search'] : $this->list_settings->search);
+            $link .= '?search='. (isset($overrides['search']) ? $overrides['search'] : $this->list_settings->search);
         }
-        else
+        else if(strtoupper($this->list_settings->link_mode) == "GET")
         {
             $link .= "?";
-            $link .= 'p='. (isset($overrides['p']) ? $overrides['p'] : $this->list_settings->p);
-            $link .= '&ord='. (isset($overrides['ord_by']) ? $overrides['ord_by'] : $this->list_settings->ord_by);
-            $link .= '&dir='. (isset($overrides['ord_dir']) ? $overrides['ord_dir'] : $this->list_settings->ord_dir);
-            $link .= '&s='. (isset($overrides['search']) ? $overrides['search'] : $this->list_settings->search);
+            $link .= 'p='. (isset($overrides['p']) ? $overrides['p'] : $this->list_settings->page);
+            $link .= '&ord='. (isset($overrides['ord_by']) ? $overrides['ord_by'] : $this->list_settings->order_column);
+            $link .= '&dir='. (isset($overrides['ord_dir']) ? $overrides['ord_dir'] : $this->list_settings->order_direction);
+            $link .= '&search='. (isset($overrides['search']) ? $overrides['search'] : $this->list_settings->search);
         }
         
         return $link;
@@ -276,7 +263,7 @@ class Interface_list extends Interface_base {
         
         if(isset($this->list_settings->rows_per_page))
         {
-            $this->list_settings->page = (!isset($this->list_settings->page)) ? 1 : $this->list_settings->page;
+            $this->list_settings->page = (!isset($this->list_settings->page) || !$this->list_settings->page) ? 1 : $this->list_settings->page;
             $this->list_settings->offset = $this->list_settings->rows_per_page*($this->list_settings->page - 1);
             
             $ctrl->limit = array($this->list_settings->rows_per_page, $this->list_settings->offset);
@@ -285,7 +272,8 @@ class Interface_list extends Interface_base {
         
         
         //Setting the order
-        if(isset($this->list_settings->order_column) && isset($this->list_settings->order_direction))
+        if(isset($this->list_settings->order_column) && isset($this->list_settings->order_direction)
+           && $this->list_settings->order_column && $this->list_settings->order_direction)
             $ctrl->order = array($this->list_settings->order_column, $this->list_settings->order_direction);
         
         

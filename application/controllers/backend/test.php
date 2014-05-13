@@ -30,7 +30,8 @@ class Test extends CI_Controller {
     }
     
     
-    public function test_list() {
+    public function test_list($p = NULL, $ord = NULL, $dir = NULL) {
+
         $this->load->library("zcms/zcms");
         $this->zcms->init();
         
@@ -39,11 +40,13 @@ class Test extends CI_Controller {
 
         $this->zcms->interface->load_interface('list');    
         $this->zcms->interface->list
-             ->set('page', 1)
              ->set('rows_per_page', 10)
-             ->set('order_column', 'id')
-             ->set('order_direction', 'asc')
+             ->set('page', $p)
+             ->set('order_column', $ord)
+             ->set('order_direction', $dir)
              ->set('search', $this->input->get('search'))
+             ->set('link_show_table', 0)
+             ->set('link_mode', "uri")
              ->add_column(array(
                  "name" => "id",
                  "label" => "#"
