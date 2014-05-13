@@ -90,34 +90,50 @@ class Interface_form extends Interface_base {
 /*
  * init()
  * 
- * This function overloads the parent::init() function and calls a few methods that load and prepare the 
- * fields for rendering. More on the respective methods below.
+ * This function overloads the parent::init()
  *  
  */
-    public function init($data_table = NULL, $interface_ca = NULL, $settings = NULL, $fetch_data = TRUE)
+    public function init($data_table = NULL, $interface_ca = NULL, $fetch_data = TRUE)
     {
-        parent::init($data_table, $interface_ca, $settings, $fetch_data);
-        
-        $this->_load_fields();
-        $this->_parse_meta_lang();
-        $this->_disable();
-        
-        if($this->raw_data)
-            $this->_set_field_values();
-        
+        parent::init($data_table, $interface_ca, NULL, $fetch_data);
+        return $this; 
     }
-    
-/*
- * get_field()
- * 
- * This function returns the field of the current form with a name identical to the parameter
- * 
- */
-
-    public function get_field($name)
-    {
-        return $this->fields[$name];
+ 
+ /**
+  * add_field
+  * 
+  * Creates a new field in the form
+  * 
+  * @param type $name of the field
+  * @param type $settings - more on them in the Fields class
+  * @return \Interface_form
+  */
+    public function add_field($name, $settings) {
+        
+        $this->fields[$name] = new Fields();
+        $this->fields[$name]->settings = array_merge($this->fields[$name]->settings, $settings);
+        $this->fields[$name]->setting('name', $name);
+        
+        return $this;
     }
+  
+ /**
+  * add_submit
+  * 
+  * Creates a submit button for the form
+  * 
+  * @param type $settings
+  * @return \Interface_form
+  */
+    public function add_submit($settings) {
+        
+        $this->submit = new Fields();
+        $this->submit->settings = array_merge($this->submit->settings, $settings);
+        $this->submit->setting('type', 'submit');
+        $this->submit->setting('name', 'submit');
+        
+        return $this;
+    }  
     
 /*
  * modify()
@@ -131,39 +147,24 @@ class Interface_form extends Interface_base {
         {
             $this->_update_files_data($this->_upload_files());
             $this->modified = TRUE;
-            return TRUE;
         }
-        return FALSE;
+        
+        return $this;
     }
- 
-/*
- * set_redirect()
- * 
- * This function sets the redirect url. It has three modes. The default one sets the redirect to the current controller and method
- * and passes as a parameter the modify_id.If the flag include_table is 0 set_redirect will not include the data_table in the link
- * If the flag return_get is up it sends the modify_id as $_GET instead. If the flag full_override is up it looks up the fourth param 
- * for a URL and appends the modify_id to it.
- * 
- */
-    public function set_redirect($include_table = 1, $return_get = 0, $full_override = 0, $ourl = NULL)
+    
+  /**
+   * Sets the redirect url
+   * 
+   * @param type $url
+   * @return \Interface_form
+   */  
+    
+    public function set_redirect($url = NULL) 
     {
-        if($full_override)
-        {    
-            $this->redirect = $ourl;
-            return NULL;
-        }
-            
-        $this->redirect = $this->backend().$this->router->fetch_class().'/'.$this->router->fetch_method().'/';
-        
-        if($include_table)  
-            $this->redirect .= $this->data_table.'/';
-        
-        if($return_get)
-            $this->redirect .= '?mod_id='.$this->modify_id;
-        else
-            $this->redirect .= $this->modify_id;
-        
+        $this->redirect = (!$url) ? current_url() : $url;
+        return $this;
     }
+    
     
 /*
  * render()
@@ -176,6 +177,7 @@ class Interface_form extends Interface_base {
         //We don't have any fields
         if(!$this->fields)
             $this->logs->log("NO_FORM");
+        
         
         //Have we modified -> redirect
         if($this->modified && !$this->zcms->logs->check_log())
@@ -191,6 +193,16 @@ class Interface_form extends Interface_base {
         if($msg)
             $this->logs->log($msg);
         
+        //Parsing the settings on the fields
+        $this->_parse_meta_lang();
+        
+        //Checking for disabled input
+        $this->_disable();
+       
+        //Loading field values if data has been loaded
+        if($this->raw_data)
+            $this->_set_field_values();
+        
         //Do we have a view set in the settings object of the base_interface class? If yes does it exist?
         //If not the default view is loaded
         $view = isset($oview) && file_exists(self::VIEWS_BACKEND.$oview)
@@ -199,8 +211,20 @@ class Interface_form extends Interface_base {
         return $this->load->view($view,array('fields' => $this->fields, 'submit' => $this->submit), $return);
     }
 
+    
 /*
- * get_table($affix)
+ * get_field()
+ * 
+ * This function returns the field of the current form with a name identical to the parameter
+ * 
+ */
+
+    public function get_field($name)
+    {
+        return $this->fields[$name];
+    }
+/*
+ * return_table($affix)
  * 
  * This function returns the name of system table with the chosen affix
  * 
@@ -676,6 +700,8 @@ class Interface_form extends Interface_base {
                 //Dont need the numbered indexes
                 unset($this->fields[$key]);   
             }
+            
+            var_dump($this->fields);
     }
  
 /*
@@ -752,43 +778,48 @@ class Interface_form extends Interface_base {
             foreach($this->fields as $field)
             {
                 $value = $field->setting($meta_field_key);
+                if(is_array($value))
+                    $value = json_encode($value);
+                
                 $matches = array();
                 
                 //The first pattern matches {@field_name} and returns the value of the field named field_name
                 preg_match($this->meta_lang_templates['field_value'], $value, $matches);
                 if(count($matches) > 0)
-                    $field->setting($meta_field_key, str_replace($matches[0], $this->raw_data[0]->{$matches[1]}, $value));
+                {
+                    $value = str_replace($matches[0], $this->raw_data[0]->{$matches[1]}, $value);
+                    $value_rdy = (@json_decode($value)) ? json_decode($value) : $value;
+                    $field->setting($meta_field_key, $value_rdy);
+                }
                 
                 //The second pattern matches {@class_name::constant} and returns the constant from the class used
                 preg_match($this->meta_lang_templates['class_constant'], $value, $matches);
                 if(count($matches) > 0)
-                     $field->setting($meta_field_key, str_replace($matches[0], constant($matches[1]), $value));
+                {
+                    $value = str_replace($matches[0], constant($matches[1]), $value);
+                    $value_rdy = (@json_decode($value)) ? json_decode($value) : $value;
+                    $field->setting($meta_field_key, $value_rdy);
+                }
                 
                 //The final pattern matches {#variable} or {#variable->subvar[0]}. It returns the Interface_form class variables.
                 //The second part of the pattern is meant for retriving variables of the control array
                 preg_match($this->meta_lang_templates['init_params'], $value, $matches);
                 if(count($matches) > 0 && count($matches) <= 2)
-                    $field->setting($meta_field_key, str_replace($matches[0], $this->{$matches[1]}, $value));
+                {
+                    $value = str_replace($matches[0], $this->{$matches[1]}, $value);
+                    $value_rdy = (@json_decode($value)) ? json_decode($value) : $value;
+                    $field->setting($meta_field_key, $value_rdy);
+                }
                 elseif(count($matches) > 4)
-                    $field->setting($meta_field_key, str_replace($matches[0], $this->{$matches[2]}->{$matches[3]}[$matches[4]], $value));
+                {
+                    $value = str_replace($matches[0], $this->{$matches[2]}->{$matches[3]}[$matches[4]], $value);
+                    $value_rdy = (@json_decode($value)) ? json_decode($value) : $value;
+                    $field->setting($meta_field_key, $value_rdy);
+                }
             }
         }      
     }
     
-    /*
-     * From here down are defined the functions that handle the developer ajax calls to the form interface
-     * 
-     * add_field()
-     * 
-     * This function handles adding a new field. It includes several steps and different parameters commented 
-     * below.
-     * 
-     */
-    
-     public function add_field()
-     {
-         echo "1";
-     }
 }
 
 /* End of file interface_form.php */

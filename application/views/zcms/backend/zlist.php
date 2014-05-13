@@ -5,41 +5,8 @@ $obj = !$caller ? $this->zcms->interface->list : $this->zcms->interface->list->{
 
 $settings = $obj->fetch_settings();
 
-if($this->zcms->auth->session_info()->level < 2)
-{
 ?>
-    <ul class="nav nav-list span3 well">
-        <li class="nav-header"><?php echo $this->zcms->translate->t('Developer menu'); ?></li>
-        <li class="divider"></li>
-        
-        <li class="nav-header"><?php echo $this->zcms->translate->t('Column options'); ?></li>
-        <li>
-            <a class="zcms-ajax" href="<?php echo $this->zcms->backend().'developer/intf/list/'.$settings->link.'/add_column/'; ?>">
-                <i class="icon-plus"></i><?php echo $this->zcms->translate->t('Add column'); ?>
-            </a>
-        </li>
-        <li>
-            <a class="zcms-ajax" href="<?php echo $this->zcms->backend().'developer/intf/list/'.$settings->link.'/remove_column/'; ?>">
-                <i class="icon-trash"></i><?php echo $this->zcms->translate->t('Remove column'); ?>
-            </a>
-        </li>
-        <li><a href="#"><i class="icon-edit"></i><?php echo $this->zcms->translate->t('Edit columns'); ?></a></li>
-        
-        <li class="nav-header"><?php echo $this->zcms->translate->t('Action options'); ?></li>
-        <li><a href="#"><i class="icon-edit"></i><?php echo $this->zcms->translate->t('Global action'); ?></a></li>
-        <li><a href="#"><i class="icon-plus"></i><?php echo $this->zcms->translate->t('Add action'); ?></a></li>
-        <li><a href="#"><i class="icon-trash"></i><?php echo $this->zcms->translate->t('Remove action'); ?></a></li>
-        <li><a href="#"><i class="icon-edit"></i><?php echo $this->zcms->translate->t('Edit actions'); ?></a></li>
-        
-        <li class="nav-header"><?php echo $this->zcms->translate->t('Pagination and search'); ?></li>
-        <li><a href="#"><i class="icon-edit"></i><?php echo $this->zcms->translate->t('Pagination options'); ?></a></li>
-        <li><a href="#"><i class="icon-edit"></i><?php echo $this->zcms->translate->t('Search options'); ?></a></li>
-        
-    </ul>
-<?php
-}
-?>
-<div <?php echo ($this->zcms->auth->session_info()->level < 2) ? 'class="offset3"' : NULL?>>
+<div>
     <div class="page-header">
         <h1>
             <?php echo $this->zcms->translate->t("Listing"); ?>

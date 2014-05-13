@@ -13,7 +13,37 @@
 
 class Fields extends Interface_form{
     
-    protected $settings = array();
+    protected $settings = array(
+        'name' => NULL,
+        'type' => NULL,
+        'label' => NULL,
+        'description' => NULL,
+        'order' => NULL,
+        'css_class' => NULL,
+        'css_id' => NULL,
+        'script' => NULL,
+        'id_' => NULL,
+        'disabled_on_insert' => NULL,
+        'disabled_on_update' => NULL,
+        'validation' => NULL,
+        'opt_val_pairs' => NULL,
+        'link_table' => NULL,
+        'link_opt_column' => NULL,
+        'link_val_column' => NULL,
+        'link_query' => NULL,
+        'multiple' => NULL,
+        'checked' => NULL,
+        'path' => NULL,
+        'size_limit' => NULL,
+        'count_limit' => NULL,
+        'ext_limit' => NULL,
+        'thumbs' => NULL,
+        'crop' => NULL,
+        'padding' => NULL,
+        'padding_color' => NULL,
+        'disabled' => NULL
+    );
+    
     protected $value = NULL;
     protected $rendered = NULL;
     
@@ -24,7 +54,8 @@ class Fields extends Interface_form{
  
     public function setting($setting, $value = NULL)
     {
-        if(!$value) return $this->settings[$setting];
+        if(!$value) 
+            return $this->settings[$setting];
         else
             $this->settings[$setting] = $value;
     }
@@ -101,7 +132,8 @@ class Fields extends Interface_form{
                                    name="'.$this->settings['name'].'"
                                         '.$this->settings['disabled'].'>';
             
-            $this->settings["opt_val_pairs"] = json_decode($this->settings["opt_val_pairs"]);
+            if(is_string($this->settings["opt_val_pairs"]))
+                $this->settings["opt_val_pairs"] = json_decode($this->settings["opt_val_pairs"]);
             
             foreach($this->settings["opt_val_pairs"] as $opt => $val)
             {   
