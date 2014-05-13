@@ -59,6 +59,11 @@ class Test extends CI_Controller {
                  "name" => "title",
                  "label" => "Title"
              ))
+             ->add_label(array(
+                 'type' => 'alert',
+                 'cond' => '{@id} < 3',
+                 'text' => 'Test'
+             ))
              ->add_search_column("title")
              ->add_search_column("keywords")
              ->add_search_column("description")

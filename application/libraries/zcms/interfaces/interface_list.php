@@ -118,6 +118,14 @@ class Interface_list extends Interface_base {
         
     }
     
+    public function add_label($label) {
+        
+        $label = (object)$label;
+        
+        $this->labels[] = $label;
+        return $this;
+    }
+    
 /**
  * get_setting()
  * 
@@ -145,6 +153,11 @@ class Interface_list extends Interface_base {
     public function get_search_columns()
     {
         return $this->search_columns;
+    }
+    
+    public function get_labels()
+    {
+        return $this->labels;
     }
 /**
  * render()
