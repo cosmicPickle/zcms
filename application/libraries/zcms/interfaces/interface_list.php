@@ -17,22 +17,16 @@ class Interface_list extends Interface_base {
     const LIST_DEFAULT_VIEW = "zlist";
     
     //The settings of the current listing
-    private $list_settings = NULL;
-    //The override settings object
-    private $or_settings = NULL;
-    
+    private $list_settings;
+    private $columns;
+    private $actions;
+    private $global_action;
+    private $search_columns;
     //The listing labels
-    private $list_labels = NULL;
+    private $labels = NULL;
     
     //The processed data will be saved here
     private $pr_data = NULL;
-    
-    //Table names
-    private $table_affix = 'zcms_list_';
-    private $settings_table = NULL;
-    private $settings_table_lang = NULL;
-    private $labels_table = NULL;
-    private $labels_table_lang = NULL;
     
     //Recognisable patterns for string parsing
     //The first pattern matches {@var_name} and will be replaced with the value of the 'var_name' column of the current row
@@ -58,7 +52,7 @@ class Interface_list extends Interface_base {
  * 
  */
     
-    public function init($data_table = NULL, $interface_ca = NULL, $settings = NULL, $fetch_data = TRUE) 
+    public function init($data_table = NULL) 
     {
         if(!$data_table || !$this->db->table_exists($data_table))
              return NULL;
@@ -68,31 +62,88 @@ class Interface_list extends Interface_base {
         
         //Initializing the language table 
         $this->_init_lang_table();
-        
-        //Sets the tables
-        $this->_set_tables();
-        
-        //Loads listing settings from the database
-        $this->_fetch_settings();
-        
-        //We don't have a listing set up
-        if(!$this->list_settings)
-            return NULL;
-        
-        //Loads the labels
-        $this->_fetch_labels();
-        
+
         //Preps the control variable
-        $this->_prep_control($interface_ca, $settings);
+        $interface_ca = $this->_prep_control();
         
         //Parent init() executed, loads the raw data
-        parent::init($data_table, $interface_ca, $settings, $fetch_data);
+        parent::init($data_table, $interface_ca, NULL, TRUE);
         
         //Setting the data counts into the settings array for view access
         $this->list_settings->count_results = $this->count_results;
         $this->list_settings->count_all = $this->count_all;
+        
+        return $this;
     }
+    
+    public function set($option, $value) {
+        
+        if(!$this->list_settings)
+            $this->list_settings = new stdClass();
+        
+        $this->list_settings->{$option} = $value;
+        return $this;
+    }
+    
+    public function add_column($column) {
+        
+        $column = (object)$column;
+        
+        $this->columns[] = $column;
+        return $this;
+    }
+    
+    public function add_action($action) {
+        
+        $action = (object)$action;
+        
+        $this->actions[] = $action;
+        return $this;
+        
+    }
+    
+    public function set_global_action($action) {
 
+        $this->global_action = $action;
+        return $this;
+        
+    }
+    
+    public function add_search_column($name) {
+
+        $this->search_columns[] = $name;
+        return $this;
+        
+    }
+    
+/**
+ * get_setting()
+ * 
+ * Returns a setting $set or all settings if no parameter is passed
+ * 
+ */
+    public function get_setting($set = NULL)
+    {
+        if(!$set)
+            return $this->list_settings;
+        else
+            isset($this->list_settings->{$set}) ? $this->list_settings->{$set} : NULL ;
+    }
+    
+    public function get_actions()
+    {
+        return $this->actions;
+    }
+    
+    public function get_global_action()
+    {
+        return $this->global_action;
+    }
+    
+    public function get_search_columns()
+    {
+        return $this->search_columns;
+    }
 /**
  * render()
  * 
@@ -111,38 +162,7 @@ class Interface_list extends Interface_base {
         //The view needs to know which interface is accessing it, thus the caller is passed
         return $this->load->view($view,array('data' => $this->pr_data, 'caller' => $this->caller ), $return);
     }
-  
-/**
- * fetch_setting()
- * 
- * Returns a setting $set or all settings if no parameter is passed
- * 
- */
-    public function fetch_settings($set = NULL)
-    {
-        if(!$set)
-            return $this->list_settings;
-        else
-            isset($this->list_settings->{$set}) ? $this->list_settings->{$set} : NULL ;
-    }
-
-/**
- * or_setting()
- * 
- * This function can override most of the default settings. Correct syntax must be followed for each setting, otherwise
- * there may be unexpected behavior.
- * 
- */
     
-    public function or_setting($set, $val)
-    {
-        if(in_array($set, array('id','link','p','offset','count_results','count_all')))
-            return FALSE;
-        
-        $this->or_settings = new stdClass();
-        $this->or_settings->{$set} = $val;
-        return TRUE;
-    }
     
 /**
  * set_links()
@@ -181,9 +201,9 @@ class Interface_list extends Interface_base {
         
         if(!$this->link_return_get)
         {
-            $link .= (isset($overrides['p']) ? $overrides['p'] : $this->list_settings->p). '/';
-            $link .= (isset($overrides['ord_by']) ? $overrides['ord_by'] : $this->list_settings->ord_by) . '/';
-            $link .= (isset($overrides['ord_dir']) ? $overrides['ord_dir'] : $this->list_settings->ord_dir) . '/';
+            $link .= (isset($overrides['p']) ? $overrides['p'] : $this->list_settings->page). '/';
+            $link .= (isset($overrides['ord_by']) ? $overrides['ord_by'] : $this->list_settings->order_column) . '/';
+            $link .= (isset($overrides['ord_dir']) ? $overrides['ord_dir'] : $this->list_settings->order_direction) . '/';
             $link .= '?s='. (isset($overrides['search']) ? $overrides['search'] : $this->list_settings->search);
         }
         else
@@ -209,29 +229,29 @@ class Interface_list extends Interface_base {
         $pagination = '<div class="pagination span7">
                             <ul>';
         
-            if($this->list_settings->p == 1)
+            if($this->list_settings->page == 1)
                 $pagination .= '<li class="disabled"><a href="">'.$this->translate->t('Prev').'</a></li>';
             else 
             {
-                $prev = $this->get_link(array('p' => $this->list_settings->p - 1));
+                $prev = $this->get_link(array('p' => $this->list_settings->page - 1));
                 $pagination .= '<li><a href="'.$prev.'">'.$this->translate->t('Prev').'</a></li>';
             }
 
-            $max_page = ceil($this->list_settings->count_all / $this->list_settings->rpp);
+            $max_page = ceil($this->list_settings->count_all / $this->list_settings->rows_per_page);
 
             for($i = 1; $i <= $max_page; $i++)
             {
                 $link = $this->get_link(array('p' => $i));
-                $class = ($i == $this->list_settings->p) ? " class='active' " : NULL;
+                $class = ($i == $this->list_settings->page) ? " class='active' " : NULL;
                 
                 $pagination .= '<li'.$class.'><a href="'.$link.'">'.$i.'</a></li>';
             }
 
-            if($this->list_settings->p == $max_page)
+            if($this->list_settings->page == $max_page)
                 $pagination .= '<li class="disabled"><a href="">'.$this->translate->t('Next').'</a></li>';
             else
             {
-                $next = $this->get_link(array('p' => $this->list_settings->p + 1));
+                $next = $this->get_link(array('p' => $this->list_settings->page + 1));
                 $pagination .= '<li><a href="'.$next.'">'.$this->translate->t('Next').'</a></li>';
             }
 
@@ -241,106 +261,6 @@ class Interface_list extends Interface_base {
          return $pagination;
     }
     
-/*
- * _set_tables()
- * 
- * This function sets the settings and labels listing tables, as well as the language tables
- * 
- */  
-      private function _set_tables()
-      {
-          $this->settings_table = $this->table_affix."settings";
-          $this->labels_table = $this->table_affix."labels";
-          
-          if($this->translate->get_table_sufix())
-          {
-              $this->settings_table_lang = $this->settings_table.$this->translate->get_table_sufix();
-              $this->labels_table_lang = $this->labels_table.$this->translate->get_table_sufix();
-          }
-      }
-    
-/*
- * _fetch_settings()
- * 
- * This function loads the settings from the database
- * 
- */
-    private function _fetch_settings()
-    {
-        if($this->settings_table_lang)
-        {
-            $cols = $this->db->list_fields($this->settings_table);
-            $lcols = $this->db->list_fields($this->settings_table_lang);
-
-            $select = array('t1.*');
-
-            foreach($lcols as $lcol)
-                if($lcol != 'id')
-                    $select[] = in_array($lcol, $cols) ? 'IFNULL(t2.'.$lcol.',t1.'.$lcol.') as '.$lcol : 't2.'.$lcol;
-
-            $this->list_settings = $this->db->select(implode(', ', $select), FALSE)
-                                            ->from($this->settings_table." as t1")
-                                            ->join($this->settings_table_lang." as t2", "t2.id_ = t1.id", 'left')
-                                            ->where("(t2.lang_id = '".$this->translate->get_lang()."' OR t2.lang_id IS NULL) AND t1.link = '".$this->data_table."'")
-                                            ->get()
-                                            ->row();
-        }
-        else
-        {
-            $this->list_settings = $this->db->where('t1.link', $this->data_table)
-                                            ->get($this->settings_table." as t1")
-                                            ->row();
-        }
-        
-        //If we didnt get any settings we don't have a listing added
-        if(!$this->list_settings)
-            $this->logs->log("NO_LISTING");
-        else
-        //We have a listing we have to parse the global action
-            $this->list_settings->global_action = $this->_parse_vars($this->list_settings->global_action, -1);
-        
-        //Overriding defaults with the or_settings object
-        if($this->or_settings)
-            foreach($this->or_settings as $or_key => $or_val)
-                if(isset($this->list_settings->{$or_key}))
-                    $this->list_settings->{$or_key} = $or_val;
-                    
-    }
-    
-/*
- * _fetch_labels()
- * 
- * This function fetches settings about the listing labels.
- * 
- */
-    
-    private function _fetch_labels()
-    {
-        if($this->labels_table_lang)
-        {
-            $cols = $this->db->list_fields($this->labels_table);
-            $lcols = $this->db->list_fields($this->labels_table_lang);
-
-            $select = array('t1.*');
-
-            foreach($lcols as $lcol)
-                if($lcol != 'id')
-                    $select[] = in_array($lcol, $cols) ? 'IFNULL(t2.'.$lcol.',t1.'.$lcol.') as '.$lcol : 't2.'.$lcol;
-
-            $this->list_labels = $this->db->select(implode(', ', $select), FALSE)
-                                          ->from($this->labels_table." as t1")
-                                          ->join($this->labels_table_lang." as t2", "t2.id_ = t1.id", 'left')
-                                          ->where(array('t2.lang_id' => $this->translate->get_lang(), 't1.list_id' => $this->list_settings->id))
-                                          ->get()
-                                          ->result();
-        }
-        else
-        {
-            $this->list_labels = $this->db->where('t1.list_id', $this->list_settings->id)
-                                          ->get($this->labels_table." as t1")
-                                          ->result();
-        }
-    }
     
 /*
  * _prep_control()
@@ -348,33 +268,36 @@ class Interface_list extends Interface_base {
  * This function creates a custom control variable if needed.
  * 
  */
-    private function _prep_control(&$ctrl, $settings)
+    private function _prep_control()
     {
-        if(!$ctrl)
-            $ctrl = new stdClass();
-        
-        $settings = (object) $settings;
+        $ctrl = new stdClass();
         
         //Setting the limit
-        $this->list_settings->p = (!isset($settings->p) || !$settings->p) ? 1 : $settings->p;
-        $this->list_settings->offset = $this->list_settings->rpp*($this->list_settings->p - 1);
-        $ctrl->limit = array($this->list_settings->rpp, $this->list_settings->offset);
+        
+        if(isset($this->list_settings->rows_per_page))
+        {
+            $this->list_settings->page = (!isset($this->list_settings->page)) ? 1 : $this->list_settings->page;
+            $this->list_settings->offset = $this->list_settings->rows_per_page*($this->list_settings->page - 1);
+            
+            $ctrl->limit = array($this->list_settings->rows_per_page, $this->list_settings->offset);
+        }
+        
         
         
         //Setting the order
-        $this->list_settings->ord_by = (!isset($settings->ord) || !$settings->ord) ? $this->list_settings->ord_by : $settings->ord;
-        $this->list_settings->ord_dir = (!isset($settings->dir) || !$settings->dir) ? 'asc' : $settings->dir;
+        if(isset($this->list_settings->order_column) && isset($this->list_settings->order_direction))
+            $ctrl->order = array($this->list_settings->order_column, $this->list_settings->order_direction);
         
-        $ctrl->order = array($this->list_settings->ord_by, $this->list_settings->ord_dir);
+        
         
         //Setting up the "like" variable
-        $this->list_settings->search = NULL;
-        if(isset($settings->s) && $settings->s)
+        if(isset($this->list_settings->search) && $this->list_settings->search)
         { 
-            $this->list_settings->search = $settings->s;
-            foreach(json_decode($this->list_settings->search_fields) as $sf)
-                $ctrl->or_like[$sf] = $settings->s;
+            foreach($this->search_columns as $sf)
+                $ctrl->or_like[$sf] = $this->list_settings->search;
         }
+        
+        return $ctrl;
         
     }
 /*
@@ -390,25 +313,24 @@ class Interface_list extends Interface_base {
         if(!$this->list_settings)
             return NULL;
         
-        $columns = json_decode($this->list_settings->columns);
         $this->pr_data = new stdClass();
         
         //Do we have any columns to list ?
-        if(!$columns)
+        if(!$this->columns)
         {
             $this->logs->log("NO_LIST_COLUMNS");
             return NULL;
         }
         
         //This will set initial values to the titles and rows arrays
-        foreach ($columns as $key => $column)
+        foreach ($this->columns as $column)
         {
             //The titles array will be used mainly as means dictionary. It maps numerical indexes
             //to the field names, which are the same in the rows below
-            $this->pr_data->titles[] = $key;
+            $this->pr_data->titles[] = $column->name;
             
             //The first row are the titles
-            $this->pr_data->rows[0][] = $column;
+            $this->pr_data->rows[0][] = $column->label;
         }
         
         //Two blank boxes for labels and actions
@@ -418,32 +340,33 @@ class Interface_list extends Interface_base {
         {    
             //Setting the raw_data into rows
             $index = count($this->pr_data->rows);
-            foreach ($columns as $key => $column)
-                $this->pr_data->rows[$index][] = $row->{$key};
+            foreach ($this->columns as $column)
+                $this->pr_data->rows[$index][] = $row->{$column->name};
                 
             //Setting the labels
             $labels = array();
-            foreach($this->list_labels as $label)
-            {
-                //We clone the $label as it is passed by reference and we want it to stay unchanged
-                $tmp = clone($label);
-                
-                //This line first parses any meta language then parses the resulting condition to 0 and 1
-                $tmp->cond = $this->_parse_cond($this->_parse_vars($tmp->cond, $index));
-              
-                $labels[] = $tmp;
-                
-                //We don't need that $tmp anymore
-                unset($tmp);
-            }
+            if($this->labels)
+                foreach($this->labels as $label)
+                {
+                    //We clone the $label as it is passed by reference and we want it to stay unchanged
+                    $tmp = clone($label);
+
+                    //This line first parses any meta language then parses the resulting condition to 0 and 1
+                    $tmp->cond = $this->_parse_cond($this->_parse_vars($tmp->cond, $index));
+
+                    $labels[] = $tmp;
+
+                    //We don't need that $tmp anymore
+                    unset($tmp);
+                }
             
             //Second to last cell of the row
             $this->pr_data->rows[$index][998] = $labels;
             
             //Setting the actions
             $actions = array();
-            if($raw_acts = json_decode($this->list_settings->actions))
-                foreach($raw_acts as $action)
+            if($this->actions)
+                foreach($this->actions as $action)
                 {
                     $action->link = $this->_parse_vars($action->link, $index);    
                     $actions[] = $action;
@@ -497,131 +420,5 @@ class Interface_list extends Interface_base {
                 case '!=': return $matches[1] != $matches[3];break;
             }
         }
-    }
-    
-    /*
-     * Developer section functions
-     * 
-     * The following functions will be used to edit the settings of the listing interface. They will be accessible through 
-     * the developer controller.
-     * 
-     */
-    public function dev_add_column($id)
-    {
-        
-        $post = $this->input->post();
-        $data = array('action' => 'add_column');
-        
-        $table = $this->table_affix."settings";
-        $table_lang = $this->translate->get_table_sufix() ? $table.$this->translate->get_table_sufix() : NULL;
-        
-        if($table_lang)
-            $this->db->select('t2.columns')
-                     ->from($table." as t1")
-                     ->join($table_lang." as t2", "t1.id = t2.id_ AND t2.lang_id = '".$this->translate->get_lang()."'")
-                     ->where('t1.link', $id);
-        else
-        {
-                $this->db->select('columns')
-                         ->from($table)
-                         ->where('link', $id);
-                
-        }
-        $current_cols = (array)json_decode($this->db->get()->row()->columns);
-        
-        $data['columns'] = $this->db->list_fields($id);       
-        foreach($data['columns'] as $key => $val)
-            if(array_key_exists($val,$current_cols))
-                unset($data['columns'][$key]);
-        
-        if($post)
-        {
-            $break = FALSE;
-            if(!$post['column'])
-            {    
-                $this->logs->log('INP_REQUIRED', $this->translate->t('Column Id'));
-                $break = TRUE;
-            }
-            if(!$post['label'])
-            {    
-                $this->logs->log('INP_REQUIRED', $this->translate->t('Column Label'));
-                $break = TRUE;
-            }
-            if(!$break)
-            {
-                $new_cols = json_encode(array_merge($current_cols, array($post['column'] => $post['label'])));
-                unset($data['columns'][array_search($post['column'], $data['columns'])]);
-                
-                $id_ = $this->db->select('id')->where('link', $id)->get($table)->row()->id;
-                
-                if(!$table_lang)
-                {
-                    $this->db->where('link',$id);
-                    $this->db->update($table, array('columns' => $new_cols));
-                    $this->logs->log('MODIFY_SUCCESS');
-                }
-                else
-                {
-                    $this->db->where(array('id_' => $id_, 'lang_id' => $this->translate->get_lang()));
-                    $this->db->update($table_lang, array('columns' => $new_cols));
-                    $this->logs->log('MODIFY_SUCCESS');
-                }
-            }
-        }
-        
-        
-        $this->load->view(self::VIEWS_BACKEND . 'listing_actions', $data);
-    }
-    
-    public function dev_remove_column($id)
-    {
-        $post = $this->input->post();
-        $data = array('action' => 'remove_column');
-        
-        $table = $this->table_affix."settings";
-        $table_lang = $this->translate->get_table_sufix() ? $table.$this->translate->get_table_sufix() : NULL;
-        
-        if($table_lang)
-            $this->db->select('t2.columns')
-                     ->from($table." as t1")
-                     ->join($table_lang." as t2", "t1.id = t2.id_ AND t2.lang_id = '".$this->translate->get_lang()."'")
-                     ->where('t1.link', $id);
-        else
-        {
-                $this->db->select('columns')
-                         ->from($table)
-                         ->where('link', $id);
-                
-        }
-        $current_cols = (array)json_decode($this->db->get()->row()->columns);
-        
-        $data['columns'] = $current_cols;
-        if($post)
-        {
-            if(!$post['column'])  
-                $this->logs->log('INP_REQUIRED', $this->translate->t('Column Id'));
-            else
-            {
-                unset($current_cols[$post['column']]);
-                unset($data['columns'][$post['column']]);
-                
-                $id_ = $this->db->select('id')->where('link', $id)->get($table)->row()->id;
-                
-                if(!$table_lang)
-                {
-                    $this->db->where('link',$id);
-                    $this->db->update($table, array('columns' => json_encode($current_cols)));
-                    $this->logs->log('MODIFY_SUCCESS');
-                }
-                else
-                {
-                    $this->db->where(array('id_' => $id_, 'lang_id' => $this->translate->get_lang()));
-                    $this->db->update($table_lang, array('columns' => json_encode($current_cols)));
-                    $this->logs->log('MODIFY_SUCCESS');
-                }
-            }
-        }
-        
-        $this->load->view(self::VIEWS_BACKEND . 'listing_actions', $data);
     }
 }

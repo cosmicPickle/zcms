@@ -3,7 +3,7 @@
 //If its not the default interface sets the caller object
 $obj = !$caller ? $this->zcms->interface->list : $this->zcms->interface->list->{$caller};
 
-$settings = $obj->fetch_settings();
+$settings = $obj->get_setting();
 
 ?>
 <div>
@@ -23,7 +23,7 @@ $settings = $obj->fetch_settings();
     ?>
 
     <form class="form-search span4 pagination">
-        <input type="text" class="input-medium search-query" name="s" placeholder="<?php echo $this->translate->t('Search'); ?>" value="<?php echo isset($_GET['s']) ? $_GET['s'] : NULL ?>">
+        <input type="text" class="input-medium search-query" name="search" placeholder="<?php echo $this->translate->t('Search'); ?>" value="<?php echo $this->input->get('search')?>">
         <button type="submit" class="btn"><?php echo $this->translate->t('Search'); ?></button>
     </form>
 
@@ -37,9 +37,9 @@ $settings = $obj->fetch_settings();
                         $icon = NULL;
                         $direction = "asc";
 
-                        if(isset($data->titles[$key]) && $settings->ord_by == $data->titles[$key])
+                        if(isset($data->titles[$key]) && $settings->order_column == $data->titles[$key])
                         {
-                            if($settings->ord_dir == 'asc') 
+                            if($settings->order_direction == 'asc') 
                             {   
                                 $icon = '<i class="icon-chevron-down" style="margin-left:10px"></i>';
                                 $direction = "desc";
@@ -56,8 +56,8 @@ $settings = $obj->fetch_settings();
                             $link = $obj->get_link(array('ord_by' => $data->titles[$key], 'ord_dir' => $direction));
 
 
-                        if(($key == count($data->rows[0]) - 1) && $settings->global_action)
-                            $title = "<a href='".$this->zcms->backend().$settings->global_action."' class='btn btn-primary'>".$this->zcms->translate->t('Add New')."</a>";
+                        if(($key == count($data->rows[0]) - 1) && $obj->get_global_action())
+                            $title = "<a href='".$this->zcms->backend().$obj->get_global_action()."' class='btn btn-primary'>".$this->zcms->translate->t('Add New')."</a>";
 
                         echo "<th>
                                  <a href='".$link."'>".$title.$icon."</a>
@@ -99,7 +99,7 @@ $settings = $obj->fetch_settings();
                                         <ul class="dropdown-menu">';
 
                                     foreach($item as $action)
-                                        echo "<li><a href='".$this->zcms->backend().$action->link."'>".$action->lbl."</a></li>";
+                                        echo "<li><a href='".$this->zcms->backend().$action->link."'>".$action->label."</a></li>";
 
                                     echo    '</ul>
                                          </div>';
