@@ -1,0 +1,26 @@
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<TEMPLATE_ANOTATION>
+/*
+ *
+ * This is a template class. It will be used to create empty templates for new
+ * modules created through the CMS. It has no other active purpose.
+ * 
+ */
+</TEMPLATE_ANOTATION>
+/*
+ * ZCMS Module: <MODULE_NAME>
+ * Bundle: <BUNDLE>
+ * 
+ * @author: <AUTHOR>
+ * @date: <DATE>
+ * 
+ * <DESCRIPTION>
+ */
+
+class <MODULE_NAME> extends Module_base {
+    
+    public function index()
+    {
+        echo "Module <MODULE_NAME> works properly.";
+    }
+}
