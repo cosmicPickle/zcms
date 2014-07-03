@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 ?>
-<div class="well offset3">
+<div class="well">
 <?php
 echo form_open_multipart('', array("class" => "form-horizontal"));
 ?>

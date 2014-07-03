@@ -1,16 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-/*
- * Pages class
- * 
- * @author Teodor Klissarov
- * @created 27.04.2013
- * 
- * This class will handle creating, editing and deleting of frontend pages
- * 
- */
 
-class Pages extends CI_Controller {
+class Frontend_Menus extends CI_Controller {
     
         public function __construct() {
             
@@ -20,18 +11,14 @@ class Pages extends CI_Controller {
             $this->zcms->init();
         }
         
-        public function index($p = NULL, $ord = NULL, $dir = NULL)
+        public function index()
         {
             $this->zcms->load_headers();
             $this->zcms->load_js();
             
             $this->zcms->interface->load_interface('list');    
             $this->zcms->interface->list
-                 ->set('page', $p)
-                 ->set('order_column', $ord)
-                 ->set('order_direction', $dir)
-                 ->set('search', $this->input->get('search'))
-                 ->init('zcms_pages')
+                 ->init('zcms_frontend_menus')
                  ->render();
             
             $this->zcms->load_footers();
@@ -46,7 +33,7 @@ class Pages extends CI_Controller {
             $get_data = $id ? TRUE : FALSE;
 
             $this->zcms->interface->load_interface('form'); 
-            $this->interface->form->init('zcms_pages', $rel, $get_data);
+            $this->interface->form->init('zcms_frontend_menus', $rel, $get_data);
 
             $this->interface->form->modify()
                                   ->render();
@@ -60,9 +47,9 @@ class Pages extends CI_Controller {
             $this->zcms->init();
 
             $this->zcms->interface->load_interface('form'); 
-            $this->interface->form->init('zcms_pages', NULL, FALSE);
+            $this->interface->form->init('zcms_frontend_menus', NULL, FALSE);
 
-            $this->interface->form->delete(array('id' => $id), base_url('index.php/backend/pages/')); 
+            $this->interface->form->delete(array('id' => $id), base_url('index.php/backend/frontend_menus/')); 
         }
 }
 

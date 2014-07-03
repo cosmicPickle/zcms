@@ -55,6 +55,11 @@ class Auth extends ZCMS {
         return $this->session_info;
     }
     
+    public function enc($password)
+    {
+        return $this->_enc($password);
+    }
+    
     private function _is_protected($controller)
     {
         if($this->router->fetch_directory() != self::PROTECTED_DIRECTORY)

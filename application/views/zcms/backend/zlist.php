@@ -21,12 +21,13 @@ $settings = $obj->get_setting();
         {
             echo $obj->pagination(); 
     ?>
-
+    
+    <?php if(!$obj->get_setting('parent_column')) : ?>
     <form class="form-search span4 pagination">
         <input type="text" class="input-medium search-query" name="search" placeholder="<?php echo $this->translate->t('Search'); ?>" value="<?php echo $this->input->get('search')?>">
         <button type="submit" class="btn"><?php echo $this->translate->t('Search'); ?></button>
     </form>
-    
+    <?php endif; ?>
     <table class="table table-striped table-bordered">
         <thead>
             <tr>

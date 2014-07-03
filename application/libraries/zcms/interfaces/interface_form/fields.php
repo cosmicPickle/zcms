@@ -11,7 +11,9 @@
  * 
  */
 
-class Fields extends Interface_form{
+class Fields extends Interface_form {
+    
+    const FIELDS_FOLDER = "fields/";
     
     protected $settings = array(
         'name' => NULL,
@@ -30,6 +32,7 @@ class Fields extends Interface_form{
         'link_table' => NULL,
         'link_opt_column' => NULL,
         'link_val_column' => NULL,
+        'parent_column' => NULL,
         'link_query' => NULL,
         'multiple' => NULL,
         'checked' => NULL,
@@ -47,6 +50,15 @@ class Fields extends Interface_form{
     protected $value = NULL;
     protected $rendered = NULL;
     
+    public function __construct($obj = NULL) 
+    {
+        parent::__construct();
+        
+        if($obj)
+            foreach($obj as $attr_key => $attr)
+                $this->{$attr_key} = $attr;
+    }
+    
     public function __set($name, $value)
     {
         $this->settings[$name] = $value;
@@ -55,7 +67,12 @@ class Fields extends Interface_form{
     public function setting($setting, $value = NULL)
     {
         if(!$value) 
+        {
+            if(!isset($this->settings[$setting]))
+                return NULL;
+            
             return $this->settings[$setting];
+        }
         else
             $this->settings[$setting] = $value;
     }
@@ -71,16 +88,89 @@ class Fields extends Interface_form{
     {
         return $this->settings['label'];
     }
+    
     public function render()
-    {
-        $method = "_".$this->settings['type'];
-        (method_exists($this, $method)) ? $this->{$method}() : NULL;
-        $this->_add_script();
+    { 
+        $class = $this->settings['type'];
+        if(!class_exists($class))
+            $this->load->library(self::INTERFACE_FOLDER
+                                .self::INCLUDES_FOLDER
+                                .self::FIELDS_FOLDER
+                                .$class);
         
-        return $this->rendered;
+        $field = new $class($this);
+        
+        $this->event->trigger("interface_form_field_render_before", $field);
+        $field->render();
+        $field->_add_script();
+        $this->event->trigger("interface_form_field_render_after", $field);
+        
+        return $field->rendered;
     }
     
-    private function _add_script()
+    /**
+     * This function handles the deletion of inline files. Meaning files that 
+     * are not separated in a linked table. For those normal entry deletion method
+     * should be used.
+     * 
+     * @param type $file
+     * @return null
+     */
+    public function delete_file($file)
+    {
+        //There is a linked table use entry deletion
+        if($this->setting('link_table'))
+            return NULL;
+        
+        //The value is not generated or there are no files in the 
+        if(!$this->value())
+            return NULL;
+        
+        $files = json_decode($this->value());
+        
+        
+        if(($filePosition = array_search($file, $files)) === FALSE)
+            return NULL;
+        
+        unset($files[$filePosition]);
+        $files = array_merge(array(),$files);
+        $files = json_encode($files);
+
+        //Path to main images
+        $path = Interface_form::UPLOADS_PATH.$this->setting('path');
+        //Path to thumbs
+        $tpath = Interface_form::UPLOADS_PATH.$this->setting('path').Interface_form::THUMBS_PATH;      
+        
+        //Deleting the main file
+        if(file_exists($path.$file))
+            @unlink($path.$file);
+        
+        //If this is an image we have thumbs
+        if($this->setting('type') == 'image')
+        {
+            //Check for a system thumb
+            if(file_exists($tpath.Interface_form::SYS_TB_PREF."_".$file))
+            {
+                @unlink($tpath.Interface_form::SYS_TB_PREF."_".$file);
+                clearstatcache();
+            }
+
+            //Loop throgh the thumbs if there are any ...
+            if($thumbs = $this->setting('thumbs'))
+                foreach($thumbs as $thumb)
+                    //... and delete them
+                    if(file_exists($tpath.$thumb."_".$file))
+                    {
+                        @unlink($tpath.$thumb."_".$file);
+                        clearstatcache();
+                    }        
+        }
+        //Updating the table
+        $this->db->where('id', $this->raw_data[0]->id)
+                 ->update($this->data_table, array($this->setting('name') => $files));
+    }
+    
+    protected function _add_script()
     {
         if($this->settings['script'])
         {    
@@ -89,93 +179,8 @@ class Fields extends Interface_form{
             $this->rendered .= '</script>';
         }           
     }
-    
-    private function _text()
-    {
-        $this->rendered = '<input type="'.$this->settings['type'].'" 
-                                  class="'.$this->settings['css_class'].'"
-                                  id="'.$this->settings['css_id'].'"
-                                  name="'.$this->settings['name'].'"
-                                  value="'.  htmlspecialchars($this->value, ENT_QUOTES).'"
-                                        '.$this->settings['disabled'].'/>';
-    }
-    
-    private function _password()
-    {
-        $this->_text();
-    }
-    
-    private function _select()
-    {
-        $this->settings["opt_val_pairs"] = $this->settings["opt_val_pairs"] 
-                                           ? $this->settings["opt_val_pairs"] 
-                                           : $this->_get_select_pairs();
-        
-        if($this->settings["opt_val_pairs"])
-        {
-            //If this is a multiple select we need to change the name to an array
-            //and decode the json values into another array and set the appropriate 
-            $multiple = NULL;
-            if($this->settings['multiple'])
-            {
-                $multiple = "multiple";
-                $this->settings['name'] .= '[]';
-                $this->value = json_decode($this->value);
-                
-            }
-            
-            //If the select is multiple and nothing is selected the corresponding POST variable
-            //will be empty. That's why we set up a backup hidden field
-            $this->rendered = "<input type='hidden' name='".$this->settings['name']."' value=''>";
-            $this->rendered .= '<select '.$multiple.' class="'.$this->settings['css_class'].'"
-                                   id="'.$this->settings['css_id'].'"
-                                   name="'.$this->settings['name'].'"
-                                        '.$this->settings['disabled'].'>';
-            
-            if(is_string($this->settings["opt_val_pairs"]))
-                $this->settings["opt_val_pairs"] = json_decode($this->settings["opt_val_pairs"]);
-            
-            foreach($this->settings["opt_val_pairs"] as $opt => $val)
-            {   
-                //If it is a multiple select the selected flag needs to be determined by searching the 
-                //array of values
-                if($this->settings['multiple'] && is_array($this->value))
-                    $selected = in_array($opt, $this->value) ? "selected" : NULL;
-                else
-                    $selected = ($this->value == $opt) ? "selected" : NULL;
 
-                $this->rendered .= '<option value="'.$opt.'" ' . $selected . '> '.$val.' </option>';
-            }
-            
-            $this->rendered .= "</select>";
-        }
-    }
-    
-    private function _radio()
-    {
-        $this->settings["opt_val_pairs"] = $this->settings["opt_val_pairs"] 
-                                           ? $this->settings["opt_val_pairs"] 
-                                           : $this->_get_select_pairs();
-        
-        if($this->settings["opt_val_pairs"])
-        {
-            $this->settings["opt_val_pairs"] = json_decode($this->settings["opt_val_pairs"]);
-            
-            foreach($this->settings["opt_val_pairs"] as $opt => $val)
-            {    
-                $selected = ($this->value == $val) ? "checked" : NULL;
-                $this->rendered .= '<input type="radio" 
-                                          class="'.$this->settings['css_class'].'"
-                                          id="'.$this->settings['css_id'].'"
-                                          name="'.$this->settings['name'].'"
-                                          value="'.$val.'"
-                                                 '.$this->settings['disabled'].'
-                                                 '.$selected.'>'.$opt;
-            }
-        }
-    }
-    
-    private function _get_select_pairs()
+    protected function _get_select_pairs()
     {
         if(!$this->settings['link_table'] || !$this->settings['link_opt_column'] || !$this->settings['link_val_column'])
             return NULL;
@@ -207,99 +212,8 @@ class Fields extends Interface_form{
             
         return json_encode($pairs);
     }
-    
-    private function _textarea()
-    {
-        $this->rendered = '<textarea class="'.$this->settings['css_class'].' tiny_mce"
-                                     id="'.$this->settings['css_id'].'"
-                                     name="'.$this->settings['name'].'"
-                                           '.$this->settings['disabled'].'>
-                                 ' . $this->value . '
-                           </textarea>';
-    }
-    
-    private function _checkbox()
-    {
-        if($this->settings['checked'] === NULL)
-            $this->settings['checked'] = 1;
-        
-        $checked = ($this->settings['checked'] == $this->value) ? 'checked' : NULL;
-        $this->rendered = '<input type="hidden" name="'.$this->settings['name'].'" value="0" />';
-        $this->rendered .= '<input type="checkbox"
-                                  name="'.$this->settings['name'].'"
-                                  class="'.$this->settings['css_class'].'"
-                                  id="'.$this->settings['css_id'].'"
-                                  value="'.$this->settings['checked'].'"
-                                         '.$checked.'>';
-    }  
-    
-    private function _date()
-    {
-        $this->rendered = '<input type="'.$this->settings['type'].'" 
-                                  class="'.$this->settings['css_class'].' datepicker"
-                                  id="'.$this->settings['css_id'].'"
-                                  name="'.$this->settings['name'].'"
-                                  value="'.$this->value.'"
-                                        '.$this->settings['disabled'].'/>';
-    }
-    
-    private function _file()
-    {
-        $this->_basic_file();
-        
-        if($this->value)
-        {    
-            $this->rendered .= "<table class='table table-hover span5'>
-                                    <tr><th colspan='2'> Filename </th></tr>";
-            $this->value = json_decode($this->value);
 
-            foreach($this->value as $file)
-                $this->rendered .= "<tr id='zcms-file-". str_replace('.', '', strtolower($file)) ."'>
-                                        <td>".$file."</td><td><a href='#' class='btn btn-danger zcms-action zcms-del-file-conf'
-                                                                          data-table='".$this->zcms->interface->form->data_table."'
-                                                                          data-id='".$this->zcms->interface->form->raw_data[0]->id."'
-                                                                          data-file='".$file."'
-                                                                          data-field='".$this->settings['name']."'
-                                                                          data-conf='" . $this->translate->t("Are you sure you want to delete this file") . "?'>
-                                                                    <i class='icon-trash icon-white'></i> " . $this->translate->t("Delete") . " 
-                                                              </a>
-                                                          </td>
-                                                      </tr>";
-            $this->rendered .= "</table>";
-        }     
-    }
-    
-    private function _image()
-    {
-        $this->_basic_file();
-        
-        if($this->value)
-        {    
-            $this->value = json_decode($this->value);
-
-            $this->rendered .= '<ul class="thumbnails">'; 
-            foreach($this->value as $file)
-                $this->rendered .= "<li id='zcms-file-". str_replace('.', '', strtolower($file)) ."'>
-                                        <div class='thumbnail'>
-                                            <a href='".base_url().self::UPLOADS_PATH.$this->settings['path'].$file."'>
-                                                <img src='".base_url().self::UPLOADS_PATH.$this->settings['path'].self::THUMBS_PATH.self::SYS_TB_PREF.'_'.$file."' class='img-polaroid' style='margin:0 10px;'>
-                                            </a>
-                                            <p><a href='#' class='btn btn-block btn-danger zcms-action zcms-del-file-conf'
-                                                                          data-table='".$this->zcms->interface->form->data_table."'
-                                                                          data-id='".$this->zcms->interface->form->raw_data[0]->id."'
-                                                                          data-file='".$file."'
-                                                                          data-field='".$this->settings['name']."'
-                                                                          data-conf='" . $this->translate->t("Are you sure you want to delete this file") . "?'
-                                                                          style='margin:10px 0 0 0;'>
-                                                    <i class='icon-trash icon-white'></i> " . $this->translate->t("Delete") . "
-                                            </a></p>
-                                        </div>
-                                    </li>";
-            $this->rendered .= '</ul>';
-        }   
-    }
-    
-    private function _basic_file()
+    protected function _basic_file()
     {
         $this->rendered = '<input type="file" 
                                   class="'.$this->settings['css_class'].'"
@@ -315,13 +229,21 @@ class Fields extends Interface_form{
         $this->rendered .= "</small></div>";
     }
     
-    private function _submit()
+    protected function _parse_vars($str, $index)
     {
-        $this->rendered = '<input type="'.$this->settings['type'].'" 
-                                  class="'.$this->settings['css_class'].'"
-                                  id="'.$this->settings['css_id'].'"
-                                  name="'.$this->settings['name'].'"
-                                  value="'.$this->settings['label'].'"/>';
+        $matches = array();
+       
+        //First we match the file variables located in the loaded_files array
+        preg_match($this->paterns['file_var'],$str,$matches);
+        if($matches && isset($this->loaded_files[$index]->{$matches[1]}))
+            $str = str_replace($matches[0], $this->loaded_files[$index]->{$matches[1]}, $str);
+
+        //Next we match the raw_data variables    
+        preg_match($this->paterns['data_var'],$str,$matches);
+        if($matches && isset($this->raw_data[0]->{$matches[1]}))
+            $str = str_replace($matches[0], $this->raw_data[0]->{$matches[1]}, $str);
+            
+        return $str;
     }
 }
 

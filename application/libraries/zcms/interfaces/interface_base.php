@@ -55,15 +55,18 @@ class Interface_base extends ZCMS {
     protected $raw_data = NULL;
     
     //The number of results fetched
-    protected $count_results = NULL;
+    protected $count_results = 0;
     
     //The number of results without any limit
-    protected $count_all = NULL;
+    protected $count_all = 0;
     
     //Each interface can be generated multiple times (see load_interface)
     //This stores the variable name the new object is bind to in the object itself
     //for later use
     protected $caller = NULL;
+    
+    //The final view that is rendered
+    protected $loaded_view = NULL;
     
 /*
  * load_interface($interface_id)
@@ -81,28 +84,40 @@ class Interface_base extends ZCMS {
  */
     public function load_interface($interface_id, $interface_name = NULL)
     {
+        $this->event->trigger('interface_load_before', $data = array(
+            "interface_id" => $interface_id, 
+            "interface_name" => $interface_name
+        ));
+        
         $intf_class = "interface_".$interface_id;
+        
         if($this->{$interface_id} && !$interface_name)
         {
             $this->{$interface_id} = new $intf_class ();
+            $this->event->trigger('interface_load_after', $this->{$interface_id});
             return TRUE;
         }
         elseif($this->{$interface_id} && $interface_name)
         {
             $this->{$interface_id}->{$interface_name} = new $intf_class ();
             $this->{$interface_id}->{$interface_name}->caller = $interface_name;
+            $this->event->trigger('interface_load_after', $this->{$interface_id});
             return TRUE;
         }
-        
-        $this->load->library(self::INTERFACE_FOLDER.$intf_class, '', $interface_id);
+
+        $this->load_interface_dependancies($intf_class);
+        $this->load->library(static::INTERFACE_FOLDER.$intf_class, '', $interface_id);
         
         if($interface_name)
         {
             $this->{$interface_id} = NULL;
             $this->{$interface_id}->{$interface_name} = new $intf_class ();
             $this->{$interface_id}->{$interface_name}->caller = $interface_name;
+            $this->event->trigger('interface_load_after', $this->{$interface_id}->{$interface_name});
             return TRUE;
         }
+        
+        $this->event->trigger('interface_load_after', $this->{$interface_id});
         return TRUE;
     }
     
@@ -131,10 +146,11 @@ class Interface_base extends ZCMS {
         //We set the language_table
         $this->_init_lang_table();
         
+        $this->event->trigger('interface_fetch_data_before', $this);
         //If we are required to, we fetch the table data
         if($fetch_data)
             $this->_fetch_data();
-        
+        $this->event->trigger('interface_fetch_data_after', $this);
     }
     
     public function get_raw_data()
@@ -152,13 +168,42 @@ class Interface_base extends ZCMS {
         return $this->settings;
     }
 
+ /**
+  * This functions loads any interfaces of which the current one is dependant.
+  * This is resolved the following way:
+  * 
+  * ex. If the interface name is Interface_list it has no dependancies.
+  * If it is Interface_list_recursive - the class is dependant on the 
+  * Interface_list class
+  * 
+  * @param type $intf_id
+  */
+    protected function load_interface_dependancies($intf_id)
+    {
+        $interface_parts = explode('_', $intf_id);
+        
+        $load = NULL;
+        foreach($interface_parts as $part)
+        {
+            if($load)
+                $load .= "_";
+            
+            $load .= $part;
+            
+            if($part == 'interface' || $part == $intf_id)
+                continue;
+            
+            $this->load->library(static::INTERFACE_FOLDER.$load);
+        }
+    }
+    
 /*
  *  _fetch_data()
  * 
  *  As the name suggests this function extracts the needed data from the database
  * 
  */
-    private function _fetch_data()
+    protected function _fetch_data()
     {
         
         //Building query data - This compound query will be too difficult for CI Active record to handle
@@ -351,7 +396,7 @@ class Interface_base extends ZCMS {
  * in the appropriate class variables
  * 
  */
-    private function _locate_columns()
+    protected function _locate_columns()
     {
         $this->data_fields = $this->db->list_fields($this->data_table);
         $this->data_fields_lang = $this->db->list_fields($this->data_table_lang);
@@ -364,7 +409,7 @@ class Interface_base extends ZCMS {
  * we are in language mode.
  * 
  */
-    private function _map_select()
+    protected function _map_select()
     {
         $mapped = array();
         $mapped[] = "t1.*";

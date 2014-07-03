@@ -15,27 +15,29 @@ class Interface_list extends Interface_base {
 
     //The constant containing the default view
     const LIST_DEFAULT_VIEW = "zlist";
+    //The folder which contains the lists setup classes
+    const LISTS_FOLDER = "interface_list/lists/";
     
     //The settings of the current listing
-    private $list_settings;
-    private $columns;
-    private $actions;
-    private $global_action;
-    private $search_columns;
+    protected $list_settings;
+    protected $columns;
+    protected $actions;
+    protected $global_action;
+    protected $search_columns;
     //The listing labels
-    private $labels = NULL;
+    protected $labels = NULL;
     
     //The processed data will be saved here
-    private $pr_data = NULL;
+    protected $pr_data = NULL;
     
     //Recognisable patterns for string parsing
     //The first pattern matches {@var_name} and will be replaced with the value of the 'var_name' column of the current row
     //The second pattern matches {#property} and will be replaced with the $this->(property) or with the number of the current
     //row if property = row
-    private $paterns = array('row_var' => '/\{@(\w*)\}/','row_num' => '/\{#(\w*)\}/');
+    protected $paterns = array('row_var' => '/\{@(\w*)\}/','row_num' => '/\{#(\w*)\}/');
     
     //Links flags
-    private $link_settings = array(
+    protected $link_settings = array(
       'show_table_name' => 1,
       'mode' => 'URI',
       'additional' => ''
@@ -59,17 +61,44 @@ class Interface_list extends Interface_base {
         if(!$data_table || !$this->db->table_exists($data_table))
              return NULL;
         
+        if(!$this->list_settings)
+            $this->list_settings = new stdClass();
+        //Initializing the list settings
+        
+        if(!isseT($this->list_settings->order_column))
+            $this->list_settings->order_column = NULL;
+        if(!isseT($this->list_settings->page))
+            $this->list_settings->page = 1;
+        if(!isseT($this->list_settings->search))
+            $this->list_settings->search = '';
+        
+        //Loading the list setup class
+        $this->fetcher->interface_file('interface_list','lists', $data_table);
+       
+        $this->event->trigger('interface_list_setup_before', $this->{$data_table});
+        //Running the setup
+        $this->{$data_table}->setup($this);
+        $this->event->trigger('interface_list_setup_after', $this);
+        
         //Initialising the data_table
         $this->data_table = $data_table;
         
         //Initializing the language table 
         $this->_init_lang_table();
 
-        //Preps the control variable
-        $interface_ca = $this->_prep_control();
-        
-        //Parent init() executed, loads the raw data
-        parent::init($data_table, $interface_ca, NULL, TRUE);
+        if(!$this->get_setting('parent_column'))
+        {
+            //Preps the control variable
+            $interface_ca = $this->_prep_control();
+            
+            //Parent init() executed, loads the raw data
+            parent::init($data_table, $interface_ca, NULL, TRUE);
+        }
+        else 
+        {
+            parent::init($data_table, NULL, NULL, FALSE);
+            $this->_get_data_recursive();
+        }
         
         //Setting the data counts into the settings array for view access
         $this->list_settings->count_results = $this->count_results;
@@ -83,7 +112,11 @@ class Interface_list extends Interface_base {
         if(!$this->list_settings)
             $this->list_settings = new stdClass();
         
-        $this->list_settings->{$option} = $value;
+        //Don't want to override here. Default params are actually set AFTER the
+        //current ones
+        if(!isset($this->list_settings->{$option}))
+            $this->list_settings->{$option} = $value;
+            
         return $this;
     }
     
@@ -137,7 +170,7 @@ class Interface_list extends Interface_base {
         if(!$set)
             return $this->list_settings;
         else
-            isset($this->list_settings->{$set}) ? $this->list_settings->{$set} : NULL ;
+            return isset($this->list_settings->{$set}) ? $this->list_settings->{$set} : NULL ;
     }
     
     public function get_actions()
@@ -168,14 +201,17 @@ class Interface_list extends Interface_base {
  */
     public function render($oview = NULL, $return = FALSE)
     {
+        $this->event->trigger('interface_list_render_before', $this);
         //From raw data to one easier to render
         $this->_render_data();
         
-        $view = isset($oview) && file_exists(self::VIEWS_BACKEND.$oview)
-                ? self::VIEWS_BACKEND.$oview : self::VIEWS_BACKEND.self::LIST_DEFAULT_VIEW;
+        $view = isset($oview) && file_exists(static::VIEWS_BACKEND.$oview)
+                ? static::VIEWS_BACKEND.$oview : static::VIEWS_BACKEND.static::LIST_DEFAULT_VIEW;
         
         //The view needs to know which interface is accessing it, thus the caller is passed
-        return $this->load->view($view,array('data' => $this->pr_data, 'caller' => $this->caller ), $return);
+        $this->loaded_view = $this->load->view($view,array('data' => $this->pr_data, 'caller' => $this->caller ), $return);
+        $this->event->trigger('interface_list_render_after', $this);
+        return $this->loaded_view;
     }
     
 
@@ -226,6 +262,9 @@ class Interface_list extends Interface_base {
     
     public function pagination()
     {
+        if($this->get_setting('parent_column'))
+            return NULL;
+        
         $pagination = '<div class="pagination span7">
                             <ul>';
         
@@ -268,7 +307,7 @@ class Interface_list extends Interface_base {
  * This function creates a custom control variable if needed.
  * 
  */
-    private function _prep_control()
+    protected function _prep_control()
     {
         $ctrl = new stdClass();
         
@@ -301,6 +340,72 @@ class Interface_list extends Interface_base {
         return $ctrl;
         
     }
+/**
+ * This function loads the data if its hierachical. It loads it recursively by level
+ * 
+ */
+    private function _get_data_recursive($parent = 0, $level = 0)
+    {
+        $loaded = array();
+        $count = "SELECT COUNT(*) as rows ";
+        $select = NULL;
+        $from = NULL;
+        $join = NULL;
+        $where = NULL;
+        
+        if($this->data_table_lang)
+        {
+            //We will need to know which fields to get from which tables below
+            $this->_locate_columns();
+            
+            //If we have a language table the query will be a bit more complicated
+            $select = "SELECT ".$this->_map_select()." ";
+            $from = "FROM ".$this->data_table." as t1 ";
+            $join = "LEFT JOIN ".$this->data_table_lang." as t2 ON t1.id = t2.id_ ";
+            $where = "WHERE (t2.lang_id = '".$this->translate->get_lang()."' OR t2.lang_id IS NULL) ";
+            $where .= "AND ".$this->get_setting('parent_column')." = '".$parent."'";
+        }
+        else
+        {
+            //Otherwise simple stuff
+            $select = "SELECT t1.* ";
+            $from = "FROM ".$this->data_table." as t1 ";
+            $where .= "WHERE ".$this->get_setting('parent_column')." = '".$parent."'";
+        }
+        
+        //And we get our data
+        $loaded = $this->db->query($select.$from.$join.$where)->result();
+        
+        //Counting results
+        $this->count_all += $this->db->query($count.$from.$join.$where)->row()->rows;
+        $this->count_results += count($loaded);
+        
+        
+        
+        //Some formatin to make the data easier for later use
+        foreach($loaded as $row)
+        {
+            if(isset($row->id_))
+            {    
+                $row->id = $row->id_;
+                
+                if(!$row->lang_id)
+                 $row->lang_id = Translate::DEFAULT_LANG; 
+                
+                unset($row->id_);   
+            }   
+            
+            //Setting the level of the row
+            $row->level = $level;
+
+            //Setting indent
+            $row->{$this->get_setting('indent_column')} = str_repeat("&nbsp", $level*4) .
+                                                              $row->{$this->get_setting('indent_column')};
+            
+            $this->raw_data[] = $row;
+            $this->_get_data_recursive($row->id, $level + 1);
+        }
+    }
 /*
  * _render_data()
  * 
@@ -308,7 +413,7 @@ class Interface_list extends Interface_base {
  * uses parser function on the meta language fields.
  * 
  */
-    private function _render_data()
+    protected function _render_data()
     {
         //We don't have a listing set up
         if(!$this->list_settings)
@@ -337,47 +442,50 @@ class Interface_list extends Interface_base {
         //Two blank boxes for labels and actions
         $this->pr_data->rows[0] = array_merge($this->pr_data->rows[0], array(NULL,NULL));
         
-        foreach($this->raw_data as $row)
-        {    
-            //Setting the raw_data into rows
-            $index = count($this->pr_data->rows);
-            foreach ($this->columns as $column)
-                $this->pr_data->rows[$index][] = $row->{$column->name};
-                
-            //Setting the labels
-            $labels = array();
-            if($this->labels)
-                foreach($this->labels as $label)
-                {
-                    //We clone the $label as it is passed by reference and we want it to stay unchanged
-                    $tmp = clone($label);
+        if($this->raw_data)
+            foreach($this->raw_data as $row)
+            {    
+                //Setting the raw_data into rows
+                $index = count($this->pr_data->rows);
+                foreach ($this->columns as $column)
+                    $this->pr_data->rows[$index][] = $row->{$column->name};
 
-                    //This line first parses any meta language then parses the resulting condition to 0 and 1
-                    $tmp->cond = $this->_parse_cond($this->_parse_vars($tmp->cond, $index));
+                //Setting the labels
+                $labels = array();
+                if($this->labels)
+                    foreach($this->labels as $label)
+                    {
+                        //We clone the $label as it is passed by reference and we want it to stay unchanged
+                        $tmp = clone($label);
 
-                    $labels[] = $tmp;
+                        //This line first parses any meta language then parses the resulting condition to 0 and 1
+                        $tmp->cond = $this->_parse_cond($this->_parse_vars($tmp->cond, $index));
 
-                    //We don't need that $tmp anymore
-                    unset($tmp);
-                }
-            
-            //Second to last cell of the row
-            $this->pr_data->rows[$index][998] = $labels;
-            
-            //Setting the actions
-            $actions = array();
-            if($this->actions)
-                foreach($this->actions as $action)
-                {
-                    $action->link = $this->_parse_vars($action->link, $index);    
-                    $actions[] = $action;
-                }
+                        $labels[] = $tmp;
 
-            $this->pr_data->rows[$index][999] = $actions;
-        }
+                        //We don't need that $tmp anymore
+                        unset($tmp);
+                    }
+
+                //Second to last cell of the row
+                $this->pr_data->rows[$index][998] = $labels;
+
+                //Setting the actions
+                $actions = array();
+
+                if($this->actions)
+                    foreach($this->actions as $action)
+                    {
+                        $tmp = clone $action;
+                        $tmp->link = $this->_parse_vars($tmp->link, $index);    
+                        $actions[] = $tmp;
+                    }
+
+                $this->pr_data->rows[$index][999] = $actions;
+            }
     }
     
-    private function _parse_vars($str, $index)
+    protected function _parse_vars($str, $index)
     {
         $matches = array();
         
@@ -385,9 +493,8 @@ class Interface_list extends Interface_base {
         if($index >= 0)
         {
             preg_match($this->paterns['row_var'],$str,$matches);
-
             if($matches)
-                $str = str_replace($matches[0], $this->pr_data->rows[$index][array_search($matches[1], $this->pr_data->titles)], $str);
+                $str = str_replace($matches[0], $this->raw_data[$index - 1]->{$matches[1]}, $str);
         }
         
         preg_match($this->paterns['row_num'],$str,$matches);
@@ -404,7 +511,7 @@ class Interface_list extends Interface_base {
     }
     
     
-    private function _parse_cond($str)
+    protected function _parse_cond($str)
     {
         $matches = NULL;
         preg_match('/(\w+)\s?(<|<=|>=|>|==|!=)\s?(\w+)/',$str,$matches);

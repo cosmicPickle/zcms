@@ -24,6 +24,7 @@ class ZCMS {
         //folder to make it easier to load libraries from that folder
         const UTILS_FOLDER ="zcms/utilities/";
         const INTERFACE_FOLDER = "zcms/interfaces/";
+        const OBSERVERS_FOLDER = 'zcms/utilities/observers/';
         const MODULES_PATH = "zcms/modules/";
         
         //Same as above only for views
@@ -83,18 +84,26 @@ class ZCMS {
 /*
  * init()
  * 
- * Loads all basic classes (translate, logs, auth) and initializes them
+ * Loads all basic classes and initializes them
  *  
  */
 
 	public function init()
         {
+            $this->load->library(self::UTILS_FOLDER."fetcher");
+            $this->load->library(self::UTILS_FOLDER."event");
+            $this->load->library(self::UTILS_FOLDER."observer");
             $this->load->library(self::UTILS_FOLDER."translate");
             $this->load->library(self::UTILS_FOLDER."logs");
             $this->load->library(self::UTILS_FOLDER."auth");
             $this->load->library(self::UTILS_FOLDER."menu");
-            
+
             $this->load->library(self::INTERFACE_FOLDER."interface_base",'',"interface");
+            
+            //Loads the observers
+            $this->observer->load_observers();
+            
+            $this->event->trigger("zcms_init_after");
         }
         
         public function load_headers($view = NULL)
