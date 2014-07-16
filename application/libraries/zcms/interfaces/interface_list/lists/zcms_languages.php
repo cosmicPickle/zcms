@@ -16,7 +16,7 @@ class Zcms_Languages extends Interface_list {
                         "label" => $this->translate->t('Language'),
                     ))
                     ->add_column(array(
-                        "name" => "lang_id",
+                        "name" => "lang_code",
                         "label" => $this->translate->t('Language Code'),
                     ))
                     ->add_search_column("language")

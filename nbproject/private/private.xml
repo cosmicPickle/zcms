@@ -3,10 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/wamp/www/development/personal/zcms/v.0.2/application/libraries/zcms/interfaces/interface_form/forms/zcms_frontend_menus.php</file>
-            <file>file:/E:/wamp/www/development/personal/zcms/v.0.2/application/libraries/zcms/interfaces/interface_form/forms/zcms_lang_misc.php</file>
-            <file>file:/E:/wamp/www/development/personal/zcms/v.0.2/application/controllers/backend/translations.php</file>
-            <file>file:/E:/wamp/www/development/personal/zcms/v.0.2/application/libraries/zcms/interfaces/interface_list.php</file>
+            <file>file:/E:/wamp/www/development/personal/zcms/v.0.2/application/libraries/zcms/modules/products/listing.php</file>
+            <file>file:/E:/wamp/www/development/personal/zcms/v.0.2/application/libraries/zcms/utilities/translate.php</file>
+            <file>file:/E:/wamp/www/development/personal/zcms/v.0.2/application/libraries/zcms/utilities/page.php</file>
+            <file>file:/E:/wamp/www/development/personal/zcms/v.0.2/application/controllers/frontend/pages.php</file>
+            <file>file:/E:/wamp/www/development/personal/zcms/v.0.2/application/libraries/zcms/modules/module_base.php</file>
         </group>
     </open-files>
 </project-private>

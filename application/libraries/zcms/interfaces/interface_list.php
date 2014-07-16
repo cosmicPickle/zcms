@@ -362,7 +362,10 @@ class Interface_list extends Interface_base {
             $select = "SELECT ".$this->_map_select()." ";
             $from = "FROM ".$this->data_table." as t1 ";
             $join = "LEFT JOIN ".$this->data_table_lang." as t2 ON t1.id = t2.id_ ";
-            $where = "WHERE (t2.lang_id = '".$this->translate->get_lang()."' OR t2.lang_id IS NULL) ";
+            $where = "WHERE (t2.lang_id = IFNULL("
+                    . "(SELECT t3.lang_id FROM ".$this->data_table_lang." as t3"
+                    . " WHERE t1.id = t3.id_ AND lang_id = '".$this->translate->get_lang()."'), "
+                    . "'".$this->translate->get_default_lang(). "')) ";
             $where .= "AND ".$this->get_setting('parent_column')." = '".$parent."'";
         }
         else

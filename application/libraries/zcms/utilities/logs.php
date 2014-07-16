@@ -86,12 +86,15 @@ class Logs extends ZCMS {
         
         public function log($log_name, $subst = NULL, $brake_on_critical = TRUE)
         {
+            
             if($this->logs_table_lang)
-                $log = $this->db->select("t1.name, t1.type, t2.id_, t2.lang_id, IFNULL(t2.text, t1.text) as text", FALSE)
+                $log = $this->db->select("t1.name, t1.type, t2.id_, t2.lang_id, t2.text as text", FALSE)
                                 ->from($this->logs_table . " as t1")
                                 ->join($this->logs_table_lang . " as t2","t1.id = t2.id_","left")
-                                ->where("(t2.lang_id = '" . $this->translate->get_lang() . "' OR t2.lang_id IS NULL) 
-                                         AND t1.name ='".$log_name."'")
+                                ->where("(t2.lang_id = IFNULL("
+                                        . "(SELECT t3.lang_id FROM ".$this->logs_table_lang." as t3"
+                                        . " WHERE t1.id = t3.id_ AND lang_id = '".$this->translate->get_lang()."'), "
+                                        . "'".$this->translate->get_default_lang(). "')) AND t1.name ='".$log_name."'")
                                 ->get()->row();
             else
                 $log = $this->db->select("name, type, text")

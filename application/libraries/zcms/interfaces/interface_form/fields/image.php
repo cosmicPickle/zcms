@@ -16,7 +16,7 @@ class Image extends Fields {
         
         if($this->setting('link_table') && $this->raw_data)
         {
-            //We have a linked outer where the images are stored we need to 
+            //We have a linked outer table where the images are stored we need to 
             //retrieve the values from that table
             $this->value = array();
             $db_file_entries = $this->db->select("*")
@@ -32,10 +32,19 @@ class Image extends Fields {
             }
             
         }
-
-        if(!is_array($this->value))
+        
+        //First we check if the values are already in array
+        //We save a backup because even if it's not an array
+        //The string might be a single value and not a valid JSON
+        //(which is the case on external tables)
+        if(($backup_value = $this->value) && !is_array($this->value))
             $this->value = json_decode($this->value);
         
+        //If the json was invalid we return the initial value
+        if(!$this->value && $backup_value && $backup_value != "[]")
+            $this->value = array($backup_value);
+        
+        //If we still have no value, we have no files to load
         if(!$this->value)
             return NULL;
         

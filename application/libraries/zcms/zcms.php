@@ -90,6 +90,7 @@ class ZCMS {
 
 	public function init()
         {
+            $this->load->library(self::UTILS_FOLDER."sql");
             $this->load->library(self::UTILS_FOLDER."fetcher");
             $this->load->library(self::UTILS_FOLDER."event");
             $this->load->library(self::UTILS_FOLDER."observer");
@@ -97,9 +98,15 @@ class ZCMS {
             $this->load->library(self::UTILS_FOLDER."logs");
             $this->load->library(self::UTILS_FOLDER."auth");
             $this->load->library(self::UTILS_FOLDER."menu");
-
-            $this->load->library(self::INTERFACE_FOLDER."interface_base",'',"interface");
             
+            if($this->environment() == 'backend')
+                $this->load->library(self::INTERFACE_FOLDER."interface_base",'',"interface");
+            else if($this->environment() == 'frontend')
+            {
+                $this->load->library(self::MODULES_PATH."module_base");
+                $this->load->library(self::UTILS_FOLDER."page");
+            }
+                
             //Loads the observers
             $this->observer->load_observers();
             
@@ -133,6 +140,11 @@ class ZCMS {
         public function frontend()
         {
             return $this->frontend;
+        }
+        
+        public function environment()
+        {
+            return substr($this->router->fetch_directory(),0, -1);
         }
 }
 

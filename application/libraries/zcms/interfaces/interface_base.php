@@ -167,6 +167,16 @@ class Interface_base extends ZCMS {
     {
         return $this->settings;
     }
+    
+    public function get_data_table()
+    {
+        return $this->data_table;
+    }
+    
+    public function get_data_table_lang()
+    {
+        return $this->data_table_lang;
+    }
 
  /**
   * This functions loads any interfaces of which the current one is dependant.
@@ -227,7 +237,10 @@ class Interface_base extends ZCMS {
             $select = "SELECT ".$this->_map_select()." ";
             $from = "FROM ".$this->data_table." as t1 ";
             $join = "LEFT JOIN ".$this->data_table_lang." as t2 ON t1.id = t2.id_ ";
-            $where = "WHERE (t2.lang_id = '".$this->translate->get_lang()."' OR t2.lang_id IS NULL) ";
+            $where = "WHERE (t2.lang_id = IFNULL("
+                    . "(SELECT t3.lang_id FROM ".$this->data_table_lang." as t3"
+                    . " WHERE t1.id = t3.id_ AND lang_id = '".$this->translate->get_lang()."'), "
+                    . "'".$this->translate->get_default_lang(). "') OR t2.lang_id IS NULL) ";
         }
         else
         {
@@ -259,7 +272,7 @@ class Interface_base extends ZCMS {
                     //We need to ensure the proper field will be selected if it is not the default language. We also check
                     //if the user has specified the table he wants.
                     if($this->data_table_lang && !preg_match('/^t[1-2]{1}\..+$/', $key))
-                            $key = in_array($key, $this->data_fields_lang) ? "IFNULL(t2.".$key.", t1.".$key.")" : "t1.".$key;
+                            $key = in_array($key, $this->data_fields_lang) ? "t2.".$key : "t1.".$key;
 
                     //Escaping the variables. Also decoding them in case they are in non english. (Yep, much work when we ain't using AR)
                     $where_tmp[] =  $key . " ='" . mysql_real_escape_string(urldecode($value)) . "'";
@@ -279,7 +292,7 @@ class Interface_base extends ZCMS {
                 foreach($this->control->or_where as $key => $value)
                 {    
                     if($this->data_table_lang && !preg_match('/^t[1-2]{1}\..+$/', $key))
-                            $key = in_array($key, $this->data_fields_lang) ? "IFNULL(t2.".$key.", t1.".$key.")" : "t1.".$key;
+                            $key = in_array($key, $this->data_fields_lang) ? "t2.".$key : "t1.".$key;
                     
                     $or_where[] = $key . " ='" . mysql_real_escape_string(urldecode($value)) . "'";
                 }
@@ -294,7 +307,7 @@ class Interface_base extends ZCMS {
                 foreach($this->control->where as $key => $value)
                 {    
                     if($this->data_table_lang && !preg_match('/^t[1-2]{1}\..+$/', $key))
-                            $key = in_array($key, $this->data_fields_lang) ? "IFNULL(t2.".$key.", t1.".$key.")" : "t1.".$key;
+                            $key = in_array($key, $this->data_fields_lang) ? "t2.".$key : "t1.".$key;
                     
                     $like_tmp[] = $key . " LIKE '%" . mysql_real_escape_string(urldecode($value)) . "%'";
                 }
@@ -309,7 +322,7 @@ class Interface_base extends ZCMS {
                 foreach($this->control->or_like as $key => $value)
                 {    
                     if($this->data_table_lang && !preg_match('/^t[1-2]{1}\..+$/', $key))
-                            $key = in_array($key, $this->data_fields_lang) ? "IFNULL(t2.".$key.", t1.".$key.")" : "t1.".$key;
+                            $key = in_array($key, $this->data_fields_lang) ? "t2.".$key : "t1.".$key;
                     
                     $or_like[] = $key . " LIKE '%" . mysql_real_escape_string(urldecode($value)) . "%'";
                 }
@@ -328,10 +341,8 @@ class Interface_base extends ZCMS {
             //and of course if the user hasn't specified which table he wants to pick from.
             if($this->data_table_lang && !preg_match('/^t[1-2]{1}\..+$/', $ob))
                 $order .= in_array($ob, $this->data_fields_lang) 
-                          ? "IFNULL(t2.".mysql_real_escape_string($ob).", t1."
-                                        .mysql_real_escape_string($ob).") "
-                                        .mysql_real_escape_string($od)." "
-                          : "t1.".$ob." ".$od." ";
+                          ? "t2.".mysql_real_escape_string($ob)." ".mysql_real_escape_string($od)." "
+                          : "t1.".mysql_real_escape_string($ob)." ".mysql_real_escape_string($od)." ";
             else
                 $order .= "t1.".mysql_real_escape_string($this->control->order[0])." ".mysql_real_escape_string($this->control->order[1])." ";
         }
@@ -345,7 +356,7 @@ class Interface_base extends ZCMS {
         
         //And we get our data
         $this->raw_data = $this->db->query($select.$from.$join.$where.$order.$limit)->result();
-        
+
         //Counting results
         $this->count_all = $this->db->query($count.$from.$join.$where.$order)->row()->rows;
         $this->count_results = count($this->raw_data);
@@ -414,8 +425,12 @@ class Interface_base extends ZCMS {
         $mapped = array();
         $mapped[] = "t1.*";
         
+        if(($id_key = array_search("id", $this->data_fields_lang, TRUE)) !== FALSE)
+            unset($this->data_fields_lang[$id_key]);
+        
         foreach($this->data_fields_lang as $lfield)
-           $mapped[] = (in_array($lfield, $this->data_fields)) ? "IFNULL(t2." . $lfield . ", t1." . $lfield . ") as " . $lfield : "t2." . $lfield; 
+            $mapped[] = "t2." . $lfield;
+           //$mapped[] = (in_array($lfield, $this->data_fields)) ? "IFNULL(t2." . $lfield . ", t1." . $lfield . ") as " . $lfield : "t2." . $lfield; 
         
         return implode(", ", $mapped);
     }

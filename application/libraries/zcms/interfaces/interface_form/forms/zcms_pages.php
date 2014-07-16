@@ -10,6 +10,31 @@ class Zcms_pages extends Interface_form{
                     'label' => $this->translate->t('Title'),
                     'validation' => 'required'
                 ))
+                ->add_field('main_menu',array(
+                    'type' => 'select',
+                    'opt_val_pairs' => array(
+                       0 => $this->translate->t("None")
+                    ),
+                    'link_table' => 'zcms_frontend_menus',
+                    'link_opt_column' => 'id',
+                    'link_val_column' => 'label',
+                    'link_query' => 'parent_id = 0',
+                    'disabled_on_update' => FALSE,
+                    'label' => $this->translate->t('Main menu'),
+                    'validation' => ''
+                ))
+                ->add_field('page_id',array(
+                    'type' => 'text',
+                    'disabled_on_update' => TRUE,
+                    'label' => $this->translate->t('Page Id'),
+                    'validation' => ''
+                ))
+                ->add_field('template',array(
+                    'type' => 'text',
+                    'disabled_on_update' => FALSE,
+                    'label' => $this->translate->t('Template'),
+                    'validation' => ''
+                ))
                 ->add_field('keywords',array(
                     'type' => 'text',
                     'disabled_on_update' => FALSE,

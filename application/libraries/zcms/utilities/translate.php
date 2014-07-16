@@ -18,7 +18,7 @@
 class Translate extends ZCMS {
     
     //the default language constant
-    const DEFAULT_LANG = "EN";
+    const DEFAULT_LANG = "BG";
     
     //the misc translation table
     const MISC_TABLE = "zcms_lang_misc";
@@ -26,7 +26,7 @@ class Translate extends ZCMS {
     //the page translations cache table
     const CACHE_TABLE = "zcms_lang_cache";
     
-    //current language will be saved here
+    //current language will be saved here 
     private $lang = NULL;
     
     //language table suffix. Every language table will have to have this fellow at the end of its name
@@ -54,30 +54,42 @@ class Translate extends ZCMS {
     {
         parent::__construct();
         
+        //Loading environment
+        $env = $this->environment();
+        
+        if($env == "backend")
+            $lang_var = 'lang';
+        else
+            $lang_var = 'locale';
+        
         //First we check the session variable
-        $session_lang = $this->session->userdata("zcms_lang");
+        $session_lang = $this->session->userdata("zcms_". $lang_var);
         
         //Then we override with the GET variable if set
-        if(isset($_GET['lang']))
+        if(isset($_GET[$lang_var]))
         {
-            $session_lang = strtoupper($_GET['lang']);
-            $this->session->set_userdata("zcms_lang", $session_lang);
+            $session_lang = strtoupper($_GET[$lang_var]);
+            $this->session->set_userdata("zcms_" . $lang_var, $session_lang);
         }
             
-        if($session_lang && $session_lang !== self::DEFAULT_LANG)
-        {    
+        if($session_lang && $session_lang !== self::DEFAULT_LANG)   
             $this->lang = $session_lang;
-            $this->lang_table_sufix = "_lang";
-            $this->_retrieve_lang_cache();
-        }
         else
             $this->lang = self::DEFAULT_LANG;
+        
+        $this->lang_table_sufix = "_lang";
+        $this->_retrieve_lang_cache();
     }
     
     // Ok. I am not commenting getters. Ever!
     public function get_lang()
     {
         return $this->lang;
+    }
+    
+    public function get_default_lang()
+    {
+        return self::DEFAULT_LANG;
     }
     
     public function get_table_sufix()
@@ -126,7 +138,7 @@ class Translate extends ZCMS {
         if(!$ids || !$ids = json_decode($ids))
             return NULL;
         
-        //We wont get out of work this time
+        //We won't get out of work this time
         
         //Constructing the WHERE query for the ids. Not using active record entirely 'cuz it will ruin the 
         // ANDs and ORs
@@ -162,8 +174,8 @@ class Translate extends ZCMS {
     public function t( $subj )
     {
         //We are on default
-        if($this->lang == self::DEFAULT_LANG)
-            return $subj;
+        //if($this->lang == self::DEFAULT_LANG)
+        //    return $subj;
         
         //Attempt 1: The easy way. We have a match, though we need to return the original text if its empty
         if(($key = array_search($subj, self::$misc)) !== FALSE)
@@ -172,7 +184,10 @@ class Translate extends ZCMS {
         //No match ...
         
         //Attempt 2: The value is translated in the misc table, but not added to the list
-        $misc_row = $this->db->where('text', $subj)->get(self::MISC_TABLE)->row();
+        $misc_row = $this->db->where(array(
+            'text' => $subj,
+            'lang_id' => $this->get_lang()
+        ))->get(self::MISC_TABLE)->row();
         
         if($misc_row)
         {

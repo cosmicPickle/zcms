@@ -247,7 +247,7 @@ class Interface_form extends Interface_base {
     
     public function delete($where, $redirect)
     { 
-
+        
         //Lets fetch an the row we are deleting
         $row = $this->db->where($where)
                     ->get($this->data_table)
@@ -255,7 +255,7 @@ class Interface_form extends Interface_base {
         
         if(!$row)
             return FALSE;
-        
+
         $this->event->trigger('interface_form_delete_before', $row);
         
         if($this->data_table_lang)
@@ -399,7 +399,7 @@ class Interface_form extends Interface_base {
         if(!$post) return NULL;
         
         $valid = TRUE;
-        
+
         $this->event->trigger('interface_form_validate_before', $this);
         
         foreach($post as $fname => $inp)
@@ -413,16 +413,17 @@ class Interface_form extends Interface_base {
             
             if(!$rules)
                 continue;
-             
+            
             foreach($rules as $rule)
             {
                 if($rule == "required")
-                    if(empty($inp))
+                {
+                    if(!strlen($inp))
                     {
                         $this->logs->log("INP_REQUIRED", $fsettings->setting('label'));
                         $valid = FALSE;
                     }
-                
+                }
                 if($rule == "alphanumeric")
                     if(!preg_match("/^[a-zA-Z0-9]*$/",$inp))
                     {
@@ -431,11 +432,13 @@ class Interface_form extends Interface_base {
                     }
                 
                 if($rule == "word")
+                {
                     if(!preg_match("/^\w*$/",$inp))
                     {
                         $this->logs->log("INP_WORD", $fsettings->setting('label'));
                         $valid = FALSE;
                     }
+                }
                  
                 if($rule == "email")
                     if(!preg_match("/^([\w-\.]+)@((?:[\w]+\.)+)([a-zA-Z]{2,4})$/",$inp))
@@ -498,8 +501,8 @@ class Interface_form extends Interface_base {
                        }
                  }
             }
-        }
-        
+        }       
+
         $this->event->trigger('interface_form_validate_after', $this);
         return $valid;
     }
@@ -514,6 +517,7 @@ class Interface_form extends Interface_base {
     
     protected function _modify_data()
     {
+        
         //Is there any post?
         $post = (object)$this->input->post();
         if(!$post)
@@ -540,6 +544,7 @@ class Interface_form extends Interface_base {
         //Is there a language table defined. (If not we are either default language or the language table is missing)
         if($this->data_table_lang)
         {   
+            
             //We need to load the fields of both the data table and the language one
             $cols = $this->db->list_fields($this->data_table);
             $lcols = $this->db->list_fields($this->data_table_lang);
@@ -559,23 +564,31 @@ class Interface_form extends Interface_base {
             //No language table - no worries
             $data = $post;
         
-        //We will update/insert the regular data first
-        $this->db->set($data);
-        if($this->fetch_data && $this->raw_data)
-        {
-            //We have fetched data which means we need to update it (if raw_data
-            //is NULL it means nothing was fetched we also need to insert)
-            $this->modify_id = $this->raw_data[0]->id;
-            $this->db->where('id',$this->modify_id)
-                     ->update($this->data_table);
-            
+        //If there is no data we don't have to insert anything
+        if($data)
+        {  
+            //We will update/insert the regular data first
+            $this->db->set($data);
+            if($data && $this->fetch_data && $this->raw_data)
+            { 
+
+                //We have fetched data which means we need to update it (if raw_data
+                //is NULL it means nothing was fetched we also need to insert)
+                $this->modify_id = $this->raw_data[0]->id;
+                $this->db->where('id',$this->modify_id)
+                         ->update($this->data_table);
+
+            }
+            else
+            {
+                //We need to insert a new row
+                $this->db->insert($this->data_table);
+                $this->modify_id = $this->db->insert_id();
+            }
         }
         else
-        {
-            //We need to insert a new row
-            $this->db->insert($this->data_table);
-            $this->modify_id = $this->db->insert_id();
-        }
+            //Just make sure to add a modify id
+            $this->modify_id = $this->raw_data[0]->id;
         
         if($this->data_table_lang)
         {
@@ -586,11 +599,16 @@ class Interface_form extends Interface_base {
                 "lang_id" => $this->translate->get_lang()
                 ))->count_all_results($this->data_table_lang);
             
+            
             if($lang_exists)
             {    
-                $this->db->where('id_',$this->modify_id)
+                $this->db->where(array(
+                                    'id_' => $this->modify_id,
+                                    'lang_id' => $this->translate->get_lang()
+                                 ))
                          ->set($data_lang)
                          ->update($this->data_table_lang); 
+                
             }
             else
             {
@@ -599,7 +617,29 @@ class Interface_form extends Interface_base {
                 $data_lang['lang_id'] = $this->translate->get_lang();
                 
                 $this->db->set($data_lang)->insert($this->data_table_lang);
+            }
+            
+            
+            //Now lets see if there is an entry for the default language
+            //If there isn't one we will create one out of the current language
+            if($this->translate->get_lang() != $this->translate->get_default_lang())
+            {
+                //The check query
+                $default_lang_exists = $this->db->where(array(
+                    "id_" => $this->modify_id,
+                    "lang_id" => $this->translate->get_default_lang()
+                ))->count_all_results($this->data_table_lang);
                 
+                if(!$default_lang_exists)
+                {
+                    if(!isset($data_lang['id_']))
+                    {
+                        $data_lang['id_'] = $this->modify_id;  
+                    }
+                    
+                    $data_lang['lang_id'] = $this->translate->get_default_lang();
+                    $this->db->set($data_lang)->insert($this->data_table_lang);
+                }
             }
         }
         
@@ -624,6 +664,7 @@ class Interface_form extends Interface_base {
         
         $this->event->trigger('interface_form_upload_before', $_FILES);
         
+        
         foreach($_FILES as $fname => $files)
         {
             
@@ -633,7 +674,7 @@ class Interface_form extends Interface_base {
             //There might be no files uploaded through this field. Go to the next
             if(!$_FILES[$fname]['name'][0])
                 continue;
-
+            
             //CodeIgniter upload library configuration
             $config['upload_path'] = self::UPLOADS_PATH.$this->fields[$fname]->setting("path");
             $config['allowed_types'] = $this->fields[$fname]->setting("ext_limit");
@@ -645,7 +686,7 @@ class Interface_form extends Interface_base {
 
             //Next we check if the number of files along with the previously uploaded files exceeds the file limit
             $val = ($this->fields[$fname]->value()) ? count(json_decode ($this->fields[$fname]->value())) : 0;
-            if($this->fields[$fname]->setting("count_limit") && $val + $fcount >= $this->fields[$fname]->setting("count_limit"))
+            if($this->fields[$fname]->setting("count_limit") && $val + $fcount > $this->fields[$fname]->setting("count_limit"))
             {    
                 //Too many files. Next field
                 $this->logs->log('UPLOAD_COUNT');
@@ -710,7 +751,6 @@ class Interface_form extends Interface_base {
                 $uploaded_files[$fname] = json_encode($uploaded_files[$fname]);
             }
         }
-        
         $this->event->trigger('interface_form_upload_after', $uploaded_files);
         return $uploaded_files;
     }
@@ -872,8 +912,31 @@ class Interface_form extends Interface_base {
     protected function _set_field_values()
     {
         foreach($this->fields as $field)
-            if(isset($this->raw_data[0]->{$field->setting('name')}))
-                $field->value($this->raw_data[0]->{$field->setting('name')});
+        {
+            if(preg_match('#^([a-zA-Z0-9_]+)\[([a-zA-Z0-9_]*)\]$#',$field->setting('name'), $matches))
+            {
+                //We have an array of fields that go in the same db column
+                $field_name = $matches[1];
+                $subfield_name = $matches[2];
+                
+                if(isset($this->raw_data[0]->{$field_name}) && ($data = json_decode($this->raw_data[0]->{$field_name})))
+                {
+                    //We have valid json in the DB
+                    //Lets check if we have the value for this field
+                    if(isset($data->{$subfield_name}))
+                        $field->value($data->{$subfield_name});
+                }
+            }
+            else 
+            {
+                //Normal field
+                if(isset($this->raw_data[0]->{$field->setting('name')}))
+                {
+                    $field->value($this->raw_data[0]->{$field->setting('name')});
+                }
+            }  
+            
+        }
     }
  
 /*

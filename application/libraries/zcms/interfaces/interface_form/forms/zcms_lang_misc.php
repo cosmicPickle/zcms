@@ -8,7 +8,7 @@ class Zcms_Lang_Misc extends Interface_form{
                     'type' => 'select',
                     'disabled_on_update' => FALSE,
                     'link_table' => 'zcms_languages',
-                    'link_opt_column' => 'lang_id',
+                    'link_opt_column' => 'lang_code',
                     'link_val_column' => 'language',
                     'label' => $this->translate->t('Language code'),
                     'validation' => 'required'

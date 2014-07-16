@@ -13,10 +13,13 @@ class Product_Categories extends Interface_form{
                 ->add_field('parent_id',array(
                     'type' => 'select',
                     'disabled_on_update' => FALSE,
-                    'label' => 'Parent Id',
+                    'label' => $this->translate->t('Parent Id'),
                     'link_table' => 'product_categories',
                     'link_opt_column' => 'id',
                     'link_val_column' => 'category',
+                    'opt_val_pairs' => array(
+                        "0" => $this->translate->t('Top')
+                    ),
                     'parent_column' => 'parent_id',
                     'validation' => ''
                 ))

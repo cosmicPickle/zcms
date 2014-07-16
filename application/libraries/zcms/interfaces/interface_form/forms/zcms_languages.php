@@ -4,7 +4,7 @@ class Zcms_Languages extends Interface_form{
     
     public function setup($form)
     {
-        return $form->add_field('lang_id',array(
+        return $form->add_field('lang_code',array(
                     'type' => 'text',
                     'disabled_on_update' => FALSE,
                     'label' => $this->translate->t('Language code'),

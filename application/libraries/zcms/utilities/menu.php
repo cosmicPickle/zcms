@@ -38,11 +38,14 @@ class Menu extends ZCMS {
                $this->menu_table_lang = NULL;
            
            if($this->menu_table_lang)
-              $raw = $this->db->select("IFNULL(t2.label, t1.label) as label, t1.controller, t1.method, 
+              $raw = $this->db->select("t2.label as label, t1.controller, t1.method, 
                                         t1.tail, t1.order, t1.access, t2.id_, t2.lang_id", FALSE)
                               ->from($this->menu_table." as t1")
                               ->join($this->menu_table_lang." as t2", " t1.id = t2.id_ ", "left")
-                              ->where("(t2.lang_id = '" . $this->translate->get_lang() . "' OR t2.id_ IS NULL)")
+                              ->where("(t2.lang_id = IFNULL("
+                                        . "(SELECT t3.lang_id FROM ".$this->menu_table_lang." as t3"
+                                        . " WHERE t1.id = t3.id_ AND lang_id = '".$this->translate->get_lang()."'), "
+                                        . "'".$this->translate->get_default_lang(). "')) ")
                               ->order_by("t1.order","asc")
                               ->get()->result();
            else

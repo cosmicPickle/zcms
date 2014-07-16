@@ -79,7 +79,7 @@ class Fields extends Interface_form {
     
     public function value($val = NULL)
     {
-        if(!$val) return $this->value;
+        if($val === NULL) return $this->value;
         else
             $this->value = $val;
     }
@@ -118,6 +118,7 @@ class Fields extends Interface_form {
      */
     public function delete_file($file)
     {
+        
         //There is a linked table use entry deletion
         if($this->setting('link_table'))
             return NULL;
@@ -127,7 +128,6 @@ class Fields extends Interface_form {
             return NULL;
         
         $files = json_decode($this->value());
-        
         
         if(($filePosition = array_search($file, $files)) === FALSE)
             return NULL;
@@ -188,16 +188,20 @@ class Fields extends Interface_form {
         $link_table = $this->settings['link_table'];
         $link_oc = $this->settings['link_opt_column'];
         $link_vc = $this->settings['link_val_column'];
+        $link_query = $this->settings['link_query'];
         
         $link_table_lang = $this->translate->get_table_sufix() 
                            ? $link_table.$this->translate->get_table_sufix()
                            : NULL;
         
         if($link_table_lang)
-            $pairs_raw = $this->db->select("t1." . $link_oc . ", IFNULL(t2." . $link_vc . ", t1." . $link_vc . ") as " . $link_vc,FALSE)
+            $pairs_raw = $this->db->select("t1." . $link_oc . ", t2." . $link_vc . " as " . $link_vc,FALSE)
                               ->from($link_table." as t1")
                               ->join($link_table_lang." as t2", "t1.id = t2.id_", "left")
-                              ->where("t2.lang_id = '" . $this->translate->get_lang() . "' OR t2.lang_id IS NULL")
+                              ->where(
+                                        "(t2.lang_id = '" . $this->translate->get_lang() . "' OR t2.lang_id IS NULL)".
+                                        (($link_query) ? (" AND (".$link_query.")" ): NULL)
+                                     )
                               ->get()
                               ->result();
         else
@@ -218,7 +222,7 @@ class Fields extends Interface_form {
         $this->rendered = '<input type="file" 
                                   class="'.$this->settings['css_class'].'"
                                   id="'.$this->settings['css_id'].'"
-                                  name="'.$this->settings['name'].($this->settings['count_limit'] == 1 ? NULL : '[]').'"
+                                  name="'.$this->settings['name'].'[]"
                                         '.$this->settings['disabled'].'
                                         '.($this->settings['count_limit'] == 1 ? NULL : 'multiple').'/>';
         

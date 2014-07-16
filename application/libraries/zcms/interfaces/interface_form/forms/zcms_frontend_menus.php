@@ -31,7 +31,7 @@ class Zcms_Frontend_Menus extends Interface_form {
                         0 => $this->translate->t('None'),
                     ),
                     'link_table' => 'zcms_pages',
-                    'link_opt_column' => 'id',
+                    'link_opt_column' => 'page_id',
                     'link_val_column' => 'title',
                     'validation' => ''
                 ))
