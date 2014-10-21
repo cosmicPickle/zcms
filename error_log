@@ -1,0 +1,5 @@
+[18-Aug-2014 13:28:15] PHP Parse error:  syntax error, unexpected T_STATIC, expecting ')' in /home/dildesig/public_html/dev/mmotors-site/application/libraries/zcms/interfaces/interface_base.php on line 109
+[29-Sep-2014 16:47:24] PHP Fatal error:  Call to undefined method Auth::_index() in /home/dildesig/public_html/dev/stimex-site/application/libraries/zcms/utilities/auth.php on line 35
+[29-Sep-2014 16:47:38] PHP Fatal error:  Call to undefined method Auth::_index() in /home/dildesig/public_html/dev/stimex-site/application/libraries/zcms/utilities/auth.php on line 35
+[29-Sep-2014 16:47:39] PHP Fatal error:  Call to undefined method Auth::_index() in /home/dildesig/public_html/dev/stimex-site/application/libraries/zcms/utilities/auth.php on line 35
+[29-Sep-2014 16:47:43] PHP Parse error:  syntax error, unexpected T_STATIC, expecting ')' in /home/dildesig/public_html/dev/stimex-site/application/libraries/zcms/interfaces/interface_base.php on line 109
