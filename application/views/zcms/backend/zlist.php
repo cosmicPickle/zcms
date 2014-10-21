@@ -41,12 +41,12 @@ $settings = $obj->get_setting();
                                 {
                                     if($settings->order_direction == 'asc') 
                                     {   
-                                        $icon = '<i class="fa fa-chevron-down" style="margin-left:10px"></i>';
+                                        $icon = '<i class="fa fa-chevron-up" style="margin-left:10px"></i>';
                                         $direction = "desc";
                                     }
                                     else
                                     {    
-                                        $icon = '<i class="fa fa-chevron-up"  style="margin-left:10px"></i>';
+                                        $icon = '<i class="fa fa-chevron-down"  style="margin-left:10px"></i>';
                                         $direction = "asc";
                                     }
                                 }

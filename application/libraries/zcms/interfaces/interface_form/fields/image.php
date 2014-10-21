@@ -67,7 +67,7 @@ class Image extends Fields {
                                                 <div class="photo-wrapper">
                                                     <div class="photo">
                                                         <a class="fancybox" href="'.base_url().self::UPLOADS_PATH.$this->settings['path'].$file.'">
-                                                            <img class="img-responsive" src="'.base_url().self::UPLOADS_PATH.$this->settings['path'].self::THUMBS_PATH.self::SYS_TB_PREF.'_'.$file.'" alt=""></a>
+                                                            <img class="img-responsive" src="'.base_url().self::UPLOADS_PATH.$this->settings['path'].$file.'" alt=""></a>
                                                     </div>
                                                     <div class="overlay"></div>
                                                 </div>

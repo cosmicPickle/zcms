@@ -17,6 +17,7 @@
     <link href="<?php echo base_url().ZCMS::ASSETS_PATH; ?>font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="<?php echo base_url().ZCMS::JS_PATH; ?>fancybox/jquery.fancybox.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="<?php echo base_url().ZCMS::CSS_PATH; ?>zabuto_calendar.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url().ZCMS::JS_PATH; ?>bootstrap-datepicker/css/datepicker.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo base_url().ZCMS::JS_PATH; ?>gritter/css/jquery.gritter.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo base_url().ZCMS::ASSETS_PATH; ?>lineicons/style.css">    
     

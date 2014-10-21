@@ -1,6 +1,6 @@
 <?php
 
-class Zcms_pages extends Interface_list {
+class Content_Articles extends Interface_list {
     
     public function setup($list) {
         
@@ -12,10 +12,6 @@ class Zcms_pages extends Interface_list {
                     ->set('link_show_table', 0)
                     ->set('link_mode', "uri")
                     ->add_column(array(
-                        "name" => "id",
-                        "label" => "#"
-                    ))
-                    ->add_column(array(
                         "name" => "title",
                         "label" => $this->translate->t('Title'),
                     ))
@@ -23,17 +19,22 @@ class Zcms_pages extends Interface_list {
                         "name" => "description",
                         "label" => $this->translate->t('Description'),
                     ))
+                    ->add_column(array(
+                        "name" => "category",
+                        "label" => $this->translate->t('Category'),
+                    ))
                     ->add_search_column("title")
                     ->add_search_column("description")
-                    ->add_search_column("html")
+                    ->add_search_column("content")
+                    ->add_search_column("category")
                     ->add_action(array(
-                        "link" => "content/pages_edit/{@id}",
+                        "link" => "content/articles_edit/{@id}",
                         "label" => "Edit"
                     ))
                     ->add_action(array(
-                        "link" => "content/pages_delete/{@id}",
+                        "link" => "content/articles_delete/{@id}",
                         "label" => "Delete"
                     ))
-                    ->set_global_action("content/pages_edit");
+                    ->set_global_action("content/articles_edit");
     }
 }

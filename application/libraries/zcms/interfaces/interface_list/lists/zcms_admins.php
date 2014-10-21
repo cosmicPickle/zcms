@@ -16,6 +16,10 @@ class Zcms_Admins extends Interface_list {
                         "label" => $this->translate->t('Username'),
                     ))
                     ->add_column(array(
+                        "name" => "name",
+                        "label" => $this->translate->t('Name'),
+                    ))
+                    ->add_column(array(
                         "name" => "email",
                         "label" => $this->translate->t('Email'),
                     ))

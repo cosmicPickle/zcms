@@ -22,13 +22,13 @@ class Zcms_Languages extends Interface_list {
                     ->add_search_column("language")
                     ->add_search_column("lang_id")
                     ->add_action(array(
-                        "link" => "languages/edit/{@id}",
+                        "link" => "localisation/languages_edit/{@id}",
                         "label" => "Edit"
                     ))
                     ->add_action(array(
-                        "link" => "languages/delete/{@id}",
+                        "link" => "localisation/languages_delete/{@id}",
                         "label" => "Delete"
                     ))
-                    ->set_global_action("languages/edit");
+                    ->set_global_action("localisation/languages_edit/");
     }
 }

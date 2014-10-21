@@ -44,7 +44,8 @@ class Fields extends Interface_form {
         'crop' => NULL,
         'padding' => NULL,
         'padding_color' => NULL,
-        'disabled' => NULL
+        'disabled' => NULL,
+        'disable_past' => NULL
     );
     
     protected $value = NULL;

@@ -4,9 +4,10 @@
 <!-- js placed at the end of the document so the pages load faster -->
 <script src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery.js"></script>
 <script src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery-1.8.3.min.js"></script>
-<script src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery-ui.js"></script>
+<script src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery-ui/jquery-ui.js"></script>
 <script src="<?php echo base_url().ZCMS::JS_PATH; ?>fancybox/jquery.fancybox.js"></script>    
 <script src="<?php echo base_url().ZCMS::JS_PATH; ?>bootstrap.min.js"></script>
+<script src="<?php echo base_url().ZCMS::JS_PATH; ?>bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <script class="include" type="text/javascript" src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery.dcjqaccordion.2.7.js"></script>
 <script src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery.scrollTo.min.js"></script>
 <script src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery.nicescroll.js" type="text/javascript"></script>
@@ -39,7 +40,23 @@ $(document).ready(function() {
         convert_urls: false
    });
    
-   $( ".datepicker" ).datepicker({ dateFormat: 'yy-mm-dd' });
+   var nowTemp = new Date();
+   var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+   
+   $( ".datepicker" ).each(function(){
+       
+       var disable_past = $(this).data('disable-past');
+       $(this).datepicker({ 
+            format: 'yyyy-mm-dd', 
+            onRender: function(date) {
+                
+                    if(!disable_past)
+                        return '';
+                    
+                    return date.valueOf() < now.valueOf() ? 'disabled' : '';
+            }
+       });
+   });
 
    $(function() {
         jQuery(".fancybox").fancybox();

@@ -10,6 +10,12 @@ class Zcms_Admins extends Interface_form{
                     'label' => $this->translate->t('Username'),
                     'validation' => 'required'
                 ))
+                ->add_field('name',array(
+                    'type' => 'text',
+                    'disabled_on_update' => FALSE,
+                    'label' => $this->translate->t('Name'),
+                    'validation' => 'required'
+                ))
                 ->add_field('email',array(
                     'type' => 'text',
                     'disabled_on_update' => FALSE,

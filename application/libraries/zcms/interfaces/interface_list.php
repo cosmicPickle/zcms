@@ -350,6 +350,7 @@ class Interface_list extends Interface_base {
         $from = NULL;
         $join = NULL;
         $where = NULL;
+        $order = NULL;
         
         if($this->data_table_lang)
         {
@@ -374,8 +375,23 @@ class Interface_list extends Interface_base {
             $where .= "WHERE ".$this->get_setting('parent_column')." = '".$parent."'";
         }
         
+        if($this->get_setting('order_column'))
+        {  
+            $order = " ORDER BY ";
+            $ob = $this->get_setting('order_column');
+            $od = $this->get_setting('order_direction') ? $this->get_setting('order_direction') : 'asc';
+            //Again we check the language if its different from the default we try to order by fields from the language table
+            //and of course if the user hasn't specified which table he wants to pick from.
+            if($this->data_table_lang && !preg_match('/^t[1-2]{1}\..+$/', $ob))
+                $order .= in_array($ob, $this->data_fields_lang) 
+                          ? "t2.".mysql_real_escape_string($ob)." ".mysql_real_escape_string($od)." "
+                          : "t1.".mysql_real_escape_string($ob)." ".mysql_real_escape_string($od)." ";
+            else
+                $order .= "t1.".mysql_real_escape_string($ob)." ".mysql_real_escape_string($od)." ";
+        }
+        
         //And we get our data
-        $loaded = $this->db->query($select.$from.$join.$where)->result();
+        $loaded = $this->db->query($select.$from.$join.$where.$order)->result();
         
         //Counting results
         $this->count_all += $this->db->query($count.$from.$join.$where)->row()->rows;

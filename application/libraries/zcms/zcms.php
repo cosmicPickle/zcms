@@ -20,6 +20,7 @@ class ZCMS {
         
         //The following constanst create paths to the utilities and interfaces
         //folder to make it easier to load libraries from that folder
+        const LIBRARY_PATH = 'libraries/';
         const UTILS_FOLDER ="zcms/utilities/";
         const INTERFACE_FOLDER = "zcms/interfaces/";
         const OBSERVERS_FOLDER = 'zcms/utilities/observers/';

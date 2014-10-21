@@ -4,10 +4,10 @@ class Page extends ZCMS {
     
     protected $_pages_table = 'zcms_pages';
     protected $_404_page_id = 'zcms_404';
-    protected $_parser_pattern = "#\{([a-zA-Z0-9_/]*)(:([a-zA-Z0-9_\-@,\.\;\s]*))?\}#";
+    protected $_parser_pattern = "#\{([a-zA-Z0-9_/]*):([a-zA-Z0-9_-]*),([a-zA-Z0-9_-]*)(\?[a-zA-Z0-9_\-@\.\&amp;\&\=]*)?\}#";
     
     protected $_page_id;
-    protected $_main_menu;
+    protected $_params = array();
     protected $_page_template = "pages";
     protected $_keywords;
     protected $_description;
@@ -23,6 +23,7 @@ class Page extends ZCMS {
         //Setting global page id
         $this->globals->set("page_id", $this->_page_id);
         
+        $this->_parse_params();
         $this->_load_page();
         $this->_get_modules();
         $this->_render_modules();
@@ -58,6 +59,24 @@ class Page extends ZCMS {
             return $this->_html_raw;
         else
             return $this->_html_parsed;
+    }
+    
+    protected function _parse_params()
+    {
+        $this->_params = $this->uri->ruri_to_assoc(4);
+    }
+    
+    public function get_param($param)
+    {
+        if(!isset($this->_params[$param]))
+            return NULL;
+        
+        return $this->_params[$param];
+    }
+    
+    public function get_params()
+    {
+        return $this->_params;
     }
     
     protected function _load_page()
@@ -101,7 +120,6 @@ class Page extends ZCMS {
         if($page->template)
             $this->_page_template = $page->template;
         
-        $this->_main_menu = $page->main_menu;
         $this->_keywords = $page->keywords;
         $this->_description = $page->description;
         $this->_title = $page->title;
@@ -115,6 +133,7 @@ class Page extends ZCMS {
         
         preg_match_all($this->_parser_pattern, $this->_html_raw, $matches);
         
+        
         if(isset($matches[1]) && $matches[1])
             foreach($matches[1] as $key => $mod_path)
             {
@@ -126,8 +145,11 @@ class Page extends ZCMS {
                 $this->_modules[$index]->set_string($matches[0][$key]);
                 $this->_modules[$index]->set_path($mod_path);
                 $this->_modules[$index]->set_name($mod_name);
-                $this->_modules[$index]->set_params(explode(',',$matches[3][$key]));
-
+                $this->_modules[$index]->set_view($matches[2][$key]);
+                $this->_modules[$index]->set_config_file($matches[3][$key]);
+                
+                $this->_modules[$index]->load_config();
+                $this->_modules[$index]->override_config($matches[4][$key]);
             }
     }
     
@@ -139,7 +161,14 @@ class Page extends ZCMS {
             if(!method_exists($module, "render"))
                 continue;
             
-            call_user_func_array(array($module, "render"), $module->get_params());
+            if(method_exists($module, "fetch"))
+                $module->fetch();
+            
+            if(method_exists($module, "action"))
+                $module->action();
+            
+            $module->render();
+            
         }
     }
     

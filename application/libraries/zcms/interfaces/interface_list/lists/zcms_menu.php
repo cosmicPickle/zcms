@@ -9,6 +9,8 @@ class Zcms_Menu extends Interface_list {
                     ->set('search', '')
                     ->set('link_show_table', 0)
                     ->set('link_mode', "uri")
+                    ->set('order_column', 'order')
+                    ->set('order_direction', 'asc')
                     ->set('parent_column', 'parent')
                     ->set('indent_column', 'label')
                     ->add_column(array(
@@ -28,13 +30,13 @@ class Zcms_Menu extends Interface_list {
                         "label" => $this->translate->t("Access")
                     ))
                     ->add_action(array(
-                        "link" => "backend_menu/edit/{@id}",
+                        "link" => "menus/backend_menu_edit/{@id}",
                         "label" => "Edit"
                     ))
                     ->add_action(array(
-                        "link" => "backend_menu/delete/{@id}",
+                        "link" => "menus/backend_menu_delete/{@id}",
                         "label" => "Delete"
                     ))
-                    ->set_global_action("backend_menu/edit");
+                    ->set_global_action("menus/backend_menu_edit");
     }
 }

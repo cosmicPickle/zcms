@@ -27,13 +27,13 @@ class Zcms_Lang_Misc extends Interface_list {
                     ->add_search_column("text")
                     ->add_search_column("lang")
                     ->add_action(array(
-                        "link" => "translations/edit/{@id}",
+                        "link" => "localisation/translations_edit/{@id}",
                         "label" => "Edit"
                     ))
                     ->add_action(array(
-                        "link" => "translations/delete/{@id}",
+                        "link" => "localisation/translations_delete/{@id}",
                         "label" => "Delete"
                     ))
-                    ->set_global_action("translations/edit");
+                    ->set_global_action("localisation/translations_edit");
     }
 }
