@@ -154,4 +154,49 @@ class Content extends CI_Controller {
 
             $this->interface->form->delete(array('id' => $id), base_url('index.php/backend/content/articles_list')); 
         }
+        
+        public function news_list($p = NULL, $ord = NULL, $dir = NULL)
+        {
+            $this->zcms->load_headers();
+            $this->zcms->load_js();
+            
+            $this->zcms->interface->load_interface('list');    
+            $this->zcms->interface->list
+                 ->set('page', $p)
+                 ->set('order_column', $ord)
+                 ->set('order_direction', $dir)
+                 ->set('search', $this->input->get('search'))
+                 ->init('content_articles', 'content_news')
+                 ->render();
+            
+            $this->zcms->load_footers();
+        }
+        
+        public function news_edit($id = NULL)
+        {
+            $this->zcms->load_headers();
+            $this->zcms->load_js();
+            
+            $rel = $id ? (object)array("where" => array("t1.id" => $id)) : NULL;
+            $get_data = $id ? TRUE : FALSE;
+
+            $this->zcms->interface->load_interface('form'); 
+            $this->interface->form->init('content_articles', $rel, $get_data, 'content_news');
+
+            $this->interface->form->modify()
+                                  ->render();
+            
+            $this->zcms->load_footers();
+        }
+        
+        public function news_delete($id) 
+        {
+            $this->load->library("zcms/zcms");
+            $this->zcms->init();
+
+            $this->zcms->interface->load_interface('form'); 
+            $this->interface->form->init('content_articles', NULL, FALSE, 'content_news');
+
+            $this->interface->form->delete(array('id' => $id), base_url('index.php/backend/content/news_list')); 
+        }
 }

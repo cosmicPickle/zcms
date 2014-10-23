@@ -27,6 +27,10 @@ class Content_Articles extends Interface_list {
                     ->add_search_column("description")
                     ->add_search_column("content")
                     ->add_search_column("category")
+                    ->add_filter_column(array(
+                        "name" => "category-!in", 
+                        "value" => array("news", "testimonials")
+                    ))
                     ->add_action(array(
                         "link" => "content/articles_edit/{@id}",
                         "label" => "Edit"

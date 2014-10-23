@@ -259,77 +259,11 @@ class Interface_base extends ZCMS {
             $where .= $where ? "AND " : "WHERE ";
             $where .= $this->control->where;
         }
-        else
+        elseif(isset($this->control->where) && !empty($this->control->where) && !is_string($this->control->where))
         {
             //Otherwise we do the work of Active Record + a little bit more
-            
-            //First we need to generate the WHERE part of the query that includes where, or_where, like and or_like
-            if(isset($this->control->where) && !empty($this->control->where))
-            {
-                $where_tmp = NULL;
-                foreach($this->control->where as $key => $value)
-                {    
-                    //We need to ensure the proper field will be selected if it is not the default language. We also check
-                    //if the user has specified the table he wants.
-                    if($this->data_table_lang && !preg_match('/^t[1-2]{1}\..+$/', $key))
-                            $key = in_array($key, $this->data_fields_lang) ? "t2.".$key : "t1.".$key;
-
-                    //Escaping the variables. Also decoding them in case they are in non english. (Yep, much work when we ain't using AR)
-                    $where_tmp[] =  $key . " ='" . mysql_real_escape_string(urldecode($value)) . "'";
-                }
-
-                //Is the where variable empty?
-                $where .= $where ? "AND " : "WHERE ";
-
-                //We put our final result from this block in brackets to avoid messing up other parts of the query
-                $where .= "(".implode(" AND ", $where_tmp).")";
-            }
-
-            //The three blocks below are similar
-            if(isset($this->control->or_where) && !empty($this->control->or_where))
-            {    
-                $or_where = array();
-                foreach($this->control->or_where as $key => $value)
-                {    
-                    if($this->data_table_lang && !preg_match('/^t[1-2]{1}\..+$/', $key))
-                            $key = in_array($key, $this->data_fields_lang) ? "t2.".$key : "t1.".$key;
-                    
-                    $or_where[] = $key . " ='" . mysql_real_escape_string(urldecode($value)) . "'";
-                }
-
-                $where .= $where ? "AND " : "WHERE ";
-                $where .= "(".implode(" OR ", $or_where).")";
-            }
-
-            if(isset($this->control->like) && !empty($this->control->like))
-            {
-                $like_tmp = NULL;
-                foreach($this->control->where as $key => $value)
-                {    
-                    if($this->data_table_lang && !preg_match('/^t[1-2]{1}\..+$/', $key))
-                            $key = in_array($key, $this->data_fields_lang) ? "t2.".$key : "t1.".$key;
-                    
-                    $like_tmp[] = $key . " LIKE '%" . mysql_real_escape_string(urldecode($value)) . "%'";
-                }
-
-                $where .= $where ? "AND " : "WHERE ";
-                $where .= "(".implode(" AND ", $like_tmp).") ";
-            }
-
-            if(isset($this->control->or_like) && !empty($this->control->or_like))
-            {    
-                $or_like = array();
-                foreach($this->control->or_like as $key => $value)
-                {    
-                    if($this->data_table_lang && !preg_match('/^t[1-2]{1}\..+$/', $key))
-                            $key = in_array($key, $this->data_fields_lang) ? "t2.".$key : "t1.".$key;
-                    
-                    $or_like[] = $key . " LIKE '%" . mysql_real_escape_string(urldecode($value)) . "%'";
-                }
-
-                $where .= $where ? "AND " : "WHERE ";
-                $where .= "(".implode(" OR ", $or_like).") ";
-            }
+            $where .= $where ? "AND " : "WHERE ";
+            $where .= $this->_parse_where($this->control->where);
         }
         
         if(isset($this->control->order) && !empty($this->control->order))
@@ -434,6 +368,123 @@ class Interface_base extends ZCMS {
         
         return implode(", ", $mapped);
     }
+    
+    	
+
+/**
+  * _parse_where function
+  *
+  * This is a recursive array parser. It recognises the following keys:
+  *
+  * key => val        equals to (AND) key = val <br/>
+  * key>|<|! => val   equals to (AND) key >|<|!= val <br/>
+  * key% => val       equals tp (AND) key LIKE %val% <br/>
+  * !key => val       equals to (OR)  key = val <br/>
+  * key-in => array() equals to       key IN (array()) <br/>
+  * key => array()    equals to (AND) (recusrsion on array()) <br/>
+  * !key => array()   equals to (OR)  (recusrsion on array()) <br/>
+  *
+  * <b> example: </b> <br/>
+  *
+  * array(<br/>
+  *      key1>  => val1<br/>
+  *      !key2% => val2<br/>
+  *      !sub1  => array(<br/>
+  *          key3!  => val3<br/>
+  *          key4< => val4<br/>
+  *      )<br/>
+  * )<br/>
+  *
+  * <b> equals to: </b> <br/>
+  *
+  * WHERE key1 > val1 OR key2 LIKE val2 OR (key3 != val3 AND key4 = val4)
+  *
+  * @param array the where data
+  * @return string the parsed where string
+  */
+     private function _parse_where($data)
+     {
+         //This as the array that will contain all conditions
+         $conds = array();
+
+         //Cycling through the data
+         foreach($data as $key => $val)
+         {
+             //The index of the current condition
+             $index = count($conds);
+
+             //If this is an array we have to process it recursively
+             if(is_array($val))
+             {
+                 //We evaluate to see if it is an "IN" request
+                 if(preg_match('#^([a-zA-Z0-9_\.]*)-(!)?in$#', $key, $matches))
+                 {
+                     //Escaping the values
+                     foreach($val as &$v)
+                         $v = mysql_real_escape_string(urldecode($v));
+                     
+                     $conds[$index] = $matches[1] . (isset($matches[2]) ? " NOT" : NULL) . " IN ('" . implode("','", $val) . "')";
+                 }
+                 else if($val)
+                     //Recursion
+                     $conds[$index] = "(" . $this->_parse_where ($val) . ')';
+
+                 //Are there previous conditions ?
+                 if($index > 0)
+                     if(preg_match('#^!.*#', $key))
+                         //If the key starts with a '!' then we need to add an OR
+                         $conds[$index] = "OR " . $conds[$index];
+                     else
+                         //Otherwise - AND
+                         $conds[$index] = "AND " . $conds[$index];    
+             }
+             else
+             {
+                 //The values are automatically sanitized, but let's check the
+                 //key. The regex matches: table.val OR (!)table.val(<|>|!|%)
+                 if(!preg_match('#^(([a-zA-Z0-9_\.]*)|((![a-zA-Z0-9_\.]*|[a-zA-Z0-9_\.]*)(>|<|!|%)))$#', $key))
+                     continue;
+
+                 $conds[$index] = '';
+
+                 if(preg_match('#^!.*#', $key))
+                 {    
+                     //Are there previous conditions ?
+                     if($index > 0)
+                         //If the key starts with a '!' then we need to add an OR
+                         $conds[$index] .= "OR ";
+
+                     $key = substr($key,1);
+                 }
+                 else
+                     if($index > 0)
+                         //Otherwise - AND
+                         $conds[$index] .= "AND ";  
+
+
+                 //Next we check for an expression
+                 if(preg_match('#^(![a-zA-Z0-9_\.]*|[a-zA-Z0-9_\.]*)(>|<|!|%)$#',$key,$matches))
+                 {      
+                      $key = str_replace($matches[2], '', $key);
+                      if($matches[2] == "%")
+                      {
+                          $val = "%".mysql_real_escape_string($val)."%";
+                          $conds[$index] .= $key. " LIKE '".$val."'";
+                      }
+                      elseif($matches[2] == "!")
+                          $conds[$index] .= $key. " != '".mysql_real_escape_string(urldecode($val))."'";
+                      else
+                          $conds[$index] .= $key . " ".$matches[2]." '".mysql_real_escape_string(urldecode($val))."'";
+                 }    
+                 else
+                     $conds[$index] .= $key . " = '".mysql_real_escape_string(urldecode($val))."'";
+             }
+         }
+         
+         return implode(" ",$conds);
+     }
+
+
 }
 
 /* End of file interface_base.php */

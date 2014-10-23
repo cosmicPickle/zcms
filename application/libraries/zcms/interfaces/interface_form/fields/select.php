@@ -59,6 +59,8 @@ class Select extends Fields {
         $link_table = $this->settings['link_table'];
         $link_oc = $this->settings['link_opt_column'];
         $link_vc = $this->settings['link_val_column'];
+        $link_query = $this->settings['link_query'];
+        
         if(count(explode('.',$link_vc)) == 1)
             $link_vc_full = "t2.".$link_vc;
         else
@@ -77,7 +79,8 @@ class Select extends Fields {
                               ->from($link_table." as t1")
                               ->join($link_table_lang." as t2", "t1.id = t2.id_", "left")
                               ->where("(t2.lang_id = '" . $this->translate->get_lang() . "' OR t2.lang_id IS NULL)")
-                              ->where($this->setting('parent_column')." = '".$parent."'")
+                              ->where($this->setting('parent_column')." = '".$parent."' ".
+                                      (($link_query) ? (" AND (".$link_query.")" ): NULL))
                               ->get()
                               ->result();
         else

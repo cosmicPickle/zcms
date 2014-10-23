@@ -7,7 +7,7 @@ endif;
 ?>
 
 <?php
-if($module->get_config()->show_article_count->value):
+if($module->get_config()->pagination->value && $module->get_config()->show_pagination->value && $module->get_config()->show_article_count->value):
 ?>
 <small>
     <?php echo $this->translate->t("Showing ")?>
@@ -69,14 +69,16 @@ endif;
                     array('article' => $article->alias),
                     TRUE
                  ); ?>">
-        <?php echo $this->translate->t("See More") ?>
+        <?php echo $this->translate->t($module->get_config()->see_more_text->value) ?>
         </a>
     </small><br>
     <?php
     endif;
     ?>
     
-<?php endforeach; 
+<?php 
+    endforeach;
+    if($module->get_config()->pagination->value && $module->get_config()->show_pagination->value) :
 ?>
 
 <ul>
@@ -101,3 +103,6 @@ endif;
         </a>
     </li>
 </ul>
+<?php
+    endif;
+?>

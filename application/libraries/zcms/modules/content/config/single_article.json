@@ -20,5 +20,10 @@
     "meta_use_title" : {
         "value" : 1,
         "can_override" : 0
-    }
+    },
+    
+    "preview" : 0,
+    "show_see_more" : 1,
+    "see_more_text" : "See more",
+    "single_article_page" : "default_single_article_page"
 }

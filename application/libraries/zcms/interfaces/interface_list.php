@@ -24,6 +24,7 @@ class Interface_list extends Interface_base {
     protected $actions;
     protected $global_action;
     protected $search_columns;
+    protected $filter_columns;
     //The listing labels
     protected $labels = NULL;
     
@@ -56,8 +57,9 @@ class Interface_list extends Interface_base {
  * 
  */
     
-    public function init($data_table = NULL) 
+    public function init($data_table = NULL, $setup_file = NULL) 
     {
+        
         if(!$data_table || !$this->db->table_exists($data_table))
              return NULL;
         
@@ -73,11 +75,13 @@ class Interface_list extends Interface_base {
             $this->list_settings->search = '';
         
         //Loading the list setup class
-        $this->fetcher->interface_file('interface_list','lists', $data_table);
+        if(!$setup_file)
+            $setup_file = $data_table;
+        $this->fetcher->interface_file('interface_list','lists', $setup_file);
        
-        $this->event->trigger('interface_list_setup_before', $this->{$data_table});
+        $this->event->trigger('interface_list_setup_before', $this->{$setup_file});
         //Running the setup
-        $this->{$data_table}->setup($this);
+        $this->{$setup_file}->setup($this);
         $this->event->trigger('interface_list_setup_after', $this);
         
         //Initialising the data_table
@@ -149,6 +153,14 @@ class Interface_list extends Interface_base {
         $this->search_columns[] = $name;
         return $this;
         
+    }
+    
+    public function add_filter_column($column) {
+        
+        $column = (object)$column;
+        
+        $this->filter_columns[] = $column;
+        return $this;
     }
     
     public function add_label($label) {
@@ -326,15 +338,28 @@ class Interface_list extends Interface_base {
            && $this->list_settings->order_column && $this->list_settings->order_direction)
             $ctrl->order = array($this->list_settings->order_column, $this->list_settings->order_direction);
         
-        
-        
-        //Setting up the "like" variable
-        if(isset($this->list_settings->search) && $this->list_settings->search)
+
+        //Setting up the search ...
+        if(isset($this->list_settings->search) && $this->list_settings->search && $this->search_columns)
         { 
+            $ctrl->where['search'] = array();
             foreach($this->search_columns as $sf)
-                $ctrl->or_like[$sf] = $this->list_settings->search;
+            {
+                $ctrl->where['search']["!".$sf."%"] = $this->list_settings->search;
+            }
         }
         
+        
+        if($this->filter_columns)
+        {
+            $ctrl->where['filters'] = array();
+            //... and filters
+            foreach($this->filter_columns as $ff)
+            {
+                $ctrl->where['filters'][$ff->name] = $ff->value;
+            }
+        }
+
         return $ctrl;
         
     }

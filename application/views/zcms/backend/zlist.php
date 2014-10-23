@@ -18,15 +18,16 @@ $settings = $obj->get_setting();
     ?>
     <div class="row">
         <div class="col-md-12">
-            <div class="content-panel">
+            <div class="content-panel">                
                 <?php if(!$obj->get_setting('parent_column')) : ?>
-                    <form class="form-search form-inline pull-right" style="margin-right:50px;">
-                        <input type="text" class="form-control search-query" name="search" placeholder="<?php echo $this->translate->t('Search'); ?>" value="<?php echo $this->input->get('search')?>">
-                        <button type="submit" class="btn btn-default"><?php echo $this->translate->t('Search'); ?></button>
+                    <form class="form-search form-inline" style="margin-left:10px;">
+                        <div class="form-group">
+                            <input type="text" class="form-control search-query" name="search" placeholder="<?php echo $this->translate->t('Search'); ?>" value="<?php echo $this->input->get('search')?>">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
                     </form>
                 <?php endif; ?>
                 <table class="table table-striped table-advance table-hover">   
-                    <h4><i class="fa fa-angle-right"></i> Advanced Table</h4>
                     <hr>
                     <thead>
                     <tr>

@@ -21,6 +21,7 @@ class Content_Articles extends Interface_form{
                     'disabled_on_update' => FALSE,
                     'label' => $this->translate->t('Category'),
                     'link_table' => 'content_categories',
+                    'link_query' => "alias != 'news' AND alias != 'testimonials'",
                     'link_opt_column' => 'alias',
                     'link_val_column' => 'label',
                     'parent_column' => 'parent',

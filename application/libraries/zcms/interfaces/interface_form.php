@@ -95,16 +95,18 @@ class Interface_form extends Interface_base {
  * This function overloads the parent::init()
  *  
  */
-    public function init($data_table = NULL, $interface_ca = NULL, $fetch_data = TRUE)
+    public function init($data_table = NULL, $interface_ca = NULL, $fetch_data = TRUE, $setup_file = NULL)
     {
         parent::init($data_table, $interface_ca, NULL, $fetch_data);
         
         //Loading the form setup class
-        $this->fetcher->interface_file('interface_form','forms',$data_table);
+        if(!$setup_file)
+            $setup_file = $data_table;
+        $this->fetcher->interface_file('interface_form','forms',$setup_file);
         
-        $this->event->trigger('interface_form_setup_before', $this->{$data_table});
+        $this->event->trigger('interface_form_setup_before', $this->{$setup_file});
         //Running the setup
-        $this->{$data_table}->setup($this);
+        $this->{$setup_file}->setup($this);
         $this->event->trigger('interface_form_setup_after', $this);
         
         //Parsing the settings on the fields
