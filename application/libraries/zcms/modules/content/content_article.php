@@ -112,9 +112,7 @@ class Content_Article extends Module_Base {
         if(isset($this->config->pagination->value) && $this->config->pagination->value)
         {
             $limit = $this->config->items_per_page->value;
-            $offset = ($this->config->article_page->value - 1)*$this->config->items_per_page->value + 1;
-            if($offset == 1)
-                $offset = 0;
+            $offset = ($this->config->article_page->value - 1)*$this->config->items_per_page->value;
             
             $this->db->limit($limit, $offset);
         }

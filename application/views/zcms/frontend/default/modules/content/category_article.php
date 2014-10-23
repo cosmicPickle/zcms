@@ -7,6 +7,22 @@ endif;
 ?>
 
 <?php
+if($module->get_config()->show_article_count->value):
+?>
+<small>
+    <?php echo $this->translate->t("Showing ")?>
+    <?php echo (($module->get_config()->article_page->value - 1)*$module->get_config()->items_per_page->value + 1)
+                . " - "
+                .($module->get_config()->article_page->value*$module->get_config()->items_per_page->value);
+    ?>
+    <?php echo $this->translate->t("of ")?>
+    <?php echo $category->article_count;?>
+    
+</small>
+<?php
+endif;
+?>
+<?php
     foreach($category->articles as $article) :
 ?>
     <?php
@@ -63,3 +79,25 @@ endif;
 <?php endforeach; 
 ?>
 
+<ul>
+    <li>
+        <a href="<?php echo $this->page->link("",array("article_page" => 1)); ?>">
+            <?php echo $this->translate->t("First") ?>
+        </a>
+    </li>
+<?php
+    $pages = ceil($category->article_count/$module->get_config()->items_per_page->value);
+    for($i = 1; $i <= $pages; $i++):
+?>  
+    <li>
+        <a href="<?php echo $this->page->link("",array("article_page" => $i)); ?>">
+            <?php echo $i; ?>
+        </a>
+    </li>
+<?php endfor; ?>
+    <li>
+        <a href="<?php echo $this->page->link("",array("article_page" => $pages)); ?>">
+            <?php echo $this->translate->t("Last") ?>
+        </a>
+    </li>
+</ul>
