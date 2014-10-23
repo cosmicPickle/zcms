@@ -25,7 +25,6 @@ class Zcms_pages extends Interface_list {
                     ))
                     ->add_search_column("title")
                     ->add_search_column("description")
-                    ->add_search_column("html")
                     ->add_action(array(
                         "link" => "content/pages_edit/{@id}",
                         "label" => "Edit"

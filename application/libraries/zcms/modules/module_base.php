@@ -21,6 +21,8 @@ class Module_base extends ZCMS {
     protected $config_file;
     protected $config_file_ext = ".json";
     protected $config;
+    protected $position;
+    protected $position_string;
     protected $html;
     
     const MODULE_CONFIG_PATH = "config/";
@@ -116,8 +118,17 @@ class Module_base extends ZCMS {
         }
     }
     
+    public function set_position_string()
+    {
+        if(!$this->position)
+            return NULL;
+        
+        $this->position_string = "<module:".$this->position."/>";
+    }
+    
     public function render()
     {
+        $this->view_data['module'] = $this;
         $this->_load_view($this->view);
     }
     
@@ -137,7 +148,7 @@ class Module_base extends ZCMS {
         }
            
         $path .= "/";
-        $this->set_html($this->load->view(self::VIEWS_MODULES.$path.$view, $this->view_data, TRUE));
+        $this->set_html($this->load->view($this->get_view_path('modules').$path.$view, $this->view_data, TRUE));
     }
 }
 

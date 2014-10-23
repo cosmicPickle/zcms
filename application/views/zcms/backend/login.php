@@ -12,13 +12,13 @@
     <title><?php echo $this->translate->t("Z-CMS Administration"); ?></title>
 
     <!-- Bootstrap core CSS -->
-    <link href="<?php echo base_url().ZCMS::CSS_PATH; ?>bootstrap.css" rel="stylesheet">
+    <link href="<?php echo $this->zcms->asset('css', 'bootstrap.css'); ?>" rel="stylesheet">
     <!--external css-->
-    <link href="<?php echo base_url().ZCMS::ASSETS_PATH; ?>font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="<?php echo $this->zcms->asset('', 'font-awesome/css/font-awesome.css'); ?>" rel="stylesheet" />
         
     <!-- Custom styles for this template -->
-    <link href="<?php echo base_url().ZCMS::CSS_PATH; ?>style.css" rel="stylesheet">
-    <link href="<?php echo base_url().ZCMS::CSS_PATH; ?>style-responsive.css" rel="stylesheet">
+    <link href="<?php echo $this->zcms->asset('css', 'style.css'); ?>" rel="stylesheet">
+    <link href="<?php echo $this->zcms->asset('css', 'style-responsive.css'); ?>" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -45,12 +45,12 @@
                 </form>
             </div>
         </div> 
-        <script type="text/javascript" src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery.js"></script>
-        <script type="text/javascript" src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery-ui.js"></script>
-        <script type="text/javascript" src="<?php echo base_url().ZCMS::JS_PATH; ?>bootstrap/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery.backstretch.min.js"></script>
+        <script type="text/javascript" src="<?php echo $this->zcms->asset('js', 'jquery.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo $this->zcms->asset('js', 'jquery-ui.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo $this->zcms->asset('js', 'bootstrap/js/bootstrap.min.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo $this->zcms->asset('js', 'jquery.backstretch.min.js'); ?>"></script>
         <script>
-            $.backstretch("<?php echo base_url().ZCMS::ASSETS_PATH; ?>img/background.png", {speed: 500});
+            $.backstretch("<?php echo $this->zcms->asset('', 'img/background.png') ?>", {speed: 500});
         </script>
     </body>
 </html>

@@ -29,23 +29,22 @@ class Zcms_pages extends Interface_form{
                     'validation' => ''
                 ))
                 ->add_field('template',array(
-                    'type' => 'select',
+                    'type' => 'text',
                     'disabled_on_update' => FALSE,
                     'label' => $this->translate->t('Template'),
-                    'opt_val_pairs' => array(
-                        'pages' => $this->translate->t('Default page template'),
-                        'static_page' => $this->translate->t('Static page template'),
-                        'frontpage' => $this->translate->t('Front page template'),
-                        'categorypage' => $this->translate->t('Category page template'),     
-                        'productpage' => $this->translate->t('Product page template'),
-                    ),
                     'validation' => ''
                 ))
                 ->add_field('html',array(
-                    'type' => 'textarea',
+                    'type' => 'text',
                     'disabled_on_update' => FALSE,
                     'label' => $this->translate->t('Layout'),
                     'validation' => 'required'
+                ))
+                ->add_field('modules',array(
+                    'type' => 'textarea',
+                    'disabled_on_update' => FALSE,
+                    'label' => $this->translate->t('Modules'),
+                    'validation' => ''
                 ))
                 ->add_submit(array(
                     'label' => $this->translate->t('Save'),

@@ -4,6 +4,7 @@ class Content_Article extends Module_Base {
     
     protected $articles_table = "content_articles";
     protected $category_table = "content_categories";
+    protected $admins_table = "zcms_admins";
     protected $alias_404 = "404_page_not_found";
     protected $alias_uncategorised = "uncategorised";
     protected $article = NULL;
@@ -19,6 +20,21 @@ class Content_Article extends Module_Base {
     {
         $this->_override_meta_info();
         parent::render();
+    }
+    
+    public function preview_content($content)
+    {
+        if($this->config->preview->value
+           && mb_strlen($content) > $this->config->preview->value)
+        {
+            $cut_at = $this->config->preview->value;
+            while($content[$cut_at] != ' ')
+                $cut_at ++;
+            
+            return mb_strcut($content,0,$cut_at). " ...";
+        }
+            
+        return $content;
     }
     
     protected function _fetch_single_article()
@@ -44,7 +60,15 @@ class Content_Article extends Module_Base {
         $this->db->from($this->category_table." as t1");
         $this->sql->add_lang_table($this->category_table.$this->translate->get_table_sufix());
         $this->db->where('alias', $this->article->category);
-        $this->article->category = $this->db->get()->result();
+        $this->article->category = $this->db->get()->row();
+        
+        //Fetching author
+        $this->db->from($this->admins_table." as t1");
+        $this->sql->add_lang_table($this->admins_table.$this->translate->get_table_sufix());
+        $this->db->where('id_', $this->article->author);
+        $this->article->author = $this->db->get()->row();
+        
+        $this->view_data = array('article' => $this->get_article());
     }
     
     protected function _fetch_category_article()
@@ -66,7 +90,7 @@ class Content_Article extends Module_Base {
             return NULL;
         }
         
-        //Fetching the article
+        //Fetching the articles
         $this->db->from($this->articles_table." as t1");
         $this->sql->add_lang_table($this->articles_table.$this->translate->get_table_sufix());
         $this->db->where('category',$this->category->alias);
@@ -94,13 +118,36 @@ class Content_Article extends Module_Base {
             
             $this->db->limit($limit, $offset);
         }
-        else if(isseT($this->config->limit->value) && $this->config->limit->value)
+        else if(isset($this->config->limit->value) && $this->config->limit->value)
         {
             //If there is no pagination but there is a limit
             $this->db->limit($this->config->limit->value);
         }
         
         $this->category->articles = $this->db->get()->result();
+        
+        //Loading article authors
+        if($this->config->show_author)
+        {
+            $ids = array();
+            foreach($this->category->articles as $article)
+                if(!in_array($article->author, $ids))
+                     $ids[] = $article->author;
+                
+            //Fetching the articles
+            $this->db->from($this->admins_table." as t1");
+            $this->sql->add_lang_table($this->admins_table.$this->translate->get_table_sufix());
+            $this->db->where_in('id_',$ids);
+            
+            $authors = $this->db->get()->result();
+            
+            foreach($authors as $author)
+                foreach($this->category->articles as $article)
+                    if($author->id_ == $article->author)
+                        $article->author = $author;
+        }
+        
+        $this->view_data = array('category' => $this->get_category()); 
     }
     
     protected function _override_meta_info()

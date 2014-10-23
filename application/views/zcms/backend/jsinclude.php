@@ -2,29 +2,29 @@
 ?>
 
 <!-- js placed at the end of the document so the pages load faster -->
-<script src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery.js"></script>
-<script src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery-1.8.3.min.js"></script>
-<script src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery-ui/jquery-ui.js"></script>
-<script src="<?php echo base_url().ZCMS::JS_PATH; ?>fancybox/jquery.fancybox.js"></script>    
-<script src="<?php echo base_url().ZCMS::JS_PATH; ?>bootstrap.min.js"></script>
-<script src="<?php echo base_url().ZCMS::JS_PATH; ?>bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-<script class="include" type="text/javascript" src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery.dcjqaccordion.2.7.js"></script>
-<script src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery.scrollTo.min.js"></script>
-<script src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery.nicescroll.js" type="text/javascript"></script>
-<script src="<?php echo base_url().ZCMS::JS_PATH; ?>jquery.sparkline.js"></script>
+<script src="<?php echo $this->zcms->asset('js', 'jquery.js'); ?>"></script>
+<script src="<?php echo $this->zcms->asset('js', 'jquery-1.8.3.min.js'); ?>"></script>
+<script src="<?php echo $this->zcms->asset('js', 'jquery-ui/jquery-ui.js'); ?>"></script>
+<script src="<?php echo $this->zcms->asset('js', 'fancybox/jquery.fancybox.js'); ?>"></script>    
+<script src="<?php echo $this->zcms->asset('js', 'bootstrap.min.js'); ?>"></script>
+<script src="<?php echo $this->zcms->asset('js', 'bootstrap-datepicker/js/bootstrap-datepicker.js'); ?>"></script>
+<script class="include" type="text/javascript" src="<?php echo $this->zcms->asset('js', 'jquery.dcjqaccordion.2.7.js'); ?>"></script>
+<script src="<?php echo $this->zcms->asset('js', 'jquery.scrollTo.min.js'); ?>"></script>
+<script src="<?php echo $this->zcms->asset('js', 'jquery.nicescroll.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo $this->zcms->asset('js', 'jquery.sparkline.js'); ?>"></script>
 
 
 <!--common script for all pages-->
-<script src="<?php echo base_url().ZCMS::JS_PATH; ?>common-scripts.js"></script>
-<script type="text/javascript" src="<?php echo base_url().ZCMS::JS_PATH; ?>gritter/js/jquery.gritter.js"></script>
-<script type="text/javascript" src="<?php echo base_url().ZCMS::JS_PATH; ?>gritter-conf.js"></script>
+<script src="<?php echo $this->zcms->asset('js', 'common-scripts.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo $this->zcms->asset('js', 'gritter/js/jquery.gritter.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo $this->zcms->asset('js', 'gritter-conf.js'); ?>"></script>
 
-<script type="text/javascript" src="<?php echo base_url().ZCMS::JS_PATH; ?>tinymce/jquery.tinymce.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->zcms->asset('js', 'tinymce/jquery.tinymce.min.js'); ?>"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     
    $('textarea.tiny_mce').tinymce({
-        script_url : '<?php echo base_url().ZCMS::JS_PATH; ?>tinymce/tinymce.min.js',
+        script_url : '<?php echo $this->zcms->asset('js', 'tinymce/tinymce.min.js') ?>',
         theme: "modern",
         plugins: [
             "advlist autolink lists link image charmap print preview hr anchor pagebreak",

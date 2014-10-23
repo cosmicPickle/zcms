@@ -12,20 +12,20 @@
     <title><?php echo $this->translate->t("Z-CMS Administration"); ?></title>
 
     <!-- Bootstrap core CSS -->
-    <link href="<?php echo base_url().ZCMS::CSS_PATH; ?>bootstrap.css" rel="stylesheet">
+    <link href="<?php echo $this->zcms->asset('css', 'bootstrap.css'); ?>" rel="stylesheet">
     <!--external css-->
-    <link href="<?php echo base_url().ZCMS::ASSETS_PATH; ?>font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <link href="<?php echo base_url().ZCMS::JS_PATH; ?>fancybox/jquery.fancybox.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().ZCMS::CSS_PATH; ?>zabuto_calendar.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().ZCMS::JS_PATH; ?>bootstrap-datepicker/css/datepicker.css" />
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().ZCMS::JS_PATH; ?>gritter/css/jquery.gritter.css" />
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url().ZCMS::ASSETS_PATH; ?>lineicons/style.css">    
+    <link href="<?php echo $this->zcms->asset('', 'font-awesome/css/font-awesome.css'); ?>" rel="stylesheet" />
+    <link href="<?php echo $this->zcms->asset('js', 'fancybox/jquery.fancybox.css'); ?>" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->zcms->asset('css', 'zabuto_calendar.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->zcms->asset('js', 'bootstrap-datepicker/css/datepicker.css'); ?>" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->zcms->asset('js', 'gritter/css/jquery.gritter.css'); ?>" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->zcms->asset('', 'lineicons/style.css'); ?>">    
     
     <!-- Custom styles for this template -->
-    <link href="<?php echo base_url().ZCMS::CSS_PATH; ?>style.css" rel="stylesheet">
-    <link href="<?php echo base_url().ZCMS::CSS_PATH; ?>style-responsive.css" rel="stylesheet">
+    <link href="<?php echo $this->zcms->asset('css', 'style.css') ?>" rel="stylesheet">
+    <link href="<?php echo $this->zcms->asset('css', 'style-responsive.css'); ?>" rel="stylesheet">
 
-    <script src="<?php echo base_url().ZCMS::JS_PATH; ?>chart-master/Chart.js"></script>
+    <script src="<?php echo $this->zcms->asset('js', 'chart-master/Chart.js'); ?>"></script>
     
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>

@@ -7,6 +7,7 @@
     "show_title": 1,
     "show_date": 1,
     "show_author": 1,
+    "show_category": 1,
     "meta_use_keywords" : 
     {
         "value" : 1,

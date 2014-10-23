@@ -29,15 +29,17 @@ class ZCMS {
         //Same as above only for views
         const VIEWS_BACKEND = "zcms/backend/";
         const VIEWS_FRONTEND = "zcms/frontend/";
-        const VIEWS_MODULES = "zcms/modules/";
+        const VIEWS_MODULES = "modules/";
+        const VIEWS_WRAPPERS = "wrappers/";
+        const VIEWS_LAYOUTS = "layouts/";
         
         //Next is the public folder path and the uploads folder path as well as
         //js and css folders
         const PUBLIC_PATH = "public";
         const UPLOADS_PATH = "public/uploads/";
-        const ASSETS_PATH = "public/assets/backend/";
-        const JS_PATH = "public/assets/backend/js/";
-        const CSS_PATH = "public/assets/backend/css/";
+        const ASSETS_PATH = "public/assets/";
+        const JS_PATH = "js/";
+        const CSS_PATH = "css/";
         
         //The default header that is loaded with load_headers()
         const HEADER = "header";
@@ -49,6 +51,9 @@ class ZCMS {
         //The frontend and backend absolute paths will be saved here
         protected $backend;
         protected $frontend;
+        
+        //ZCMS configuration
+        protected $zcms_config;
         
 /*
  * __construct()
@@ -74,8 +79,9 @@ class ZCMS {
  */
         
         public function __get($name) {
-            
             $ci = & get_instance();
+            $this->zcms_config = $ci->config->item("zcms");
+            
             if(isset($ci->{$name}))
                 return $ci->{$name};
         }
@@ -134,6 +140,62 @@ class ZCMS {
             $this->event->trigger("zcms_load_js_after", $this);
         }
         
+        public function zcms_config($item, $value = NULL)
+        {
+            if($value)
+            {
+                $this->zcms_config[$item] = $value;
+            }
+            else
+            {
+                return (isset($this->zcms_config[$item]) ? $this->zcms_config[$item] : NULL);
+            }
+        }
+        
+        public function asset($type, $asset)
+        {
+            $path = base_url() 
+                    . ZCMS::ASSETS_PATH 
+                    . $this->environment(TRUE)
+                    . $this->zcms_config('theme').'/';
+            
+            if(strtolower($type) == 'js')
+                $path .= ZCMS::JS_PATH;
+            
+            if(strtolower($type) == 'css')
+                $path .= ZCMS::CSS_PATH;
+            
+            return $path.$asset;
+        }
+        
+        public function get_view_path($type = NULL)
+        {
+            if($type)
+            {
+                $refl = new ReflectionClass($this);
+                $type = "VIEWS_".strtoupper($type);
+                $type = $refl->getConstant($type);
+            }
+            
+            $path = "";
+            if($this->environment() == "frontend")
+                $path .= self::VIEWS_FRONTEND;
+            else if($this->environment() == "backend")
+                $path .= self::VIEWS_BACKEND;
+            
+            $path .= $this->zcms_config('theme').'/';
+            $path .= $type;
+            
+            return $path;
+        }
+        
+        public function environment($add_trailing_slash = FALSE)
+        {
+            if(!$add_trailing_slash)
+                return substr($this->router->fetch_directory(),0, -1);
+            
+            return $this->router->fetch_directory();
+        }
 /*
  *  I refuse to comment the last two functions.
  */
@@ -146,11 +208,6 @@ class ZCMS {
         public function frontend()
         {
             return $this->frontend;
-        }
-        
-        public function environment()
-        {
-            return substr($this->router->fetch_directory(),0, -1);
         }
 }
 

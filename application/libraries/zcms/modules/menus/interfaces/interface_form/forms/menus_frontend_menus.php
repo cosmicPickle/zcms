@@ -10,6 +10,12 @@ class Menus_Frontend_Menus extends Interface_form {
                     'label' => $this->translate->t('Label'),
                     'validation' => 'required'
                 ))
+                ->add_field('alias', array(
+                    'type' => 'text',
+                    'disabled_on_update' => TRUE,
+                    'label' => $this->translate->t('Alias'),
+                    'validation' => ''
+                ))
                 ->add_field('parent_id',array(
                     'type' => 'select',
                     'disabled_on_update' => FALSE,

@@ -4,6 +4,9 @@
         "can_override" : 0
     },
     "category": "",
+    "show_category_as_title": 1,
+    "show_title": 1,
+    "show_category": 1,
     "show_date": 1,
     "show_author": 1,
     "meta_use_keywords" : 
@@ -28,7 +31,9 @@
     "article_page" : 1,
     "order_by" : "date",
     "order_dir" : "desc",
-    "limit" : 0,
+    "limit" : 2,
     
-    "preview" : 100    
+    "preview" : 100,
+    "show_see_more" : 1,
+    "single_article_page" : "default_single_article_page"
 }
