@@ -2,10 +2,10 @@
 -- version 4.0.4
 -- http://www.phpmyadmin.net
 --
--- Хост: localhost
--- Време на генериране: 
--- Версия на сървъра: 5.6.12-log
--- Версия на PHP: 5.4.12
+-- Host: localhost
+-- Generation Time: Oct 29, 2014 at 12:31 PM
+-- Server version: 5.6.12-log
+-- PHP Version: 5.4.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,15 +17,15 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- БД: `zcms_v04`
+-- Database: `zcms_v04`
 --
-CREATE DATABASE IF NOT EXISTS `zcms_v04` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+CREATE DATABASE IF NOT EXISTS `zcms_v04` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 USE `zcms_v04`;
 
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `content_articles`
+-- Table structure for table `content_articles`
 --
 
 CREATE TABLE IF NOT EXISTS `content_articles` (
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `content_articles` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 --
--- Схема на данните от таблица `content_articles`
+-- Dumping data for table `content_articles`
 --
 
 INSERT INTO `content_articles` (`id`, `alias`, `category`, `author`, `date`) VALUES
@@ -52,7 +52,7 @@ INSERT INTO `content_articles` (`id`, `alias`, `category`, `author`, `date`) VAL
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `content_articles_lang`
+-- Table structure for table `content_articles_lang`
 --
 
 CREATE TABLE IF NOT EXISTS `content_articles_lang` (
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `content_articles_lang` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 --
--- Схема на данните от таблица `content_articles_lang`
+-- Dumping data for table `content_articles_lang`
 --
 
 INSERT INTO `content_articles_lang` (`id`, `id_`, `lang_id`, `title`, `keywords`, `description`, `content`) VALUES
@@ -81,7 +81,7 @@ INSERT INTO `content_articles_lang` (`id`, `id_`, `lang_id`, `title`, `keywords`
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `content_categories`
+-- Table structure for table `content_categories`
 --
 
 CREATE TABLE IF NOT EXISTS `content_categories` (
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `content_categories` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
--- Схема на данните от таблица `content_categories`
+-- Dumping data for table `content_categories`
 --
 
 INSERT INTO `content_categories` (`id`, `alias`, `parent`, `order`) VALUES
@@ -103,7 +103,7 @@ INSERT INTO `content_categories` (`id`, `alias`, `parent`, `order`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `content_categories_lang`
+-- Table structure for table `content_categories_lang`
 --
 
 CREATE TABLE IF NOT EXISTS `content_categories_lang` (
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `content_categories_lang` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
--- Схема на данните от таблица `content_categories_lang`
+-- Dumping data for table `content_categories_lang`
 --
 
 INSERT INTO `content_categories_lang` (`id`, `id_`, `lang_id`, `label`, `keywords`, `description`) VALUES
@@ -127,7 +127,7 @@ INSERT INTO `content_categories_lang` (`id`, `id_`, `lang_id`, `label`, `keyword
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `menus_frontend_menus`
+-- Table structure for table `menus_frontend_menus`
 --
 
 CREATE TABLE IF NOT EXISTS `menus_frontend_menus` (
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `menus_frontend_menus` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 --
--- Схема на данните от таблица `menus_frontend_menus`
+-- Dumping data for table `menus_frontend_menus`
 --
 
 INSERT INTO `menus_frontend_menus` (`id`, `parent_id`, `page_id`, `params`, `order`, `alias`) VALUES
@@ -150,13 +150,13 @@ INSERT INTO `menus_frontend_menus` (`id`, `parent_id`, `page_id`, `params`, `ord
 (2, 1, 'default_category_article_page', 'category/news', 0, ''),
 (3, 1, 'zcms_404', '', 1, ''),
 (4, 3, 'one_column_layout', 'article/lorem_ipsum', 0, ''),
-(5, 3, 'zcms_404', '', 1, ''),
+(5, 3, 'two_column_layout', 'category/news', 1, ''),
 (6, 3, 'zcms_404', '', 2, '');
 
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `menus_frontend_menus_lang`
+-- Table structure for table `menus_frontend_menus_lang`
 --
 
 CREATE TABLE IF NOT EXISTS `menus_frontend_menus_lang` (
@@ -168,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `menus_frontend_menus_lang` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 --
--- Схема на данните от таблица `menus_frontend_menus_lang`
+-- Dumping data for table `menus_frontend_menus_lang`
 --
 
 INSERT INTO `menus_frontend_menus_lang` (`id`, `id_`, `lang_id`, `label`) VALUES
@@ -182,7 +182,7 @@ INSERT INTO `menus_frontend_menus_lang` (`id`, `id_`, `lang_id`, `label`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `product_categories`
+-- Table structure for table `product_categories`
 --
 
 CREATE TABLE IF NOT EXISTS `product_categories` (
@@ -195,7 +195,7 @@ CREATE TABLE IF NOT EXISTS `product_categories` (
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `product_categories_lang`
+-- Table structure for table `product_categories_lang`
 --
 
 CREATE TABLE IF NOT EXISTS `product_categories_lang` (
@@ -209,7 +209,7 @@ CREATE TABLE IF NOT EXISTS `product_categories_lang` (
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `product_docs`
+-- Table structure for table `product_docs`
 --
 
 CREATE TABLE IF NOT EXISTS `product_docs` (
@@ -223,7 +223,7 @@ CREATE TABLE IF NOT EXISTS `product_docs` (
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `product_docs_lang`
+-- Table structure for table `product_docs_lang`
 --
 
 CREATE TABLE IF NOT EXISTS `product_docs_lang` (
@@ -238,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `product_docs_lang` (
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `product_images`
+-- Table structure for table `product_images`
 --
 
 CREATE TABLE IF NOT EXISTS `product_images` (
@@ -253,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `product_images` (
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `product_images_lang`
+-- Table structure for table `product_images_lang`
 --
 
 CREATE TABLE IF NOT EXISTS `product_images_lang` (
@@ -269,7 +269,7 @@ CREATE TABLE IF NOT EXISTS `product_images_lang` (
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `product_products`
+-- Table structure for table `product_products`
 --
 
 CREATE TABLE IF NOT EXISTS `product_products` (
@@ -283,7 +283,7 @@ CREATE TABLE IF NOT EXISTS `product_products` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 --
--- Схема на данните от таблица `product_products`
+-- Dumping data for table `product_products`
 --
 
 INSERT INTO `product_products` (`id`, `type`, `filters`, `code`, `top_offer`, `categories`) VALUES
@@ -292,7 +292,7 @@ INSERT INTO `product_products` (`id`, `type`, `filters`, `code`, `top_offer`, `c
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `product_products_lang`
+-- Table structure for table `product_products_lang`
 --
 
 CREATE TABLE IF NOT EXISTS `product_products_lang` (
@@ -308,7 +308,7 @@ CREATE TABLE IF NOT EXISTS `product_products_lang` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 --
--- Схема на данните от таблица `product_products_lang`
+-- Dumping data for table `product_products_lang`
 --
 
 INSERT INTO `product_products_lang` (`id`, `id_`, `lang_id`, `title`, `short_description`, `description`, `technical_info`) VALUES
@@ -317,7 +317,7 @@ INSERT INTO `product_products_lang` (`id`, `id_`, `lang_id`, `title`, `short_des
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `zcms_admins`
+-- Table structure for table `zcms_admins`
 --
 
 CREATE TABLE IF NOT EXISTS `zcms_admins` (
@@ -332,7 +332,7 @@ CREATE TABLE IF NOT EXISTS `zcms_admins` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
--- Схема на данните от таблица `zcms_admins`
+-- Dumping data for table `zcms_admins`
 --
 
 INSERT INTO `zcms_admins` (`id`, `username`, `password`, `email`, `image`, `level`) VALUES
@@ -342,7 +342,7 @@ INSERT INTO `zcms_admins` (`id`, `username`, `password`, `email`, `image`, `leve
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `zcms_admins_lang`
+-- Table structure for table `zcms_admins_lang`
 --
 
 CREATE TABLE IF NOT EXISTS `zcms_admins_lang` (
@@ -353,7 +353,7 @@ CREATE TABLE IF NOT EXISTS `zcms_admins_lang` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Схема на данните от таблица `zcms_admins_lang`
+-- Dumping data for table `zcms_admins_lang`
 --
 
 INSERT INTO `zcms_admins_lang` (`id`, `id_`, `lang_id`, `name`) VALUES
@@ -363,7 +363,7 @@ INSERT INTO `zcms_admins_lang` (`id`, `id_`, `lang_id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `zcms_languages`
+-- Table structure for table `zcms_languages`
 --
 
 CREATE TABLE IF NOT EXISTS `zcms_languages` (
@@ -373,7 +373,7 @@ CREATE TABLE IF NOT EXISTS `zcms_languages` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 --
--- Схема на данните от таблица `zcms_languages`
+-- Dumping data for table `zcms_languages`
 --
 
 INSERT INTO `zcms_languages` (`id`, `lang_code`) VALUES
@@ -382,7 +382,7 @@ INSERT INTO `zcms_languages` (`id`, `lang_code`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `zcms_languages_lang`
+-- Table structure for table `zcms_languages_lang`
 --
 
 CREATE TABLE IF NOT EXISTS `zcms_languages_lang` (
@@ -394,7 +394,7 @@ CREATE TABLE IF NOT EXISTS `zcms_languages_lang` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
--- Схема на данните от таблица `zcms_languages_lang`
+-- Dumping data for table `zcms_languages_lang`
 --
 
 INSERT INTO `zcms_languages_lang` (`id`, `id_`, `lang_id`, `language`) VALUES
@@ -404,7 +404,7 @@ INSERT INTO `zcms_languages_lang` (`id`, `id_`, `lang_id`, `language`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `zcms_lang_cache`
+-- Table structure for table `zcms_lang_cache`
 --
 
 CREATE TABLE IF NOT EXISTS `zcms_lang_cache` (
@@ -418,7 +418,7 @@ CREATE TABLE IF NOT EXISTS `zcms_lang_cache` (
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `zcms_lang_misc`
+-- Table structure for table `zcms_lang_misc`
 --
 
 CREATE TABLE IF NOT EXISTS `zcms_lang_misc` (
@@ -427,10 +427,10 @@ CREATE TABLE IF NOT EXISTS `zcms_lang_misc` (
   `text` text COLLATE utf8_unicode_ci NOT NULL,
   `lang` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=84 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=86 ;
 
 --
--- Схема на данните от таблица `zcms_lang_misc`
+-- Dumping data for table `zcms_lang_misc`
 --
 
 INSERT INTO `zcms_lang_misc` (`id`, `lang_id`, `text`, `lang`) VALUES
@@ -516,12 +516,14 @@ INSERT INTO `zcms_lang_misc` (`id`, `lang_id`, `text`, `lang`) VALUES
 (80, 'EN', 'Site logo', NULL),
 (81, 'EN', ' by ', NULL),
 (82, 'EN', 'Posted on ', NULL),
-(83, 'EN', ' in ', NULL);
+(83, 'EN', ' in ', NULL),
+(84, 'EN', 'by', NULL),
+(85, 'EN', 'in', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `zcms_logs`
+-- Table structure for table `zcms_logs`
 --
 
 CREATE TABLE IF NOT EXISTS `zcms_logs` (
@@ -532,7 +534,7 @@ CREATE TABLE IF NOT EXISTS `zcms_logs` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
 
 --
--- Схема на данните от таблица `zcms_logs`
+-- Dumping data for table `zcms_logs`
 --
 
 INSERT INTO `zcms_logs` (`id`, `name`, `type`) VALUES
@@ -560,7 +562,7 @@ INSERT INTO `zcms_logs` (`id`, `name`, `type`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `zcms_logs_lang`
+-- Table structure for table `zcms_logs_lang`
 --
 
 CREATE TABLE IF NOT EXISTS `zcms_logs_lang` (
@@ -573,7 +575,7 @@ CREATE TABLE IF NOT EXISTS `zcms_logs_lang` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=39 ;
 
 --
--- Схема на данните от таблица `zcms_logs_lang`
+-- Dumping data for table `zcms_logs_lang`
 --
 
 INSERT INTO `zcms_logs_lang` (`id`, `id_`, `lang_id`, `text`) VALUES
@@ -619,7 +621,7 @@ INSERT INTO `zcms_logs_lang` (`id`, `id_`, `lang_id`, `text`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `zcms_menu`
+-- Table structure for table `zcms_menu`
 --
 
 CREATE TABLE IF NOT EXISTS `zcms_menu` (
@@ -635,7 +637,7 @@ CREATE TABLE IF NOT EXISTS `zcms_menu` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=26 ;
 
 --
--- Схема на данните от таблица `zcms_menu`
+-- Dumping data for table `zcms_menu`
 --
 
 INSERT INTO `zcms_menu` (`id`, `controller`, `method`, `tail`, `order`, `access`, `parent`, `icon`) VALUES
@@ -659,7 +661,7 @@ INSERT INTO `zcms_menu` (`id`, `controller`, `method`, `tail`, `order`, `access`
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `zcms_menu_lang`
+-- Table structure for table `zcms_menu_lang`
 --
 
 CREATE TABLE IF NOT EXISTS `zcms_menu_lang` (
@@ -672,7 +674,7 @@ CREATE TABLE IF NOT EXISTS `zcms_menu_lang` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=39 ;
 
 --
--- Схема на данните от таблица `zcms_menu_lang`
+-- Dumping data for table `zcms_menu_lang`
 --
 
 INSERT INTO `zcms_menu_lang` (`id`, `id_`, `lang_id`, `label`) VALUES
@@ -696,7 +698,7 @@ INSERT INTO `zcms_menu_lang` (`id`, `id_`, `lang_id`, `label`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `zcms_pages`
+-- Table structure for table `zcms_pages`
 --
 
 CREATE TABLE IF NOT EXISTS `zcms_pages` (
@@ -707,21 +709,22 @@ CREATE TABLE IF NOT EXISTS `zcms_pages` (
   `modules` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `page_id` (`page_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=18 ;
 
 --
--- Схема на данните от таблица `zcms_pages`
+-- Dumping data for table `zcms_pages`
 --
 
 INSERT INTO `zcms_pages` (`id`, `page_id`, `template`, `html`, `modules`) VALUES
 (1, 'zcms_404', 'pages', 'single_column_layout', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top<br />{content/content_article:single_article,single_article?show_date=0&amp;show_author=0&amp;show_category=0}@pos_1_1</p>'),
 (15, 'home', 'pages', 'home_page_layout', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top</p>'),
-(16, 'one_column_layout', 'pages', 'single_column_layout', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top<br />{content/content_article:single_article,single_article}@pos_1_1</p>');
+(16, 'one_column_layout', 'pages', 'single_column_layout', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top<br />{content/content_article:single_article,single_article}@pos_1_1</p>'),
+(17, 'two_column_layout', 'pages', 'two_column_layout', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top<br />{content/content_article:category_article,category_article}@pos_1_2</p>');
 
 -- --------------------------------------------------------
 
 --
--- Структура на таблица `zcms_pages_lang`
+-- Table structure for table `zcms_pages_lang`
 --
 
 CREATE TABLE IF NOT EXISTS `zcms_pages_lang` (
@@ -732,29 +735,30 @@ CREATE TABLE IF NOT EXISTS `zcms_pages_lang` (
   `id_` int(11) NOT NULL,
   `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=18 ;
 
 --
--- Схема на данните от таблица `zcms_pages_lang`
+-- Dumping data for table `zcms_pages_lang`
 --
 
 INSERT INTO `zcms_pages_lang` (`id`, `title`, `keywords`, `description`, `id_`, `lang_id`) VALUES
 (1, '404 Page not found', '', '', 1, 'EN'),
 (15, 'Home page', '', '', 15, 'EN'),
-(16, 'One Column Layout', '', '', 16, 'EN');
+(16, 'One Column Layout', '', '', 16, 'EN'),
+(17, 'Two Column Layout', '', '', 17, 'EN');
 
 --
--- Ограничения за дъмпнати таблици
+-- Constraints for dumped tables
 --
 
 --
--- Ограничения за таблица `zcms_logs_lang`
+-- Constraints for table `zcms_logs_lang`
 --
 ALTER TABLE `zcms_logs_lang`
   ADD CONSTRAINT `zcms_logs_lang_ibfk_1` FOREIGN KEY (`id_`) REFERENCES `zcms_logs` (`id`);
 
 --
--- Ограничения за таблица `zcms_menu_lang`
+-- Constraints for table `zcms_menu_lang`
 --
 ALTER TABLE `zcms_menu_lang`
   ADD CONSTRAINT `zcms_menu_lang_ibfk_1` FOREIGN KEY (`id_`) REFERENCES `zcms_menu` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

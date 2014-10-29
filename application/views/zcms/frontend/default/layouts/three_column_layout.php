@@ -1,9 +1,6 @@
 <!-- This position will normally be used for the top menu -->
 <module:top/>
 
-<!-- This position will normally be used for a slider -->
-<module:slider/>
-
 <!-- Content starts here -->
 
 <div class="container">

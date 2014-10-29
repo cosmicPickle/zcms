@@ -35,8 +35,8 @@
     "order_dir" : "desc",
     "limit" : 0,
     
-    "preview" : 100,
+    "preview" : 400,
     "show_see_more" : 1,
     "see_more_text" : "See more",
-    "single_article_page" : "default_single_article_page"
+    "single_article_page" : "one_column_layout"
 }

@@ -12,15 +12,6 @@ if($module->get_config()->show_title->value):
         <?php
         endif;
         ?>
-        <?php
-        if($module->get_config()->show_category->value):
-        ?>
-        <small>
-        <?php echo $this->translate->t(" in ") . $article->category->label; ?><br>
-        </small>
-        <?php
-        endif;
-        ?>
 </h1>
 <?php
 endif;
@@ -30,11 +21,26 @@ endif;
 
 
 <?php
-if($module->get_config()->show_date->value):
+if($module->get_config()->show_date->value || $module->get_config()->show_category->value):
 ?>
 <hr>
 <!-- Date/Time -->
-<p><i class="fa fa-clock-o"></i> <?php echo $this->translate->t("Posted on ") . $article->date; ?></p>
+<p>
+    <?php
+    if($module->get_config()->show_date->value):
+    ?>
+    <i class="fa fa-clock-o"></i> <?php echo $this->translate->t("Posted on ") . $article->date; ?>
+    <?php
+    endif;
+    ?>
+    <?php
+    if($module->get_config()->show_category->value):
+    ?>
+    <?php echo $this->translate->t(" in ") . $article->category->label; ?>
+    <?php
+    endif;
+    ?>
+</p>
 <hr>
 <?php
 endif;
