@@ -1,0 +1,53 @@
+{
+    "view_type": {
+        "value" : "single_article",
+        "can_override" : 0
+    },
+    "article": "",
+    "show_title": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "show_date": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "show_author": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "show_category": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "meta_use_keywords" : 
+    {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "meta_use_description": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "meta_use_title" : {
+        "value" : 1,
+        "can_override" : 0
+    },
+    
+    "preview" : {
+        "value" : 0,
+        "can_override" : 0
+    },
+    "show_see_more" : {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "see_more_text" : {
+        "value" : "See More",
+        "can_override" : 0
+    },
+    "single_article_page" : {
+        "value" : "default_single_article_page",
+        "can_override" : 0
+    }
+}
