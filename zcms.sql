@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4
+-- version 4.1.14
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Oct 29, 2014 at 12:31 PM
--- Server version: 5.6.12-log
--- PHP Version: 5.4.16
+-- Host: 127.0.0.1
+-- Generation Time: Nov 03, 2014 at 07:09 PM
+-- Server version: 5.6.17
+-- PHP Version: 5.5.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `zcms_v04`
 --
-CREATE DATABASE IF NOT EXISTS `zcms_v04` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-USE `zcms_v04`;
 
 -- --------------------------------------------------------
 
@@ -127,6 +125,98 @@ INSERT INTO `content_categories_lang` (`id`, `id_`, `lang_id`, `label`, `keyword
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `content_slider`
+--
+
+CREATE TABLE IF NOT EXISTS `content_slider` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `alias` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `image` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `link` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `parent` int(11) NOT NULL,
+  `order` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `content_slider`
+--
+
+INSERT INTO `content_slider` (`id`, `alias`, `image`, `link`, `parent`, `order`) VALUES
+(1, 'simple_slider', '', '', 0, 0),
+(2, 'slide_1', '["slide_one.png"]', 'http://localhost/development/personal/zcms/v.0.4/index.php/front/three_column_layout/article/lorem_ipsum', 1, 1),
+(3, 'slide_2', '["slide_two.png"]', 'http://localhost/development/personal/zcms/v.0.4/index.php/front/three_column_layout/article/lorem_ipsum', 1, 2),
+(4, 'slide_3', '["slide_three.png"]', 'http://localhost/development/personal/zcms/v.0.4/index.php/front/three_column_layout/article/lorem_ipsum', 1, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `content_slider_lang`
+--
+
+CREATE TABLE IF NOT EXISTS `content_slider_lang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_` int(11) NOT NULL,
+  `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `label` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `content_slider_lang`
+--
+
+INSERT INTO `content_slider_lang` (`id`, `id_`, `lang_id`, `label`) VALUES
+(1, 1, 'EN', 'Simple Slider'),
+(2, 2, 'EN', 'Slide 1'),
+(3, 3, 'EN', 'Slide 2'),
+(4, 4, 'EN', 'Slide 3');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `content_widgets`
+--
+
+CREATE TABLE IF NOT EXISTS `content_widgets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `alias` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `link` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `content_widgets`
+--
+
+INSERT INTO `content_widgets` (`id`, `alias`, `link`) VALUES
+(1, 'bootstrap', 'http://localhost/development/personal/zcms/v.0.4/index.php/front/two_column_layout/category/news');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `content_widgets_lang`
+--
+
+CREATE TABLE IF NOT EXISTS `content_widgets_lang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_` int(11) NOT NULL,
+  `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `title` text COLLATE utf8_unicode_ci NOT NULL,
+  `content` text COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `content_widgets_lang`
+--
+
+INSERT INTO `content_widgets_lang` (`id`, `id_`, `lang_id`, `title`, `content`) VALUES
+(1, 1, 'EN', '<p><i class="fa fa-fw fa-check"></i> Bootstrap v3.2.0</p>', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus eveniet incidunt dicta nostrum quod?</p>');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `menus_frontend_menus`
 --
 
@@ -139,7 +229,7 @@ CREATE TABLE IF NOT EXISTS `menus_frontend_menus` (
   `alias` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `page_id` (`page_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `menus_frontend_menus`
@@ -147,11 +237,11 @@ CREATE TABLE IF NOT EXISTS `menus_frontend_menus` (
 
 INSERT INTO `menus_frontend_menus` (`id`, `parent_id`, `page_id`, `params`, `order`, `alias`) VALUES
 (1, 0, '0', '', 0, 'main'),
-(2, 1, 'default_category_article_page', 'category/news', 0, ''),
+(2, 1, 'home', 'category/news', 0, ''),
 (3, 1, 'zcms_404', '', 1, ''),
 (4, 3, 'one_column_layout', 'article/lorem_ipsum', 0, ''),
 (5, 3, 'two_column_layout', 'category/news', 1, ''),
-(6, 3, 'zcms_404', '', 2, '');
+(6, 3, 'three_column_layout', 'article/lorem_ipsum', 2, '');
 
 -- --------------------------------------------------------
 
@@ -165,7 +255,7 @@ CREATE TABLE IF NOT EXISTS `menus_frontend_menus_lang` (
   `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `label` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `menus_frontend_menus_lang`
@@ -427,7 +517,7 @@ CREATE TABLE IF NOT EXISTS `zcms_lang_misc` (
   `text` text COLLATE utf8_unicode_ci NOT NULL,
   `lang` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=86 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=92 ;
 
 --
 -- Dumping data for table `zcms_lang_misc`
@@ -518,7 +608,13 @@ INSERT INTO `zcms_lang_misc` (`id`, `lang_id`, `text`, `lang`) VALUES
 (82, 'EN', 'Posted on ', NULL),
 (83, 'EN', ' in ', NULL),
 (84, 'EN', 'by', NULL),
-(85, 'EN', 'in', NULL);
+(85, 'EN', 'in', NULL),
+(86, 'EN', 'Link', NULL),
+(87, 'EN', 'awesome', NULL),
+(88, 'EN', 'Assets', NULL),
+(89, 'EN', 'Slider', NULL),
+(90, 'EN', 'Slide', NULL),
+(91, 'EN', 'New Slider', NULL);
 
 -- --------------------------------------------------------
 
@@ -634,7 +730,7 @@ CREATE TABLE IF NOT EXISTS `zcms_menu` (
   `parent` int(11) NOT NULL,
   `icon` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=26 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=28 ;
 
 --
 -- Dumping data for table `zcms_menu`
@@ -656,7 +752,9 @@ INSERT INTO `zcms_menu` (`id`, `controller`, `method`, `tail`, `order`, `access`
 (22, 'content', 'category_list', '', 1, 2, 18, ''),
 (23, 'content', 'articles_list', '', 2, 2, 18, ''),
 (24, 'catalog', 'category_list', '', 0, 2, 20, ''),
-(25, 'content', 'news_list', '', 3, 2, 18, '');
+(25, 'content', 'news_list', '', 3, 2, 18, ''),
+(26, 'content', 'widgets_list', '', 5, 2, 18, ''),
+(27, 'content', 'slider_list', '', 4, 2, 18, '');
 
 -- --------------------------------------------------------
 
@@ -671,7 +769,7 @@ CREATE TABLE IF NOT EXISTS `zcms_menu_lang` (
   `label` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_` (`id_`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=39 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=41 ;
 
 --
 -- Dumping data for table `zcms_menu_lang`
@@ -693,7 +791,9 @@ INSERT INTO `zcms_menu_lang` (`id`, `id_`, `lang_id`, `label`) VALUES
 (35, 22, 'EN', 'Categories'),
 (36, 23, 'EN', 'Articles'),
 (37, 24, 'EN', 'Categories'),
-(38, 25, 'EN', 'News');
+(38, 25, 'EN', 'News'),
+(39, 26, 'EN', 'Widgets'),
+(40, 27, 'EN', 'Slider');
 
 -- --------------------------------------------------------
 
@@ -706,20 +806,22 @@ CREATE TABLE IF NOT EXISTS `zcms_pages` (
   `page_id` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `template` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
   `html` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `assets` text COLLATE utf8_unicode_ci NOT NULL,
   `modules` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `page_id` (`page_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `zcms_pages`
 --
 
-INSERT INTO `zcms_pages` (`id`, `page_id`, `template`, `html`, `modules`) VALUES
-(1, 'zcms_404', 'pages', 'single_column_layout', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top<br />{content/content_article:single_article,single_article?show_date=0&amp;show_author=0&amp;show_category=0}@pos_1_1</p>'),
-(15, 'home', 'pages', 'home_page_layout', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top</p>'),
-(16, 'one_column_layout', 'pages', 'single_column_layout', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top<br />{content/content_article:single_article,single_article}@pos_1_1</p>'),
-(17, 'two_column_layout', 'pages', 'two_column_layout', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top<br />{content/content_article:category_article,category_article}@pos_1_2</p>');
+INSERT INTO `zcms_pages` (`id`, `page_id`, `template`, `html`, `assets`, `modules`) VALUES
+(1, 'zcms_404', 'pages', 'single_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top<br />{content/content_article:single_article,single_article?show_date=0&amp;show_author=0&amp;show_category=0}@pos_1_1</p>'),
+(15, 'home', 'pages', 'home_page_layout', '{js:carousel-init.js}', ' {menus/menus_recursive:top_menu,menus_recursive?menu=main}@top\r\n {content/content_slider:simple_slider,simple_slider?slider=simple_slider}@slider\r\n{content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_2_1 \r\n{content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_2_2 \r\n{content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_2_3 \r\n{content/content_article:single_article,single_article?article=lorem_ipsum}@pos_1_1'),
+(16, 'one_column_layout', 'pages', 'single_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top<br />{content/content_article:single_article,single_article}@pos_1_1</p>'),
+(17, 'two_column_layout', 'pages', 'two_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top {content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_1_1 {content/content_article:category_article,category_article}@pos_1_2</p>'),
+(19, 'three_column_layout', 'pages', 'three_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top {content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_1_1 {content/content_article:single_article,single_article}@pos_1_2{content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_1_3</p>');
 
 -- --------------------------------------------------------
 
@@ -735,7 +837,7 @@ CREATE TABLE IF NOT EXISTS `zcms_pages_lang` (
   `id_` int(11) NOT NULL,
   `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `zcms_pages_lang`
@@ -745,7 +847,8 @@ INSERT INTO `zcms_pages_lang` (`id`, `title`, `keywords`, `description`, `id_`, 
 (1, '404 Page not found', '', '', 1, 'EN'),
 (15, 'Home page', '', '', 15, 'EN'),
 (16, 'One Column Layout', '', '', 16, 'EN'),
-(17, 'Two Column Layout', '', '', 17, 'EN');
+(17, 'Two Column Layout', '', '', 17, 'EN'),
+(19, 'Three Column Layout', '', '', 19, 'EN');
 
 --
 -- Constraints for dumped tables
