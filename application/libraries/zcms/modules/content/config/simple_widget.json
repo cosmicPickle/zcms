@@ -1,0 +1,18 @@
+{
+    "widget": {
+        "value" : "",
+        "can_override" : 0
+    },
+    "show_title": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "show_link": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "link_text": {
+        "value" : "See More",
+        "can_override" : 0
+    }
+}

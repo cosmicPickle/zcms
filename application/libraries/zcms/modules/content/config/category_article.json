@@ -4,11 +4,26 @@
         "can_override" : 0
     },
     "category": "",
-    "show_category_as_title": 1,
-    "show_title": 1,
-    "show_category": 1,
-    "show_date": 1,
-    "show_author": 1,
+    "show_category_as_title": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "show_title": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "show_category": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "show_date": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "show_author": {
+        "value" : 1,
+        "can_override" : 0
+    },
     "meta_use_keywords" : 
     {
         "value" : 1,
@@ -27,16 +42,34 @@
         "can_override" : 0
     },
     
-    "show_pagination": 1,
-    "show_article_count": 1,
+    "show_pagination": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "show_article_count": {
+        "value" : 1,
+        "can_override" : 0
+    },
     "items_per_page" : 2,
     "article_page" : 1,
     "order_by" : "date",
     "order_dir" : "desc",
     "limit" : 0,
     
-    "preview" : 400,
-    "show_see_more" : 1,
-    "see_more_text" : "See more",
-    "single_article_page" : "one_column_layout"
+    "preview" : {
+        "value" : 400,
+        "can_override" : 0
+    },
+    "show_see_more" : {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "see_more_text" : {
+        "value" : "See More",
+        "can_override" : 0
+    },
+    "single_article_page" : {
+        "value" : "one_column_layout",
+        "can_override" : 0
+    }
 }

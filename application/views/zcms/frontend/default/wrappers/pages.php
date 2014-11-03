@@ -19,6 +19,9 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     
+    <!-- Getting the page specific CSS -->
+    <?php echo $page->get_css(); ?>
+    
     <title><?php echo $page->get_title(); ?></title>
     <meta name="keywords" content="<?php echo $page->get_keywords(); ?>">
     <meta name="description" content="<?php echo $page->get_description(); ?>">
@@ -32,12 +35,8 @@
 
       <!-- Bootstrap Core JavaScript -->
       <script src="<?php echo $this->zcms->asset('js', 'bootstrap.min.js'); ?>"></script>
-
-      <!-- Script to Activate the Carousel -->
-      <script>
-      $('.carousel').carousel({
-          interval: 5000 //changes the speed
-      })
-      </script>
+      
+      <!-- Getting the page specific JS -->
+       <?php echo $page->get_js(); ?>
   </body>
 </html>

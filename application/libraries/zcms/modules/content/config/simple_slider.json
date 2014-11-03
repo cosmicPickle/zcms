@@ -1,0 +1,18 @@
+{
+    "slider": {
+        "value" : "",
+        "can_override" : 0
+    },
+    "show_label": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "show_bullet_nav": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "show_arrows": {
+        "value" : 1,
+        "can_override" : 0
+    }
+}

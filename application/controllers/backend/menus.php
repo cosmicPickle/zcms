@@ -53,7 +53,7 @@ class Menus extends CI_Controller {
             $this->zcms->interface->load_interface('form'); 
             $this->interface->form->init('zcms_menu', NULL, FALSE);
 
-            $this->interface->form->delete(array('id' => $id), base_url('index.php/backend/menu/backend_menu_list/')); 
+            $this->interface->form->delete(array('id' => $id), base_url('index.php/backend/menus/backend_menu_list/')); 
         }
         
         public function frontend_menu_list()
@@ -94,6 +94,6 @@ class Menus extends CI_Controller {
             $this->zcms->interface->load_interface('form'); 
             $this->interface->form->init('menus_frontend_menus', NULL, FALSE);
 
-            $this->interface->form->delete(array('id' => $id), base_url('index.php/backend/menu/frontend_menu_list/')); 
+            $this->interface->form->delete(array('id' => $id), base_url('index.php/backend/menus/frontend_menu_list/')); 
         }
 }

@@ -27,7 +27,7 @@
     
     <div class="row">
         <div class="col-lg-12">
-            <module:pos_3_1/>
+            <module:pos_4_1/>
         </div>
     </div>
 

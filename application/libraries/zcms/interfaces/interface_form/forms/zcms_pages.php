@@ -40,9 +40,19 @@ class Zcms_pages extends Interface_form{
                     'label' => $this->translate->t('Layout'),
                     'validation' => 'required'
                 ))
+                ->add_field('assets',array(
+                    'type' => 'textarea',
+                    'disabled_on_update' => FALSE,
+                    'tiny_mce' => FALSE,
+                    'css_class' => 'form-control',
+                    'label' => $this->translate->t('Assets'),
+                    'validation' => ''
+                ))
                 ->add_field('modules',array(
                     'type' => 'textarea',
                     'disabled_on_update' => FALSE,
+                    'tiny_mce' => FALSE,
+                    'css_class' => 'form-control',
                     'label' => $this->translate->t('Modules'),
                     'validation' => ''
                 ))

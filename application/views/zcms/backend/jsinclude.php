@@ -37,7 +37,8 @@ $(document).ready(function() {
         image_advtab: true,
         width:"640",
         height:"480",
-        convert_urls: false
+        convert_urls: false,
+        verify_html : false
    });
    
    var nowTemp = new Date();

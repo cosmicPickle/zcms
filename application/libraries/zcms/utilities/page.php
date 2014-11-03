@@ -5,7 +5,9 @@ class Page extends ZCMS {
     protected $_pages_table = 'zcms_pages';
     protected $_404_page_id = 'zcms_404';
     protected $_parser_pattern = "#\{([a-zA-Z0-9_/]*):([a-zA-Z0-9_-]*),([a-zA-Z0-9_-]*)(\?[a-zA-Z0-9_\-@\.\&amp;\&\=]*)?\}@([a-zA-Z0-9_]*)#";
-    
+    protected $_assets_pattern ="#\{(\!)?(js|css):([a-zA-Z0-9_\-\./]+)\}#";
+    protected $_position_pattern = "#<module:[a-zA-Z0-9_]*/>#";
+            
     protected $_page_id;
     protected $_params = array();
     protected $_page_template = "pages";
@@ -16,6 +18,8 @@ class Page extends ZCMS {
     protected $_html_parsed = NULL;
     protected $_modules_raw = NULL;
     protected $_modules = NULL;
+    protected $_assets_raw = NULL;
+    protected $_assets = NULL;
     
     public function render($page_id)
     {
@@ -26,6 +30,7 @@ class Page extends ZCMS {
         
         $this->_parse_params();
         $this->_load_page();
+        $this->_parse_assets();
         $this->_get_modules();
         $this->_render_modules();
         $this->_parse_html();
@@ -60,6 +65,36 @@ class Page extends ZCMS {
             return $this->_html_raw;
         else
             return $this->_html_parsed;
+    }
+    
+    public function get_css()
+    {
+        if(!$this->_assets || !isset($this->_assets['css']))
+            return NULL;
+        
+        $css = "";
+        foreach($this->_assets['css'] as $item)
+        {
+            $src = $this->asset($item->base, $item->path);
+            $css .= '<link rel="stylesheet" type="text/css" href="'.$src.'" />'; 
+        }
+        
+        return $css;
+    }
+    
+    public function get_js()
+    {
+        if(!$this->_assets || !isset($this->_assets['js']))
+            return NULL;
+        
+        $js = "";
+        foreach($this->_assets['js'] as $item)
+        {
+            $src = $this->asset($item->base, $item->path);
+            $js .= '<script type="text/javascript" src="'.$src.'" ></script>'; 
+        }
+        
+        return $js;
     }
     
     public function link($page_id = NULL, $params = array(), $exclusive = FALSE)
@@ -157,6 +192,32 @@ class Page extends ZCMS {
         $this->_title = $page->title;
         $this->_html_raw = $this->load->view($this->get_view_path('layouts').$page->html, array('page' => $this), TRUE);
         $this->_modules_raw = $page->modules;
+        $this->_assets_raw = $page->assets;
+    }
+    
+    protected function _parse_assets()
+    {
+        $matches = array();
+        $this->_assets = array();
+        
+        preg_match_all($this->_assets_pattern, $this->_assets_raw, $matches);
+        
+        foreach($matches[0] as $key => $_raw_asset)
+        {
+            $type = $matches[2][$key];
+            $base_folder = (!$matches[1][$key]) ? $matches[2][$key] : '';
+            $path = $matches[3][$key];
+            
+            if(!isset($this->_assets[$type]))
+                $this->_assets[$type] = array();
+            
+            $index = count($this->_assets[$type]);
+            $this->_assets[$type][$index] = new stdClass();
+            $this->_assets[$type][$index]->string = $_raw_asset;
+            $this->_assets[$type][$index]->base = $base_folder;
+            $this->_assets[$type][$index]->type = $type;
+            $this->_assets[$type][$index]->path = $path;
+        }
     }
     
     protected function _get_modules()
@@ -214,7 +275,15 @@ class Page extends ZCMS {
             $this->_html_parsed = str_replace($module->get_position_string(), $module->get_html(), 
                                               ($this->_html_parsed) ? $this->_html_parsed : $this->_html_raw);
         }
+        
         if($this->_html_parsed === NULL) 
             $this->_html_parsed = $this->_html_raw;
+        
+        $this->_clear_html_pos();
+    }
+    
+    protected function _clear_html_pos()
+    {
+        $this->_html_parsed = preg_replace($this->_position_pattern, "", $this->_html_parsed);
     }
 }

@@ -45,7 +45,8 @@ class Fields extends Interface_form {
         'padding' => NULL,
         'padding_color' => NULL,
         'disabled' => NULL,
-        'disable_past' => NULL
+        'disable_past' => NULL,
+        'tiny_mce' => TRUE
     );
     
     protected $value = NULL;
