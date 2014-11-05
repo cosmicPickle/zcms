@@ -37,6 +37,7 @@ class ZCMS {
         //js and css folders
         const PUBLIC_PATH = "public";
         const UPLOADS_PATH = "public/uploads/";
+        const MEDIA_PATH = "public/uploads/media";
         const ASSETS_PATH = "public/assets/";
         const JS_PATH = "js/";
         const CSS_PATH = "css/";

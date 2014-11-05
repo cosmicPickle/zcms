@@ -16,18 +16,24 @@ class Fields extends Interface_form {
     const FIELDS_FOLDER = "fields/";
     
     protected $settings = array(
+        
         'name' => NULL,
         'type' => NULL,
         'label' => NULL,
         'description' => NULL,
-        'order' => NULL,
         'css_class' => NULL,
         'css_id' => NULL,
+        
+        'order' => NULL,
+        
         'script' => NULL,
+        
         'id_' => NULL,
         'disabled_on_insert' => NULL,
         'disabled_on_update' => NULL,
+        
         'validation' => NULL,
+        
         'opt_val_pairs' => NULL,
         'link_table' => NULL,
         'link_opt_column' => NULL,
@@ -36,6 +42,7 @@ class Fields extends Interface_form {
         'link_query' => NULL,
         'multiple' => NULL,
         'checked' => NULL,
+        
         'path' => NULL,
         'size_limit' => NULL,
         'count_limit' => NULL,
@@ -44,9 +51,12 @@ class Fields extends Interface_form {
         'crop' => NULL,
         'padding' => NULL,
         'padding_color' => NULL,
+        
         'disabled' => NULL,
         'disable_past' => NULL,
-        'tiny_mce' => TRUE
+        
+        'tiny_mce' => TRUE,
+        'elfinder_root' => NULL
     );
     
     protected $value = NULL;

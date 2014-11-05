@@ -2,7 +2,6 @@
 ?>
 
 <!-- js placed at the end of the document so the pages load faster -->
-<script src="<?php echo $this->zcms->asset('js', 'jquery.js'); ?>"></script>
 <script src="<?php echo $this->zcms->asset('js', 'jquery-1.8.3.min.js'); ?>"></script>
 <script src="<?php echo $this->zcms->asset('js', 'jquery-ui/jquery-ui.js'); ?>"></script>
 <script src="<?php echo $this->zcms->asset('js', 'fancybox/jquery.fancybox.js'); ?>"></script>    
@@ -21,25 +20,49 @@
 
 <script type="text/javascript" src="<?php echo $this->zcms->asset('js', 'tinymce/jquery.tinymce.min.js'); ?>"></script>
 <script type="text/javascript">
+
 $(document).ready(function() {
-    
-   $('textarea.tiny_mce').tinymce({
-        script_url : '<?php echo $this->zcms->asset('js', 'tinymce/tinymce.min.js') ?>',
-        theme: "modern",
-        plugins: [
-            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-            "searchreplace wordcount visualblocks visualchars code fullscreen",
-            "insertdatetime media nonbreaking save table contextmenu directionality",
-            "emoticons template paste textcolor colorpicker textpattern"
-        ],
-        toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-        toolbar2: "print preview media | forecolor backcolor emoticons",
-        image_advtab: true,
-        width:"640",
-        height:"480",
-        convert_urls: false,
-        verify_html : false
-   });
+   
+   $('textarea.tiny_mce').each(function(){
+       var _this = $(this);
+       $(this).tinymce({
+            script_url : '<?php echo $this->zcms->asset('js', 'tinymce/tinymce.min.js') ?>',
+            theme: "modern",
+            plugins: [
+                "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                "searchreplace wordcount visualblocks visualchars code fullscreen",
+                "insertdatetime media nonbreaking save table contextmenu directionality",
+                "emoticons template paste textcolor colorpicker textpattern"
+            ],
+            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+            toolbar2: "print preview media | forecolor backcolor emoticons",
+            image_advtab: true,
+            width:"640",
+            height:"480",
+            convert_urls: false,
+            verify_html : false,
+            file_browser_callback : function(field_name, url, type, win) {
+                var path = btoa(_this.data('elfinder-root'));
+                elFinderBrowser (field_name, url, type, win, path);
+            }
+        });
+    });
+   
+    function elFinderBrowser (field_name, url, type, win, path) {
+        console.log('<?php echo $this->zcms->backend()."elf/index/1/" ?>' + path);
+        tinymce.activeEditor.windowManager.open({
+          file: '<?php echo $this->zcms->backend()."elf/index/1/" ?>' + path ,// use an absolute path!
+          title: '<?php echo $this->translate->t('ZCMS: File Upload'); ?>',
+          width: 900,  
+          height: 450,
+          resizable: 'yes'
+        }, {
+          setUrl: function (url) {
+            win.document.getElementById(field_name).value = url;
+          }
+        });
+        return false;
+    }
    
    var nowTemp = new Date();
    var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
