@@ -17,7 +17,9 @@
 
 class Translate extends ZCMS {
     
-    //the default language constant
+    //The default language constant
+    //Note: The default language in here is system default. What language will be loaded by default is set in the
+    //zcms configuration file
     const DEFAULT_LANG = "EN";
     
     //the misc translation table
@@ -72,10 +74,10 @@ class Translate extends ZCMS {
             $this->session->set_userdata("zcms_" . $lang_var, $session_lang);
         }
             
-        if($session_lang && $session_lang !== self::DEFAULT_LANG)   
+        if($session_lang && $session_lang !== $this->zcms_config('default_lang'))   
             $this->lang = $session_lang;
         else
-            $this->lang = self::DEFAULT_LANG;
+            $this->lang = $this->zcms_config('default_lang');
         
         $this->lang_table_sufix = "_lang";
         $this->_retrieve_lang_cache();

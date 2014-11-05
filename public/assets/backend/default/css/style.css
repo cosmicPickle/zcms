@@ -544,7 +544,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     display: inline-block;
 }
 
-.dropdown-menu.extended li a:hover {
+.dropdown-menu.extended li a:hover,.dropdown-menu.extended li a.active {
     background-color: #F7F8F9 !important;
     color: #2E2E2E;
 }

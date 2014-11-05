@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 03, 2014 at 07:09 PM
+-- Generation Time: Nov 05, 2014 at 04:06 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `content_articles` (
   `author` int(11) NOT NULL,
   `date` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `content_articles`
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `content_articles_lang` (
   `description` text COLLATE utf8_unicode_ci NOT NULL,
   `content` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `content_articles_lang`
@@ -74,7 +74,13 @@ INSERT INTO `content_articles_lang` (`id`, `id_`, `lang_id`, `title`, `keywords`
 (3, 3, 'EN', 'Simple News 2', 'simple, news', 'Simple news 2', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>\r\n<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim, iure!</p>'),
 (4, 4, 'EN', 'Simple News 3', 'simple, news', 'Simple news 3', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>\r\n<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim, iure!</p>'),
 (5, 5, 'EN', 'Simple News 4', 'simple, news', 'Simple news 4', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>\r\n<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim, iure!</p>'),
-(6, 6, 'EN', 'Lorem Ipsum', '', '', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras commodo lacus vitae ipsum mattis, in gravida sem luctus. In bibendum, eros at condimentum mattis, nibh nibh vulputate est, eu facilisis tortor ligula lacinia erat. Nunc ullamcorper orci eget quam consequat, sit amet varius orci rhoncus. Cras sit amet orci pellentesque, pulvinar odio a, semper eros. Aliquam sem magna, pellentesque quis semper ut, efficitur in libero. Nulla purus leo, pulvinar et molestie et, pretium et mauris. Aenean nec nunc dictum, feugiat neque vel, tincidunt ligula. Donec ut ante felis. Etiam vel purus eros.</p>\r\n<p>&nbsp;</p>\r\n<p>Aenean a aliquam libero. Morbi at lorem magna. Morbi elementum elementum risus sed interdum. Curabitur ultricies lorem non lacinia pellentesque. Quisque ut convallis diam. Donec facilisis sodales maximus. Nulla ut laoreet nisl. In consequat, tortor vitae tristique porttitor, lorem leo ultrices ex, ac placerat nibh nunc et mi. Ut vel metus et lacus tincidunt tincidunt pellentesque ut urna. Quisque vulputate libero id imperdiet tincidunt. Proin ultrices libero eget lectus volutpat, et placerat nisl pellentesque. Sed vel lacinia libero. Nulla nisi ex, pharetra at felis vitae, tincidunt sagittis nulla. Suspendisse potenti. Aliquam facilisis iaculis sem, non blandit velit luctus ac.</p>');
+(6, 6, 'EN', 'Lorem Ipsum', '', '', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras commodo lacus vitae ipsum mattis, in gravida sem luctus. In bibendum, eros at condimentum mattis, nibh nibh vulputate est, eu facilisis tortor ligula lacinia erat. Nunc ullamcorper orci eget quam consequat, sit amet varius orci rhoncus. Cras sit amet orci pellentesque, pulvinar odio a, semper eros. Aliquam sem magna, pellentesque quis semper ut, efficitur in libero. Nulla purus leo, pulvinar et molestie et, pretium et mauris. Aenean nec nunc dictum, feugiat neque vel, tincidunt ligula. Donec ut ante felis. Etiam vel purus eros.</p>\r\n<p>&nbsp;</p>\r\n<p>Aenean a aliquam libero. Morbi at lorem magna. Morbi elementum elementum risus sed interdum. Curabitur ultricies lorem non lacinia pellentesque. Quisque ut convallis diam. Donec facilisis sodales maximus. Nulla ut laoreet nisl. In consequat, tortor vitae tristique porttitor, lorem leo ultrices ex, ac placerat nibh nunc et mi. Ut vel metus et lacus tincidunt tincidunt pellentesque ut urna. Quisque vulputate libero id imperdiet tincidunt. Proin ultrices libero eget lectus volutpat, et placerat nisl pellentesque. Sed vel lacinia libero. Nulla nisi ex, pharetra at felis vitae, tincidunt sagittis nulla. Suspendisse potenti. Aliquam facilisis iaculis sem, non blandit velit luctus ac.</p>'),
+(7, 1, 'BG', '404 Страницата не е намерена', '', '', '<p>Страницата, която търсите не е намерена.</p>'),
+(8, 2, 'BG', 'Новина ', 'Новина, ключови, думи', 'Новина Описание', '<p>Внимавайте вие, читатели и слушатели, роде български, които обичате и вземате присърце своя род и своето българско отечество и желаете да разберете и знаете известното за своя български род и за вашите бащи, прадеди и царе, патриарси и светии как изпърво са живели и прекарвали. За вас е потребно и полезно да знаете известното за делата на вашите бащи, както знаят всички други племена и народи своя род и език, имат история и всеки грамотен от тях знае, разказва и се гордее със своя род и език.</p>\r\n<p></p>'),
+(9, 3, 'BG', 'Новина 2', 'новини', 'Новина 2', '<p>Така и аз ви написах подред това, което е известно за вашия род и език. Четете и знайте, за да не бивате подигравани и укорявани от други племена и народи. Твърде много обикнах българския род и отечество и много труд употребих да събирам от различни книги и истории, докато събрах и обединих историята на българския род в тая книжка за ваша полза и похвала. Написах я за вас, които обичате своя род и българското отечество и обичате да знаете за своя род и език. Преписвайте тая историйка и платете, нека ви я препишат, които умеят да пишат, и пазете я да не изчезне!</p>'),
+(10, 4, 'BG', 'Новина 3', 'simple, news', 'Новина 3', '<p>Внимавайте вие, читатели и слушатели, роде български, които обичате и вземате присърце своя род и своето българско отечество и желаете да разберете и знаете известното за своя български род и за вашите бащи, прадеди и царе, патриарси и светии как изпърво са живели и прекарвали. За вас е потребно и полезно да знаете известното за делата на вашите бащи, както знаят всички други племена и народи своя род и език, имат история и всеки грамотен от тях знае, разказва и се гордее със своя род и език.</p>\r\n<p>Така и аз ви написах подред това, което е известно за вашия род и език. Четете и знайте, за да не бивате подигравани и укорявани от други племена и народи. Твърде много обикнах българския род и отечество и много труд употребих да събирам от различни книги и истории, докато събрах и обединих историята на българския род в тая книжка за ваша полза и похвала. Написах я за вас, които обичате своя род и българското отечество и обичате да знаете за своя род и език. Преписвайте тая историйка и платете, нека ви я препишат, които умеят да пишат, и пазете я да не изчезне!</p>'),
+(11, 5, 'BG', 'Новина 4', 'simple, news', 'Новина 4', '<p>Внимавайте вие, читатели и слушатели, роде български, които обичате и вземате присърце своя род и своето българско отечество и желаете да разберете и знаете известното за своя български род и за вашите бащи, прадеди и царе, патриарси и светии как изпърво са живели и прекарвали. За вас е потребно и полезно да знаете известното за делата на вашите бащи, както знаят всички други племена и народи своя род и език, имат история и всеки грамотен от тях знае, разказва и се гордее със своя род и език.</p>\r\n<p>Така и аз ви написах подред това, което е известно за вашия род и език. Четете и знайте, за да не бивате подигравани и укорявани от други племена и народи. Твърде много обикнах българския род и отечество и много труд употребих да събирам от различни книги и истории, докато събрах и обединих историята на българския род в тая книжка за ваша полза и похвала. Написах я за вас, които обичате своя род и българското отечество и обичате да знаете за своя род и език. Преписвайте тая историйка и платете, нека ви я препишат, които умеят да пишат, и пазете я да не изчезне!</p>'),
+(12, 6, 'BG', 'О неразумни', '', '', '<p>Внимавайте вие, читатели и слушатели, роде български, които обичате и вземате присърце своя род и своето българско отечество и желаете да разберете и знаете известното за своя български род и за вашите бащи, прадеди и царе, патриарси и светии как изпърво са живели и прекарвали. За вас е потребно и полезно да знаете известното за делата на вашите бащи, както знаят всички други племена и народи своя род и език, имат история и всеки грамотен от тях знае, разказва и се гордее със своя род и език.</p>\r\n<p>Така и аз ви написах подред това, което е известно за вашия род и език. Четете и знайте, за да не бивате подигравани и укорявани от други племена и народи. Твърде много обикнах българския род и отечество и много труд употребих да събирам от различни книги и истории, докато събрах и обединих историята на българския род в тая книжка за ваша полза и похвала. Написах я за вас, които обичате своя род и българското отечество и обичате да знаете за своя род и език. Преписвайте тая историйка и платете, нека ви я препишат, които умеят да пишат, и пазете я да не изчезне!</p>');
 
 -- --------------------------------------------------------
 
@@ -107,12 +113,12 @@ INSERT INTO `content_categories` (`id`, `alias`, `parent`, `order`) VALUES
 CREATE TABLE IF NOT EXISTS `content_categories_lang` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_` int(11) NOT NULL,
-  `lang_id` varchar(5) NOT NULL,
-  `label` varchar(256) NOT NULL,
-  `keywords` varchar(256) NOT NULL,
-  `description` varchar(256) NOT NULL,
+  `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `label` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `keywords` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `content_categories_lang`
@@ -120,7 +126,9 @@ CREATE TABLE IF NOT EXISTS `content_categories_lang` (
 
 INSERT INTO `content_categories_lang` (`id`, `id_`, `lang_id`, `label`, `keywords`, `description`) VALUES
 (1, 1, 'EN', 'News', '', ''),
-(2, 2, 'EN', 'Uncategorised', 'Uncategorised, articles', 'Uncategorised articles');
+(2, 2, 'EN', 'Uncategorised', 'Uncategorised, articles', 'Uncategorised articles'),
+(3, 2, 'BG', 'Без категория', 'Без категория', 'Без категория'),
+(4, 1, 'BG', 'Новини', '', '');
 
 -- --------------------------------------------------------
 
@@ -160,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `content_slider_lang` (
   `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `label` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `content_slider_lang`
@@ -170,7 +178,11 @@ INSERT INTO `content_slider_lang` (`id`, `id_`, `lang_id`, `label`) VALUES
 (1, 1, 'EN', 'Simple Slider'),
 (2, 2, 'EN', 'Slide 1'),
 (3, 3, 'EN', 'Slide 2'),
-(4, 4, 'EN', 'Slide 3');
+(4, 4, 'EN', 'Slide 3'),
+(5, 1, 'BG', 'Прост слайдър'),
+(6, 2, 'BG', 'Слайд 1'),
+(7, 3, 'BG', 'Слайд 2'),
+(8, 4, 'BG', 'Слайд 3');
 
 -- --------------------------------------------------------
 
@@ -205,14 +217,15 @@ CREATE TABLE IF NOT EXISTS `content_widgets_lang` (
   `title` text COLLATE utf8_unicode_ci NOT NULL,
   `content` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `content_widgets_lang`
 --
 
 INSERT INTO `content_widgets_lang` (`id`, `id_`, `lang_id`, `title`, `content`) VALUES
-(1, 1, 'EN', '<p><i class="fa fa-fw fa-check"></i> Bootstrap v3.2.0</p>', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus eveniet incidunt dicta nostrum quod?</p>');
+(1, 1, 'EN', '<p><i class="fa fa-fw fa-check"></i> Bootstrap v3.2.0</p>', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus eveniet incidunt dicta nostrum quod?</p>'),
+(2, 1, 'BG', '<p><i class="fa fa-fw fa-check"></i> Тестов Уиджет</p>', '<p>Но поради що ти, глупави човече, се срамуваш от своя род и се влачиш по чужд език? Но, рече, гърците са по-мъдри и по-културни, а българите са прости и глупави и нямат изтънчени думи. Затова, казва, по-добре да се присъединим към гърците.</p>');
 
 -- --------------------------------------------------------
 
@@ -238,7 +251,7 @@ CREATE TABLE IF NOT EXISTS `menus_frontend_menus` (
 INSERT INTO `menus_frontend_menus` (`id`, `parent_id`, `page_id`, `params`, `order`, `alias`) VALUES
 (1, 0, '0', '', 0, 'main'),
 (2, 1, 'home', 'category/news', 0, ''),
-(3, 1, 'zcms_404', '', 1, ''),
+(3, 1, '0', '', 1, ''),
 (4, 3, 'one_column_layout', 'article/lorem_ipsum', 0, ''),
 (5, 3, 'two_column_layout', 'category/news', 1, ''),
 (6, 3, 'three_column_layout', 'article/lorem_ipsum', 2, '');
@@ -255,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `menus_frontend_menus_lang` (
   `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `label` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=14 ;
 
 --
 -- Dumping data for table `menus_frontend_menus_lang`
@@ -267,7 +280,13 @@ INSERT INTO `menus_frontend_menus_lang` (`id`, `id_`, `lang_id`, `label`) VALUES
 (3, 3, 'EN', 'Layout Tests'),
 (4, 4, 'EN', 'One column layout'),
 (5, 5, 'EN', 'Two column layout'),
-(6, 6, 'EN', 'Three column layout');
+(6, 6, 'EN', 'Three column layout'),
+(8, 1, 'BG', 'Главно меню'),
+(9, 2, 'BG', 'Начало'),
+(10, 3, 'BG', 'Тестове на изгледи'),
+(11, 4, 'BG', 'Изглед с една колона'),
+(12, 5, 'BG', 'Изглед с две колони'),
+(13, 6, 'BG', 'Изглед с три колони');
 
 -- --------------------------------------------------------
 
@@ -338,7 +357,14 @@ CREATE TABLE IF NOT EXISTS `product_images` (
   `main` int(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `rel_id` (`rel_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=29 ;
+
+--
+-- Dumping data for table `product_images`
+--
+
+INSERT INTO `product_images` (`id`, `rel_id`, `file`, `main`) VALUES
+(28, 1, 'compliments-cover.png', 0);
 
 -- --------------------------------------------------------
 
@@ -419,7 +445,7 @@ CREATE TABLE IF NOT EXISTS `zcms_admins` (
   `level` int(2) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `zcms_admins`
@@ -427,7 +453,8 @@ CREATE TABLE IF NOT EXISTS `zcms_admins` (
 
 INSERT INTO `zcms_admins` (`id`, `username`, `password`, `email`, `image`, `level`) VALUES
 (1, 'tedobg', '456f733c9d39fe928b732b858fadd6ff ', 'teodorklissarov@gmail.com', '["10628058_760530170676435_4429408701370286876_n.jpg"]', 1),
-(2, 'admin', '36e630a4aad2edad9775790eaa92fffa', 'admin@dev.bg', '', 2);
+(2, 'admin', '36e630a4aad2edad9775790eaa92fffa', 'admin@dev.bg', '', 2),
+(4, 'client', '36e630a4aad2edad9775790eaa92fffa', 'client@test.bg', '', 3);
 
 -- --------------------------------------------------------
 
@@ -448,7 +475,11 @@ CREATE TABLE IF NOT EXISTS `zcms_admins_lang` (
 
 INSERT INTO `zcms_admins_lang` (`id`, `id_`, `lang_id`, `name`) VALUES
 (0, 2, 'EN', 'Admin'),
-(0, 1, 'EN', 'Teodor Klissarov');
+(0, 1, 'EN', 'Teodor Klissarov'),
+(0, 4, 'EN', 'Client'),
+(0, 2, 'BG', 'Admin'),
+(0, 4, 'BG', 'Client'),
+(0, 1, 'BG', 'Teodor Klissarov');
 
 -- --------------------------------------------------------
 
@@ -460,14 +491,15 @@ CREATE TABLE IF NOT EXISTS `zcms_languages` (
   `id` int(1) NOT NULL AUTO_INCREMENT,
   `lang_code` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `zcms_languages`
 --
 
 INSERT INTO `zcms_languages` (`id`, `lang_code`) VALUES
-(1, 'EN');
+(1, 'EN'),
+(2, 'BG');
 
 -- --------------------------------------------------------
 
@@ -481,7 +513,7 @@ CREATE TABLE IF NOT EXISTS `zcms_languages_lang` (
   `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `language` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `zcms_languages_lang`
@@ -489,7 +521,9 @@ CREATE TABLE IF NOT EXISTS `zcms_languages_lang` (
 
 INSERT INTO `zcms_languages_lang` (`id`, `id_`, `lang_id`, `language`) VALUES
 (1, 1, 'EN', 'English'),
-(2, 1, 'BG', 'Английски');
+(2, 1, 'BG', 'Английски'),
+(3, 2, 'EN', 'Bulgarian'),
+(4, 2, 'BG', 'Български');
 
 -- --------------------------------------------------------
 
@@ -503,7 +537,85 @@ CREATE TABLE IF NOT EXISTS `zcms_lang_cache` (
   `lang_id` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
   `ids` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=73 ;
+
+--
+-- Dumping data for table `zcms_lang_cache`
+--
+
+INSERT INTO `zcms_lang_cache` (`id`, `link`, `lang_id`, `ids`) VALUES
+(1, 'backend/catalog/product_edit/1', 'BG', '[94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109]'),
+(2, 'front/home', 'BG', '[110,111,"136","137","138","139"]'),
+(3, 'front', 'BG', '["110","111","136","137","138","139"]'),
+(4, 'front/home/category/news', 'BG', '["79","80","73","81","82","83","110","111",136,137,138,139]'),
+(5, 'front/one_column_layout/article/lorem_ipsum', 'BG', '["110","111","137","138","139"]'),
+(6, 'front/two_column_layout/category/news', 'BG', '["110","111","136",152,153,154,155,156,157,158,159,160]'),
+(7, 'front/three_column_layout/article/lorem_ipsum', 'BG', '["110","111","136","137","138","139"]'),
+(8, 'backend/dashboard', 'BG', '["1","42","92","94","95","96"]'),
+(9, 'backend/localisation/translations_list', 'BG', '["1","42","92","60","61","62","8","11","12","13","9","10","94","95","96","112","113","114","115","116","117","118","119","120"]'),
+(10, 'backend/content/pages_list', 'BG', '["94","95","96","98","102","115","116","117","118","119","120"]'),
+(11, 'backend/content/pages_edit/1', 'BG', '["94","95","96","98",121,"102",122,123,124,125,126,"103","104"]'),
+(12, 'backend/content/category_list', 'BG', '["1","42","92","4","5","35","36","8","12","13"]'),
+(13, 'backend/content/category_edit/2', 'BG', '["94","95","96","128",129,"102","122",130,131,"127","103","104"]'),
+(14, 'backend/content/category_edit/1', 'BG', '["94","95","96","128","129","102","122","130","131","127","103","104"]'),
+(15, 'backend/content/articles_list', 'BG', '["1","42","92","14","15","67","8","11","12","13","9","10"]'),
+(16, 'backend/content/articles_edit/1', 'BG', '["94","95","96","98","129","132",133,134,"102","122",135,"103","104"]'),
+(17, 'backend/content/news_list', 'BG', '["94","95","96","98","102","132","115","116","117","118","119","120"]'),
+(18, 'backend/content/news_edit/2', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
+(19, 'backend/content/news_edit/3', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
+(20, 'backend/content/pages_edit/15', 'BG', '["94","95","96","98","121","102","122","123","124","125","126","103","104"]'),
+(21, 'backend/content/pages_edit/16', 'BG', '["94","95","96","98","121","102","122","123","124","125","126","103","104"]'),
+(22, 'backend/content/pages_edit/19', 'BG', '["94","95","96","98","121","102","122","123","124","125","126","103","104"]'),
+(23, 'backend/content/pages_edit/17', 'BG', '["94","95","96","98","121","102","122","123","124","125","126","103","104"]'),
+(24, 'backend/content/news_edit/4', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
+(25, 'backend/content/news_edit/5', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
+(26, 'backend/content/slider_list', 'BG', '["94","95","96","128","108","109",140,141,"115","117","118"]'),
+(27, 'backend/content/slider_edit/1', 'BG', '["94","95","96","128","129",142,"130",143,"127",144,"103","104","105","106","107"]'),
+(28, 'front/home/article/simple_news', 'BG', '["110","111","136","137","138","139"]'),
+(29, 'backend/content/slider_edit/2', 'BG', '["1","42","92","5","69","86","54","91","4","46","28","29","30","31","32","36","94","95","96","128","129","142","130","143","127","144","103","104","105","106","107","109"]'),
+(30, 'backend/content/slider_edit/3', 'BG', '["94","95","96","128","129","142","130","143","127","144","103","104","105","106","107","109"]'),
+(31, 'backend/content/slider_edit/4', 'BG', '["94","95","96","128","129","142","130","143","127","144","103","104","105","106","107","109"]'),
+(32, 'backend/content/widgets_list', 'BG', '["94","95","96","98","142","115","116","117","118","119","120"]'),
+(33, 'backend/content/widgets_edit/1', 'BG', '["94","95","96","129","142","98","135","103","104"]'),
+(34, 'backend/content/articles_edit/6', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
+(35, 'backend/menus/frontend_menu_list', 'BG', '["94","95","96","128",145,146,"115","117","118"]'),
+(36, 'backend/menus/frontend_menu_edit/1', 'BG', '["94","95","96","128","129",147,148,149,150,151,"127","103","104"]'),
+(37, 'backend/menus/frontend_menu_edit/2', 'BG', '["94","95","96","128","129","147","148","149","150","151","127","103","104"]'),
+(38, 'backend/menus/frontend_menu_edit/3', 'BG', '["94","95","96","128","129","147","148","149","150","151","127","103","104"]'),
+(39, 'backend/menus/frontend_menu_edit/4', 'BG', '["94","95","96","128","129","147","148","149","150","151","127","103","104"]'),
+(40, 'backend/menus/frontend_menu_edit/5', 'BG', '["94","95","96","128","129","147","148","149","150","151","127","103","104"]'),
+(41, 'backend/menus/frontend_menu_edit/6', 'BG', '["94","95","96","128","129","147","148","149","150","151","127","103","104"]'),
+(42, 'backend/localisation/translations_edit', 'BG', '["94","95","96","112","113","114","103","104"]'),
+(43, 'backend/localisation/translations_edit/136', 'BG', '["94","95","96","112","113","114","103","104"]'),
+(44, 'backend/localisation/translations_edit/137', 'BG', '["94","95","96","112","113","114","103","104"]'),
+(45, 'backend/localisation/translations_edit/154', 'BG', '["94","95","96","112","113","114","103","104"]'),
+(46, 'backend/localisation/translations_edit/139', 'BG', '["94","95","96","112","113","114","103","104"]'),
+(47, 'backend/localisation/translations_edit/155', 'BG', '["94","95","96","112","113","114","103","104"]'),
+(48, 'backend/localisation/translations_edit/160', 'BG', '["94","95","96","112","113","114","103","104"]'),
+(49, 'backend/localisation/languages_list', 'BG', '["94","95","96",161,"112","115","116","117","118","119","120"]'),
+(50, 'backend/localisation/languages_edit/2', 'BG', '["94","95","96","112","161","103","104"]'),
+(51, 'backend/localisation/translations_edit/94', 'BG', '["94","95","96","112","113","114","103","104"]'),
+(52, 'backend/localisation/translations_delete/73', 'BG', '["112","113","114","103"]'),
+(53, 'backend/localisation/translations_delete/136', 'BG', '["112","113","114","103"]'),
+(54, 'backend/localisation/translations_delete/137', 'BG', '["112","113","114","103"]'),
+(55, 'backend/localisation/translations_delete/154', 'BG', '["112","113","114","103"]'),
+(56, 'backend/localisation/translations_delete/84', 'BG', '["112","113","114","103"]'),
+(57, 'backend/localisation/translations_delete/155', 'BG', '["112","113","114","103"]'),
+(58, 'backend/localisation/translations_delete/139', 'BG', '["112","113","114","103"]'),
+(59, 'backend/content/articles_edit', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
+(60, 'backend/admin/index', 'BG', '["1","42","92","43","71","44","7","8","11","12","13","9","10"]'),
+(61, 'backend/admin/edit/2', 'BG', '["94","95","96","162","163","164","144",166,"165","103","104","105","106","107"]'),
+(62, 'backend/admin/edit/4', 'BG', '["94","95","96","162","163","164","144","166","165","103","104","105","106","107"]'),
+(63, 'backend/admin/edit/1', 'BG', '["94","95","96","162","163","164","144","166","165","103","104","105","106","107"]'),
+(64, 'backend/content/articles_edit/7', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
+(65, 'backend/localisation/translations_edit/158', 'BG', '["94","95","96","112","113","114","103","104"]'),
+(66, 'backend/localisation/translations_edit/159', 'BG', '["94","95","96","112","113","114","103","104"]'),
+(67, 'backend/localisation/translations_edit/152', 'BG', '["94","95","96","112","113","114","103","104"]'),
+(68, 'backend/localisation/translations_edit/153', 'BG', '["94","95","96","112","113","114","103","104"]'),
+(69, 'front/one_column_layout/article/simple_news', 'BG', '["110","111",167,"138",168]'),
+(70, 'backend/localisation/translations_edit/167', 'BG', '["94","95","96","112","113","114","103","104"]'),
+(71, 'backend/localisation/translations_edit/168', 'BG', '["94","95","96","112","113","114","103","104"]'),
+(72, 'backend/localisation/translations_edit/138', 'BG', '["94","95","96","112","113","114","103","104"]');
 
 -- --------------------------------------------------------
 
@@ -517,7 +629,7 @@ CREATE TABLE IF NOT EXISTS `zcms_lang_misc` (
   `text` text COLLATE utf8_unicode_ci NOT NULL,
   `lang` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=92 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=169 ;
 
 --
 -- Dumping data for table `zcms_lang_misc`
@@ -596,7 +708,6 @@ INSERT INTO `zcms_lang_misc` (`id`, `lang_id`, `text`, `lang`) VALUES
 (70, 'EN', 'Author', NULL),
 (71, 'EN', 'Name', NULL),
 (72, 'EN', 'Date', NULL),
-(73, 'EN', 'See More', NULL),
 (74, 'EN', 'Modules', NULL),
 (75, 'EN', 'Showing ', NULL),
 (76, 'EN', 'of ', NULL),
@@ -607,14 +718,85 @@ INSERT INTO `zcms_lang_misc` (`id`, `lang_id`, `text`, `lang`) VALUES
 (81, 'EN', ' by ', NULL),
 (82, 'EN', 'Posted on ', NULL),
 (83, 'EN', ' in ', NULL),
-(84, 'EN', 'by', NULL),
 (85, 'EN', 'in', NULL),
 (86, 'EN', 'Link', NULL),
 (87, 'EN', 'awesome', NULL),
 (88, 'EN', 'Assets', NULL),
 (89, 'EN', 'Slider', NULL),
 (90, 'EN', 'Slide', NULL),
-(91, 'EN', 'New Slider', NULL);
+(91, 'EN', 'New Slider', NULL),
+(92, 'EN', 'ZCMS: File Upload', NULL),
+(93, 'EN', 'File Manager', NULL),
+(94, 'BG', 'Z-CMS Administration', NULL),
+(95, 'BG', 'Change Language', NULL),
+(96, 'BG', 'ZCMS: File Upload', NULL),
+(97, 'BG', 'Code', NULL),
+(98, 'BG', 'Title', NULL),
+(99, 'BG', 'Deals', NULL),
+(100, 'BG', 'Images', NULL),
+(101, 'BG', 'Documents', NULL),
+(102, 'BG', 'Description', NULL),
+(103, 'BG', 'Save', NULL),
+(104, 'BG', 'Edit/Insert', NULL),
+(105, 'BG', 'You can upload', NULL),
+(106, 'BG', 'Max file size', NULL),
+(107, 'BG', 'Max files', NULL),
+(108, 'BG', 'Edit', NULL),
+(109, 'BG', 'Delete', NULL),
+(110, 'BG', 'Toggle navigation', NULL),
+(111, 'BG', 'Site logo', NULL),
+(112, 'BG', 'Language Code', NULL),
+(113, 'BG', 'Text', NULL),
+(114, 'BG', 'Translation', NULL),
+(115, 'BG', 'Listing', NULL),
+(116, 'BG', 'Search', NULL),
+(117, 'BG', 'Add New', NULL),
+(118, 'BG', 'Actions', NULL),
+(119, 'BG', 'Prev', NULL),
+(120, 'BG', 'Next', NULL),
+(121, 'BG', 'Page Id', NULL),
+(122, 'BG', 'Keywords', NULL),
+(123, 'BG', 'Template', NULL),
+(124, 'BG', 'Layout', NULL),
+(125, 'BG', 'Assets', NULL),
+(126, 'BG', 'Modules', NULL),
+(127, 'BG', 'Order', NULL),
+(128, 'BG', 'Label', NULL),
+(129, 'BG', 'Alias', NULL),
+(130, 'BG', 'Parent', NULL),
+(131, 'BG', 'Top', NULL),
+(132, 'BG', 'Category', NULL),
+(133, 'BG', 'Author', NULL),
+(134, 'BG', 'Date', NULL),
+(135, 'BG', 'Content', NULL),
+(138, 'BG', 'Posted on ', 'Публикувано на '),
+(140, 'BG', 'Slider', NULL),
+(141, 'BG', 'Slide', NULL),
+(142, 'BG', 'Link', NULL),
+(143, 'BG', 'New Slider', NULL),
+(144, 'BG', 'Image', NULL),
+(145, 'BG', 'Menu', NULL),
+(146, 'BG', 'Item', NULL),
+(147, 'BG', 'Parent Id', NULL),
+(148, 'BG', 'New menu', NULL),
+(149, 'BG', 'Page', NULL),
+(150, 'BG', 'None', NULL),
+(151, 'BG', 'Params', NULL),
+(152, 'BG', 'Showing ', 'Показват се'),
+(153, 'BG', 'of ', 'от'),
+(156, 'BG', 'First', NULL),
+(157, 'BG', 'Last', NULL),
+(158, 'BG', 'See More', 'Повече'),
+(159, 'BG', 'by', 'от'),
+(160, 'BG', 'in', 'в'),
+(161, 'BG', 'Language', NULL),
+(162, 'BG', 'Username', NULL),
+(163, 'BG', 'Name', NULL),
+(164, 'BG', 'Email', NULL),
+(165, 'BG', 'Access', NULL),
+(166, 'BG', 'Password', NULL),
+(167, 'BG', ' by ', ' от '),
+(168, 'BG', ' in ', ' в ');
 
 -- --------------------------------------------------------
 
@@ -739,15 +921,15 @@ CREATE TABLE IF NOT EXISTS `zcms_menu` (
 INSERT INTO `zcms_menu` (`id`, `controller`, `method`, `tail`, `order`, `access`, `parent`, `icon`) VALUES
 (3, 'authenticate', 'logout', '', 999, 2, 0, 'fa-lock'),
 (4, 'content', 'pages_list', '', 0, 2, 18, ''),
-(6, 'menus', 'backend_menu_list', '', 0, 1, 19, ''),
-(7, 'admin', 'index', '', 998, 1, 0, 'fa-user'),
-(8, 'menus', 'frontend_menu_list', '', 1, 1, 19, ''),
-(10, 'localisation', 'languages_list', '', 995, 1, 21, ''),
-(11, 'localisation', 'translations_list', '', 996, 1, 21, ''),
+(6, 'menus', 'backend_menu_list', '', 0, 2, 19, ''),
+(7, 'admin', 'index', '', 998, 2, 0, 'fa-user'),
+(8, 'menus', 'frontend_menu_list', '', 1, 2, 19, ''),
+(10, 'localisation', 'languages_list', '', 995, 2, 21, ''),
+(11, 'localisation', 'translations_list', '', 996, 2, 21, ''),
 (12, 'catalog', 'product_list', '', 1, 2, 20, ''),
 (18, '', '', '', 0, 2, 0, 'fa-list-alt'),
 (19, '', '', '', 2, 2, 0, 'fa-link'),
-(20, '', '', '', 1, 2, 0, ' fa-cubes'),
+(20, '', '', '', 1, 1, 0, ' fa-cubes'),
 (21, '', '', '', 3, 2, 0, ' fa-flag'),
 (22, 'content', 'category_list', '', 1, 2, 18, ''),
 (23, 'content', 'articles_list', '', 2, 2, 18, ''),
@@ -837,7 +1019,7 @@ CREATE TABLE IF NOT EXISTS `zcms_pages_lang` (
   `id_` int(11) NOT NULL,
   `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=24 ;
 
 --
 -- Dumping data for table `zcms_pages_lang`
@@ -848,7 +1030,11 @@ INSERT INTO `zcms_pages_lang` (`id`, `title`, `keywords`, `description`, `id_`, 
 (15, 'Home page', '', '', 15, 'EN'),
 (16, 'One Column Layout', '', '', 16, 'EN'),
 (17, 'Two Column Layout', '', '', 17, 'EN'),
-(19, 'Three Column Layout', '', '', 19, 'EN');
+(19, 'Three Column Layout', '', '', 19, 'EN'),
+(20, 'Начална страница', '', '', 15, 'BG'),
+(21, 'Лейаут с една колона', '', '', 16, 'BG'),
+(22, 'Лейаут с три колони', '', '', 19, 'BG'),
+(23, 'Лейаут с две колони', '', '', 17, 'BG');
 
 --
 -- Constraints for dumped tables

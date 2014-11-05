@@ -39,9 +39,9 @@ class Menus_Recursive extends Module_Base {
             
             if($parent_id)
                 foreach($menu as $item)
-                    $item->sublevel = $this->_load_menu($item->id, $level);
+                    $item->sublevel = $this->_load_menu($item->id_, $level);
             else
-                $menu->sublevel = $this->_load_menu($menu->id, $level);
+                $menu->sublevel = $this->_load_menu($menu->id_, $level);
         }
         
         return $menu;

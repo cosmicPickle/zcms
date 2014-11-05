@@ -62,8 +62,9 @@
                                 <li>
                                     <div class="task-info">
                                         <div class="desc">
-                                            <a href="<?php echo $this->zcms->backend()."dashboard?lang=".$lang->lang_code; ?>">
-                                                <?php echo $lang->language; ?>
+                                            <a href="<?php echo $this->zcms->backend()."dashboard?lang=".$lang->lang_code; ?>"
+                                               <?php if($this->translate->get_lang() == $lang->lang_code) echo 'class="active"'; ?>>
+                                               <?php echo $lang->language; ?>
                                             </a>
                                         </div>
                                     </div>  

@@ -75,14 +75,14 @@ class Select extends Fields {
                            : NULL;
         
         if($link_table_lang)
-            $pairs_raw = $this->db->select("t1." . $link_oc . ", ". $link_vc_full . ", t1.id ",FALSE)
-                              ->from($link_table." as t1")
-                              ->join($link_table_lang." as t2", "t1.id = t2.id_", "left")
-                              ->where("(t2.lang_id = '" . $this->translate->get_lang() . "' OR t2.lang_id IS NULL)")
-                              ->where($this->setting('parent_column')." = '".$parent."' ".
-                                      (($link_query) ? (" AND (".$link_query.")" ): NULL))
-                              ->get()
-                              ->result();
+        {
+            $this->db->select("t1." . $link_oc . ", ". $link_vc_full . ", t1.id ",FALSE)
+                     ->from($link_table." as t1");
+            $this->sql->add_lang_table($link_table_lang);
+            $pairs_raw = $this->db->where($this->setting('parent_column')." = '".$parent."'")
+                                  ->get()
+                                  ->result();
+        }
         else
             $pairs_raw = $this->db->select("t1." . $link_oc . ", t1." . $link_vc.", t1.id")
                               ->from($link_table." as t1")

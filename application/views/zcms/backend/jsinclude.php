@@ -4,7 +4,7 @@
 <!-- js placed at the end of the document so the pages load faster -->
 <script src="<?php echo $this->zcms->asset('js', 'jquery-1.8.3.min.js'); ?>"></script>
 <script src="<?php echo $this->zcms->asset('js', 'jquery-ui/jquery-ui.js'); ?>"></script>
-<script src="<?php echo $this->zcms->asset('js', 'fancybox/jquery.fancybox.js'); ?>"></script>    
+<script src="<?php echo $this->zcms->asset('js', 'fancybox/jquery.fancybox.js'); ?>"></script>   
 <script src="<?php echo $this->zcms->asset('js', 'bootstrap.min.js'); ?>"></script>
 <script src="<?php echo $this->zcms->asset('js', 'bootstrap-datepicker/js/bootstrap-datepicker.js'); ?>"></script>
 <script class="include" type="text/javascript" src="<?php echo $this->zcms->asset('js', 'jquery.dcjqaccordion.2.7.js'); ?>"></script>
@@ -22,7 +22,9 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
+    $("a.fancybox").fancybox();
    
+   //TinyMCE generation
    $('textarea.tiny_mce').each(function(){
        var _this = $(this);
        $(this).tinymce({
@@ -48,6 +50,7 @@ $(document).ready(function() {
         });
     });
    
+    //TinyMCE Elfinder Generation
     function elFinderBrowser (field_name, url, type, win, path) {
         console.log('<?php echo $this->zcms->backend()."elf/index/1/" ?>' + path);
         tinymce.activeEditor.windowManager.open({
@@ -64,6 +67,7 @@ $(document).ready(function() {
         return false;
     }
    
+   //DatePicker Generation
    var nowTemp = new Date();
    var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
    
@@ -81,10 +85,5 @@ $(document).ready(function() {
             }
        });
    });
-
-   $(function() {
-        jQuery(".fancybox").fancybox();
-   });
-
 });
 </script>
