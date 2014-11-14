@@ -9,6 +9,7 @@ class Elfinder_Lib
 {
   public function __construct($opts) 
   {
+    date_default_timezone_set(@date_default_timezone_get());
     $connector = new elFinderConnector(new elFinder($opts));
     $connector->run();
   }

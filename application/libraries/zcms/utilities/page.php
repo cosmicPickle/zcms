@@ -4,7 +4,7 @@ class Page extends ZCMS {
     
     protected $_pages_table = 'zcms_pages';
     protected $_404_page_id = 'zcms_404';
-    protected $_parser_pattern = "#\{([a-zA-Z0-9_/]*):([a-zA-Z0-9_-]*),([a-zA-Z0-9_-]*)(\?[a-zA-Z0-9_\-@\.\&amp;\&\=]*)?\}@([a-zA-Z0-9_]*)#";
+    protected $_parser_pattern = "#\{([a-zA-Z0-9_/]*):([a-zA-Z0-9_-]*),([a-zA-Z0-9_-]*)(\?[a-zA-Zа-яА-Я0-9_\-@\.\&amp;\&\=\s]*)?\}@([a-zA-Z0-9_]*)#u";
     protected $_assets_pattern ="#\{(\!)?(js|css):([a-zA-Z0-9_\-\./]+)\}#";
     protected $_position_pattern = "#<module:[a-zA-Z0-9_]*/>#";
             

@@ -43,6 +43,8 @@ $(document).ready(function() {
             height:"480",
             convert_urls: false,
             verify_html : false,
+            force_p_newlines : true,
+            forced_root_block : '',
             file_browser_callback : function(field_name, url, type, win) {
                 var path = btoa(_this.data('elfinder-root'));
                 elFinderBrowser (field_name, url, type, win, path);

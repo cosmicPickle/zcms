@@ -125,7 +125,7 @@ class Content_Article extends Module_Base {
         $this->category->articles = $this->db->get()->result();
         
         //Loading article authors
-        if($this->config->show_author)
+        if($this->config->show_author && $this->category->articles)
         {
             $ids = array();
             foreach($this->category->articles as $article)
