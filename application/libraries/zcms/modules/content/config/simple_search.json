@@ -1,0 +1,58 @@
+{
+    "s" : "",
+    "trim_search" : {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "max_search_content" : {
+        "value" : 300,
+        "can_override" : 0
+    },
+    "highlight_search" : 
+    {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "highlighter" : {
+        "value" : "<span class=\"label label-success\">%s</span>",
+        "can_override" : 0
+    },
+    "show_title" : {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "show_header" : {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "header_text" : {
+        "value" : "Showing results for",
+        "can_override" : 0
+    },
+    "show_see_more" : {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "see_more_text" : {
+        "value" : "See More",
+        "can_override" : 0
+    },
+    "no_results_text" : {
+        "value" : "There were no results found for your search.",
+        "can_override" : 0
+    },
+    
+    "single_article_page" : {
+        "value" : "default_single_article_page",
+        "can_override" : 0
+    },
+    "article_search_in" : {
+        "value" : "title,content",
+        "can_override" : 0
+    },
+    
+    "widgets_search_in" : {
+        "value" : "title,content",
+        "can_override" : 0
+    }
+}

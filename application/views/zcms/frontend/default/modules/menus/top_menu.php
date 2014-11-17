@@ -13,6 +13,12 @@
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-right" role="search" method="GET" action="<?php echo $this->zcms->frontend().'search' ?>">
+                <div class="form-group">
+                    <input type="text" name="s" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
             <ul class="nav navbar-nav navbar-right">
             <?php 
                 $items = $menu->sublevel;

@@ -31,7 +31,11 @@ class Content_Article extends Module_Base {
             while($content[$cut_at] != ' ')
                 $cut_at ++;
             
-            return mb_strcut($content,0,$cut_at). " ...";
+            $content = mb_strcut($content,0,$cut_at). " ...";
+            
+            $this->purifier->init();
+            $this->purifier->create();
+            $content = $this->purifier->clean($content);
         }
             
         return $content;

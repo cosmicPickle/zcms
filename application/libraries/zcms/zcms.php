@@ -102,6 +102,7 @@ class ZCMS {
             $this->load->library(self::UTILS_FOLDER."event");
             $this->load->library(self::UTILS_FOLDER."observer");
             $this->load->library(self::UTILS_FOLDER."translate");
+            $this->load->library(self::UTILS_FOLDER."htmlpurifier_lib", NULL, "purifier");
             $this->load->library(self::UTILS_FOLDER."logs");
             $this->load->library(self::UTILS_FOLDER."auth");
             $this->load->library(self::UTILS_FOLDER."menu");
