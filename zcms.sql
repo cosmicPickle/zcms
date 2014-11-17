@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 05, 2014 at 04:06 PM
+-- Generation Time: Nov 17, 2014 at 02:19 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `content_articles` (
   `author` int(11) NOT NULL,
   `date` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `content_articles`
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `content_articles_lang` (
   `description` text COLLATE utf8_unicode_ci NOT NULL,
   `content` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `content_articles_lang`
@@ -242,7 +242,7 @@ CREATE TABLE IF NOT EXISTS `menus_frontend_menus` (
   `alias` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `page_id` (`page_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `menus_frontend_menus`
@@ -357,14 +357,7 @@ CREATE TABLE IF NOT EXISTS `product_images` (
   `main` int(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `rel_id` (`rel_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=29 ;
-
---
--- Dumping data for table `product_images`
---
-
-INSERT INTO `product_images` (`id`, `rel_id`, `file`, `main`) VALUES
-(28, 1, 'compliments-cover.png', 0);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -537,7 +530,7 @@ CREATE TABLE IF NOT EXISTS `zcms_lang_cache` (
   `lang_id` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
   `ids` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=73 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=80 ;
 
 --
 -- Dumping data for table `zcms_lang_cache`
@@ -546,14 +539,14 @@ CREATE TABLE IF NOT EXISTS `zcms_lang_cache` (
 INSERT INTO `zcms_lang_cache` (`id`, `link`, `lang_id`, `ids`) VALUES
 (1, 'backend/catalog/product_edit/1', 'BG', '[94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109]'),
 (2, 'front/home', 'BG', '[110,111,"136","137","138","139"]'),
-(3, 'front', 'BG', '["110","111","136","137","138","139"]'),
-(4, 'front/home/category/news', 'BG', '["79","80","73","81","82","83","110","111",136,137,138,139]'),
+(3, 'front', 'BG', '["79","80","169","81","82","83"]'),
+(4, 'front/home/category/news', 'BG', '["79","80","169","81","82","83"]'),
 (5, 'front/one_column_layout/article/lorem_ipsum', 'BG', '["110","111","137","138","139"]'),
-(6, 'front/two_column_layout/category/news', 'BG', '["110","111","136",152,153,154,155,156,157,158,159,160]'),
-(7, 'front/three_column_layout/article/lorem_ipsum', 'BG', '["110","111","136","137","138","139"]'),
+(6, 'front/two_column_layout/category/news', 'BG', '["79","80","169","75","76","174","85","77","78"]'),
+(7, 'front/three_column_layout/article/lorem_ipsum', 'BG', '["79","80","169","81","82","83"]'),
 (8, 'backend/dashboard', 'BG', '["1","42","92","94","95","96"]'),
 (9, 'backend/localisation/translations_list', 'BG', '["1","42","92","60","61","62","8","11","12","13","9","10","94","95","96","112","113","114","115","116","117","118","119","120"]'),
-(10, 'backend/content/pages_list', 'BG', '["94","95","96","98","102","115","116","117","118","119","120"]'),
+(10, 'backend/content/pages_list', 'BG', '["1","42","92","14","15","8","11","12","13","9","10"]'),
 (11, 'backend/content/pages_edit/1', 'BG', '["94","95","96","98",121,"102",122,123,124,125,126,"103","104"]'),
 (12, 'backend/content/category_list', 'BG', '["1","42","92","4","5","35","36","8","12","13"]'),
 (13, 'backend/content/category_edit/2', 'BG', '["94","95","96","128",129,"102","122",130,131,"127","103","104"]'),
@@ -563,8 +556,8 @@ INSERT INTO `zcms_lang_cache` (`id`, `link`, `lang_id`, `ids`) VALUES
 (17, 'backend/content/news_list', 'BG', '["94","95","96","98","102","132","115","116","117","118","119","120"]'),
 (18, 'backend/content/news_edit/2', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
 (19, 'backend/content/news_edit/3', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
-(20, 'backend/content/pages_edit/15', 'BG', '["94","95","96","98","121","102","122","123","124","125","126","103","104"]'),
-(21, 'backend/content/pages_edit/16', 'BG', '["94","95","96","98","121","102","122","123","124","125","126","103","104"]'),
+(20, 'backend/content/pages_edit/15', 'BG', '["1","42","92","14","18","15","25","19","33","88","74","28","29"]'),
+(21, 'backend/content/pages_edit/16', 'BG', '["1","42","92","14","18","15","25","19","33","88","74","28","29"]'),
 (22, 'backend/content/pages_edit/19', 'BG', '["94","95","96","98","121","102","122","123","124","125","126","103","104"]'),
 (23, 'backend/content/pages_edit/17', 'BG', '["94","95","96","98","121","102","122","123","124","125","126","103","104"]'),
 (24, 'backend/content/news_edit/4', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
@@ -615,7 +608,14 @@ INSERT INTO `zcms_lang_cache` (`id`, `link`, `lang_id`, `ids`) VALUES
 (69, 'front/one_column_layout/article/simple_news', 'BG', '["110","111",167,"138",168]'),
 (70, 'backend/localisation/translations_edit/167', 'BG', '["94","95","96","112","113","114","103","104"]'),
 (71, 'backend/localisation/translations_edit/168', 'BG', '["94","95","96","112","113","114","103","104"]'),
-(72, 'backend/localisation/translations_edit/138', 'BG', '["94","95","96","112","113","114","103","104"]');
+(72, 'backend/localisation/translations_edit/138', 'BG', '["94","95","96","112","113","114","103","104"]'),
+(73, 'backend/catalog/product_list', 'BG', '["94","95","96","97","98","108","109",170,"115","116","117","118","119","120"]'),
+(74, 'backend/catalog/product_image_delete/28/1', 'BG', '["98",171,"144",172,"103"]'),
+(75, 'backend/authenticate/login', 'BG', '["94",173]'),
+(76, 'backend/elf/index/1/cHVibGljL3VwbG9hZHMvbWVkaWE=', 'BG', '["96"]'),
+(77, 'backend/elf/init/cHVibGljL3VwbG9hZHMvbWVkaWE=', 'BG', NULL),
+(78, 'front/search', 'BG', '["79","80","175","169"]'),
+(79, 'backend/content/pages_edit', 'BG', '["1","42","92","14","18","15","25","19","33","88","74","28"]');
 
 -- --------------------------------------------------------
 
@@ -629,7 +629,7 @@ CREATE TABLE IF NOT EXISTS `zcms_lang_misc` (
   `text` text COLLATE utf8_unicode_ci NOT NULL,
   `lang` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=169 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=177 ;
 
 --
 -- Dumping data for table `zcms_lang_misc`
@@ -796,7 +796,15 @@ INSERT INTO `zcms_lang_misc` (`id`, `lang_id`, `text`, `lang`) VALUES
 (165, 'BG', 'Access', NULL),
 (166, 'BG', 'Password', NULL),
 (167, 'BG', ' by ', ' от '),
-(168, 'BG', ' in ', ' в ');
+(168, 'BG', ' in ', ' в '),
+(169, 'EN', 'See More', NULL),
+(170, 'BG', 'Copy', NULL),
+(171, 'BG', 'Main', NULL),
+(172, 'BG', 'Alt', NULL),
+(173, 'BG', 'sign in now', NULL),
+(174, 'EN', 'by', NULL),
+(175, 'EN', 'Showing results for', NULL),
+(176, 'EN', 'There were no results found for your search.', NULL);
 
 -- --------------------------------------------------------
 
@@ -992,18 +1000,19 @@ CREATE TABLE IF NOT EXISTS `zcms_pages` (
   `modules` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `page_id` (`page_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `zcms_pages`
 --
 
 INSERT INTO `zcms_pages` (`id`, `page_id`, `template`, `html`, `assets`, `modules`) VALUES
-(1, 'zcms_404', 'pages', 'single_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top<br />{content/content_article:single_article,single_article?show_date=0&amp;show_author=0&amp;show_category=0}@pos_1_1</p>'),
+(1, 'zcms_404', 'pages', 'single_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top<br />{content/content_article:single_article,single_article?show_date=0&show_author=0&show_category=0}@pos_1_1</p>'),
 (15, 'home', 'pages', 'home_page_layout', '{js:carousel-init.js}', ' {menus/menus_recursive:top_menu,menus_recursive?menu=main}@top\r\n {content/content_slider:simple_slider,simple_slider?slider=simple_slider}@slider\r\n{content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_2_1 \r\n{content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_2_2 \r\n{content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_2_3 \r\n{content/content_article:single_article,single_article?article=lorem_ipsum}@pos_1_1'),
-(16, 'one_column_layout', 'pages', 'single_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top<br />{content/content_article:single_article,single_article}@pos_1_1</p>'),
+(16, 'one_column_layout', 'pages', 'single_column_layout', '', '{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top<br />{content/content_article:single_article,single_article}@pos_1_1'),
 (17, 'two_column_layout', 'pages', 'two_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top {content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_1_1 {content/content_article:category_article,category_article}@pos_1_2</p>'),
-(19, 'three_column_layout', 'pages', 'three_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top {content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_1_1 {content/content_article:single_article,single_article}@pos_1_2{content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_1_3</p>');
+(19, 'three_column_layout', 'pages', 'three_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top {content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_1_1 {content/content_article:single_article,single_article}@pos_1_2{content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_1_3</p>'),
+(20, 'search', 'pages', 'single_column_layout', '', '{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top\r\n{content/content_search:simple_search,simple_search}@pos_1_1');
 
 -- --------------------------------------------------------
 
@@ -1019,7 +1028,7 @@ CREATE TABLE IF NOT EXISTS `zcms_pages_lang` (
   `id_` int(11) NOT NULL,
   `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `zcms_pages_lang`
@@ -1034,7 +1043,9 @@ INSERT INTO `zcms_pages_lang` (`id`, `title`, `keywords`, `description`, `id_`, 
 (20, 'Начална страница', '', '', 15, 'BG'),
 (21, 'Лейаут с една колона', '', '', 16, 'BG'),
 (22, 'Лейаут с три колони', '', '', 19, 'BG'),
-(23, 'Лейаут с две колони', '', '', 17, 'BG');
+(23, 'Лейаут с две колони', '', '', 17, 'BG'),
+(24, '404 Страницата не е намерена', '', '', 1, 'BG'),
+(25, 'Search page', '', '', 20, 'EN');
 
 --
 -- Constraints for dumped tables
