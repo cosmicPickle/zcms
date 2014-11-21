@@ -1,0 +1,49 @@
+{
+    "form": "",
+    "email_to": {
+        "value": "email",
+        "can_override": 0
+    },
+    "email_charset": {
+        "value" : "utf-8",
+        "can_override" : 0
+    },
+    "email_from": {
+        "value" : "no-reply@zcms.mail.com",
+        "can_override" : 0
+    },
+    "email_template": {
+        "value" : "",
+        "can_override" : 0
+    },
+    
+    "show_label_in_field": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "show_label_out_field": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "required_msg": {
+        "value": "This field is required",
+        "can_override": 0
+    },
+    "submit_btn_msg": {
+        "value": "Send Message",
+        "can_override": 0
+    }, 
+    
+    "success": {
+        "value": -1,
+        "can_override": 0
+    },
+    "success_msg": {
+        "value": "Your query has been sent successfully.",
+        "can_override": 0
+    }, 
+    "error_msg": {
+        "value": "There was an error sending your query. Please try again later.",
+        "can_override": 0
+    }
+}

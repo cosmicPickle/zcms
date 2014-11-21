@@ -44,6 +44,9 @@ class Interface_form extends Interface_base {
     
     //An array containing the generated fields' names for keys and their settings for values
     protected $fields;
+    //An array consisting of the form's dynamic triggers
+    protected $triggers;
+    
     //The submit field of the form
     protected $submit;
     //The url to which the page will redirect once the form is esecuted
@@ -163,7 +166,36 @@ class Interface_form extends Interface_base {
         
         return $this;
     }  
+ /**
+  * add_trigger 
+  * 
+  * Adds a new trigger
+  * 
+  * @param type $trigger - a trigger array with the following options:
+  * - action_type - the type of action that will be completed. currently only "display"
+  * - target - the dynamic field which will be affected by the trigger
+  * - observed_field - the field which produces the trigger
+  * - value - the value to be matched
+  * - display_on_load - defaults to FALSE
+  */   
     
+    public function add_trigger($trigger) 
+    {
+        $trigger = (object)$trigger;
+        
+        if(!isset($trigger->action_type))
+            $trigger->action_type = "display";
+        if(!isset($trigger->display_on_load))
+            $trigger->display_on_load = FALSE;
+        
+        if(!isset($trigger->target) || !isset($trigger->observed_field) || !isset($trigger->value))
+            return $this;
+        
+        $this->triggers[] = $trigger;
+        
+        return $this;
+    }
+     
 /*
  * modify()
  * 
@@ -231,7 +263,11 @@ class Interface_form extends Interface_base {
         $view = isset($oview) && file_exists(self::VIEWS_BACKEND.$oview)
                 ? self::VIEWS_BACKEND.$oview : self::VIEWS_BACKEND.self::FORM_DEFAULT_VIEW;
         
-        $this->loaded_view = $this->load->view($view,array('fields' => $this->fields, 'submit' => $this->submit), $return);
+        $this->loaded_view = $this->load->view($view,array(
+            'fields' => $this->fields, 
+            'submit' => $this->submit, 
+            'triggers' => $this->triggers), $return);
+        
         $this->event->trigger('interface_form_render_after', $this);
         return $this->loaded_view;
     }

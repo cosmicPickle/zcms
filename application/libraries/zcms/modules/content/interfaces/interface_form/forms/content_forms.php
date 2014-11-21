@@ -1,6 +1,6 @@
 <?php
 
-class Menus_Frontend_Menus extends Interface_form {
+class Content_Forms extends Interface_form {
     
     public function setup($form)
     {
@@ -21,24 +21,12 @@ class Menus_Frontend_Menus extends Interface_form {
                     'disabled_on_update' => FALSE,
                     'label' => $this->translate->t('Parent Id'),
                     'opt_val_pairs' => array(
-                        0 => $this->translate->t('New menu'),
+                        0 => $this->translate->t('New form'),
                     ),
-                    'link_table' => 'menus_frontend_menus',
+                    'link_table' => 'content_forms',
                     'link_opt_column' => 'id',
                     'link_val_column' => 'label',
                     'parent_column' => 'parent_id',
-                    'validation' => ''
-                ))
-                ->add_field('page_id',array(
-                    'type' => 'select',
-                    'disabled_on_update' => FALSE,
-                    'label' => $this->translate->t('Page'),
-                    'opt_val_pairs' => array(
-                        0 => $this->translate->t('None'),
-                    ),
-                    'link_table' => 'zcms_pages',
-                    'link_opt_column' => 'page_id',
-                    'link_val_column' => 'title',
                     'validation' => ''
                 ))
                 ->add_field('type',array(
@@ -46,40 +34,40 @@ class Menus_Frontend_Menus extends Interface_form {
                     'disabled_on_update' => FALSE,
                     'label' => $this->translate->t('Type'),
                     'opt_val_pairs' => array(
-                        'general' => $this->translate->t('General'),
-                        'article' => $this->translate->t('Article'),
-                        'category' => $this->translate->t('Category'),
+                        'form' => $this->translate->t('Form'),
+                        'text' => $this->translate->t('Text'),
+                        'textarea' => $this->translate->t('Textarea'),
+                        'select' => $this->translate->t('Dropdown'),
+                        'checkbox' => $this->translate->t('Checkbox'),
                     ),
                     'validation' => ''
                 ))
-                ->add_field('article',array(
+                ->add_field('options',array(
+                    'type' => 'textarea',
+                    'disabled_on_update' => FALSE,
+                    'label' => $this->translate->t('Options'),
+                    'tiny_mce' => FALSE,
+                    'css_class' => 'form-control',
+                    'validation' => ''
+                ))
+                ->add_field('required',array(
                     'type' => 'select',
                     'disabled_on_update' => FALSE,
-                    'label' => $this->translate->t('Article'),
+                    'label' => $this->translate->t('Required'),
                     'opt_val_pairs' => array(
-                        0 => $this->translate->t('None'),
+                        0 => $this->translate->t('No'),
+                        1 => $this->translate->t('Yes'),
                     ),
-                    'link_table' => 'content_articles',
-                    'link_opt_column' => 'alias',
-                    'link_val_column' => 'title',
                     'validation' => ''
                 ))
-                ->add_field('category',array(
+                ->add_field('enabled',array(
                     'type' => 'select',
                     'disabled_on_update' => FALSE,
-                    'label' => $this->translate->t('Category'),
+                    'label' => $this->translate->t('Enabled'),
                     'opt_val_pairs' => array(
-                        0 => $this->translate->t('None'),
+                        0 => $this->translate->t('No'),
+                        1 => $this->translate->t('Yes'),
                     ),
-                    'link_table' => 'content_categories',
-                    'link_opt_column' => 'alias',
-                    'link_val_column' => 'label',
-                    'validation' => ''
-                ))
-                ->add_field('params',array(
-                    'type' => 'text',
-                    'disabled_on_update' => FALSE,
-                    'label' => $this->translate->t('Params'),
                     'validation' => ''
                 ))
                 ->add_field('order',array(
@@ -90,21 +78,9 @@ class Menus_Frontend_Menus extends Interface_form {
                 ))
                 ->add_trigger(array(
                     "action_type" => "display",
-                    "target" => "article",
+                    "target" => "options",
                     "observed_field" => "type",
-                    "value" => "article"
-                ))
-                ->add_trigger(array(
-                    "action_type" => "display",
-                    "target" => "category",
-                    "observed_field" => "type",
-                    "value" => "category"
-                ))
-                ->add_trigger(array(
-                    "action_type" => "display",
-                    "target" => "params",
-                    "observed_field" => "type",
-                    "value" => "general"
+                    "value" => "select"
                 ))
                 ->add_submit(array(
                     'label' => $this->translate->t('Save'),

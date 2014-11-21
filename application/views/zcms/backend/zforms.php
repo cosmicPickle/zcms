@@ -38,6 +38,33 @@
             </div>
         </div>
     </div>
+<script type="text/javascript">
+$(document).ready(function(){
+<?php
+foreach($triggers as $trigger) :
+    if(!$trigger->display_on_load):
+?>
+        $("[name='<?php echo $trigger->target; ?>']").parents(".form-group").hide(0);
+<?php
+    endif;
+?>  
+    var target_val = $("[name='<?php echo $trigger->observed_field; ?>']").val();
+    var target_val_select = $("[name='<?php echo $trigger->observed_field; ?>']").find(":selected").val();
+    
+    if(target_val == '<?php echo $trigger->value; ?>' || target_val_select == '<?php echo $trigger->value; ?>')
+        $("[name='<?php echo $trigger->target; ?>']").parents(".form-group").show(300);
+        
+    $(document).on("change","[name='<?php echo $trigger->observed_field; ?>']",function(){
+        if($(this).val() == '<?php echo $trigger->value; ?>')
+            $("[name='<?php echo $trigger->target; ?>']").parents(".form-group").show(300);
+        else
+            $("[name='<?php echo $trigger->target; ?>']").parents(".form-group").hide(300);
+    });
+<?php endforeach; ?>
+});
+</script>
+
+
 
 
 

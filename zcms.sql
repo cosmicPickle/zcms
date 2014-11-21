@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2014 at 02:19 PM
+-- Generation Time: Nov 21, 2014 at 11:54 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -133,6 +133,64 @@ INSERT INTO `content_categories_lang` (`id`, `id_`, `lang_id`, `label`, `keyword
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `content_forms`
+--
+
+CREATE TABLE IF NOT EXISTS `content_forms` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `alias` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `parent_id` int(11) NOT NULL,
+  `order` int(11) NOT NULL,
+  `required` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `content_forms`
+--
+
+INSERT INTO `content_forms` (`id`, `alias`, `type`, `parent_id`, `order`, `required`, `enabled`) VALUES
+(1, 'contact-us', 'form', 0, 0, 0, 1),
+(2, 'name', 'text', 1, 0, 1, 1),
+(3, 'email', 'text', 1, 10, 1, 1),
+(4, 'gender', 'select', 1, 20, 0, 1),
+(5, 'subscribe', 'checkbox', 1, 30, 0, 1),
+(6, 'query', 'textarea', 1, 40, 1, 1),
+(7, 'phone', 'text', 1, 15, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `content_forms_lang`
+--
+
+CREATE TABLE IF NOT EXISTS `content_forms_lang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_` int(11) NOT NULL,
+  `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `label` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `options` text COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `content_forms_lang`
+--
+
+INSERT INTO `content_forms_lang` (`id`, `id_`, `lang_id`, `label`, `options`) VALUES
+(1, 1, 'EN', 'Contact Us', ''),
+(2, 2, 'EN', 'Name', ''),
+(3, 3, 'EN', 'E-mail', ''),
+(4, 4, 'EN', 'Gender', '{male:Male}\r\n{female:Female}'),
+(5, 5, 'EN', 'Subscribe', ''),
+(6, 6, 'EN', 'Query', ''),
+(7, 7, 'EN', 'Phone', '');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `content_slider`
 --
 
@@ -237,6 +295,9 @@ CREATE TABLE IF NOT EXISTS `menus_frontend_menus` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) NOT NULL,
   `page_id` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'general',
+  `article` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `category` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `params` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `order` int(11) NOT NULL,
   `alias` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
@@ -248,13 +309,13 @@ CREATE TABLE IF NOT EXISTS `menus_frontend_menus` (
 -- Dumping data for table `menus_frontend_menus`
 --
 
-INSERT INTO `menus_frontend_menus` (`id`, `parent_id`, `page_id`, `params`, `order`, `alias`) VALUES
-(1, 0, '0', '', 0, 'main'),
-(2, 1, 'home', 'category/news', 0, ''),
-(3, 1, '0', '', 1, ''),
-(4, 3, 'one_column_layout', 'article/lorem_ipsum', 0, ''),
-(5, 3, 'two_column_layout', 'category/news', 1, ''),
-(6, 3, 'three_column_layout', 'article/lorem_ipsum', 2, '');
+INSERT INTO `menus_frontend_menus` (`id`, `parent_id`, `page_id`, `type`, `article`, `category`, `params`, `order`, `alias`) VALUES
+(1, 0, '0', 'general', NULL, NULL, '', 0, 'main'),
+(2, 1, 'home', 'general', NULL, NULL, 'category/news', 0, ''),
+(3, 1, '0', 'general', NULL, NULL, '', 1, ''),
+(4, 3, 'one_column_layout', 'article', 'lorem_ipsum', 'news', 'article/lorem_ipsum', 0, ''),
+(5, 3, 'two_column_layout', 'general', NULL, NULL, 'category/news', 1, ''),
+(6, 3, 'three_column_layout', 'general', '0', '0', 'form/contact-us', 2, '');
 
 -- --------------------------------------------------------
 
@@ -541,11 +602,11 @@ INSERT INTO `zcms_lang_cache` (`id`, `link`, `lang_id`, `ids`) VALUES
 (2, 'front/home', 'BG', '[110,111,"136","137","138","139"]'),
 (3, 'front', 'BG', '["79","80","169","81","82","83"]'),
 (4, 'front/home/category/news', 'BG', '["79","80","169","81","82","83"]'),
-(5, 'front/one_column_layout/article/lorem_ipsum', 'BG', '["110","111","137","138","139"]'),
-(6, 'front/two_column_layout/category/news', 'BG', '["79","80","169","75","76","174","85","77","78"]'),
-(7, 'front/three_column_layout/article/lorem_ipsum', 'BG', '["79","80","169","81","82","83"]'),
-(8, 'backend/dashboard', 'BG', '["1","42","92","94","95","96"]'),
-(9, 'backend/localisation/translations_list', 'BG', '["1","42","92","60","61","62","8","11","12","13","9","10","94","95","96","112","113","114","115","116","117","118","119","120"]'),
+(5, 'front/one_column_layout/article/lorem_ipsum', 'BG', '["79","80","81","82","83"]'),
+(6, 'front/two_column_layout/category/news', 'BG', '["79","80","75","76","174","85","169","77","78"]'),
+(7, 'front/three_column_layout/article/lorem_ipsum', 'BG', '["79","80","169"]'),
+(8, 'backend/dashboard', 'BG', '["1","42","92"]'),
+(9, 'backend/localisation/translations_list', 'BG', '["1","42","92","60","61","62","8","11","12","13","9","10"]'),
 (10, 'backend/content/pages_list', 'BG', '["1","42","92","14","15","8","11","12","13","9","10"]'),
 (11, 'backend/content/pages_edit/1', 'BG', '["94","95","96","98",121,"102",122,123,124,125,126,"103","104"]'),
 (12, 'backend/content/category_list', 'BG', '["1","42","92","4","5","35","36","8","12","13"]'),
@@ -558,11 +619,11 @@ INSERT INTO `zcms_lang_cache` (`id`, `link`, `lang_id`, `ids`) VALUES
 (19, 'backend/content/news_edit/3', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
 (20, 'backend/content/pages_edit/15', 'BG', '["1","42","92","14","18","15","25","19","33","88","74","28","29"]'),
 (21, 'backend/content/pages_edit/16', 'BG', '["1","42","92","14","18","15","25","19","33","88","74","28","29"]'),
-(22, 'backend/content/pages_edit/19', 'BG', '["94","95","96","98","121","102","122","123","124","125","126","103","104"]'),
-(23, 'backend/content/pages_edit/17', 'BG', '["94","95","96","98","121","102","122","123","124","125","126","103","104"]'),
+(22, 'backend/content/pages_edit/19', 'BG', '["1","42","92","14","18","15","25","19","33","88","74","28","29"]'),
+(23, 'backend/content/pages_edit/17', 'BG', '["1","42","92","14","18","15","25","19","33","88","74","28","29"]'),
 (24, 'backend/content/news_edit/4', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
 (25, 'backend/content/news_edit/5', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
-(26, 'backend/content/slider_list', 'BG', '["94","95","96","128","108","109",140,141,"115","117","118"]'),
+(26, 'backend/content/slider_list', 'BG', '["1","42","92","5","35","36","89","90","8","12","13"]'),
 (27, 'backend/content/slider_edit/1', 'BG', '["94","95","96","128","129",142,"130",143,"127",144,"103","104","105","106","107"]'),
 (28, 'front/home/article/simple_news', 'BG', '["110","111","136","137","138","139"]'),
 (29, 'backend/content/slider_edit/2', 'BG', '["1","42","92","5","69","86","54","91","4","46","28","29","30","31","32","36","94","95","96","128","129","142","130","143","127","144","103","104","105","106","107","109"]'),
@@ -571,13 +632,13 @@ INSERT INTO `zcms_lang_cache` (`id`, `link`, `lang_id`, `ids`) VALUES
 (32, 'backend/content/widgets_list', 'BG', '["94","95","96","98","142","115","116","117","118","119","120"]'),
 (33, 'backend/content/widgets_edit/1', 'BG', '["94","95","96","129","142","98","135","103","104"]'),
 (34, 'backend/content/articles_edit/6', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
-(35, 'backend/menus/frontend_menu_list', 'BG', '["94","95","96","128",145,146,"115","117","118"]'),
+(35, 'backend/menus/frontend_menu_list', 'BG', '["1","42","92","5","38","39","8","12","13"]'),
 (36, 'backend/menus/frontend_menu_edit/1', 'BG', '["94","95","96","128","129",147,148,149,150,151,"127","103","104"]'),
 (37, 'backend/menus/frontend_menu_edit/2', 'BG', '["94","95","96","128","129","147","148","149","150","151","127","103","104"]'),
 (38, 'backend/menus/frontend_menu_edit/3', 'BG', '["94","95","96","128","129","147","148","149","150","151","127","103","104"]'),
-(39, 'backend/menus/frontend_menu_edit/4', 'BG', '["94","95","96","128","129","147","148","149","150","151","127","103","104"]'),
+(39, 'backend/menus/frontend_menu_edit/4', 'BG', '["1","42","92","5","69","63","64","65","16","68","178","177","67","66","4","28","29"]'),
 (40, 'backend/menus/frontend_menu_edit/5', 'BG', '["94","95","96","128","129","147","148","149","150","151","127","103","104"]'),
-(41, 'backend/menus/frontend_menu_edit/6', 'BG', '["94","95","96","128","129","147","148","149","150","151","127","103","104"]'),
+(41, 'backend/menus/frontend_menu_edit/6', 'BG', '["1","42","92","5","69","63","64","65","16","68","178","177","67","66","4","28","29"]'),
 (42, 'backend/localisation/translations_edit', 'BG', '["94","95","96","112","113","114","103","104"]'),
 (43, 'backend/localisation/translations_edit/136', 'BG', '["94","95","96","112","113","114","103","104"]'),
 (44, 'backend/localisation/translations_edit/137', 'BG', '["94","95","96","112","113","114","103","104"]'),
@@ -605,13 +666,13 @@ INSERT INTO `zcms_lang_cache` (`id`, `link`, `lang_id`, `ids`) VALUES
 (66, 'backend/localisation/translations_edit/159', 'BG', '["94","95","96","112","113","114","103","104"]'),
 (67, 'backend/localisation/translations_edit/152', 'BG', '["94","95","96","112","113","114","103","104"]'),
 (68, 'backend/localisation/translations_edit/153', 'BG', '["94","95","96","112","113","114","103","104"]'),
-(69, 'front/one_column_layout/article/simple_news', 'BG', '["110","111",167,"138",168]'),
+(69, 'front/one_column_layout/article/simple_news', 'BG', '["79","80","81","82","83"]'),
 (70, 'backend/localisation/translations_edit/167', 'BG', '["94","95","96","112","113","114","103","104"]'),
 (71, 'backend/localisation/translations_edit/168', 'BG', '["94","95","96","112","113","114","103","104"]'),
 (72, 'backend/localisation/translations_edit/138', 'BG', '["94","95","96","112","113","114","103","104"]'),
 (73, 'backend/catalog/product_list', 'BG', '["94","95","96","97","98","108","109",170,"115","116","117","118","119","120"]'),
 (74, 'backend/catalog/product_image_delete/28/1', 'BG', '["98",171,"144",172,"103"]'),
-(75, 'backend/authenticate/login', 'BG', '["94",173]'),
+(75, 'backend/authenticate/login', 'BG', '["1","57"]'),
 (76, 'backend/elf/index/1/cHVibGljL3VwbG9hZHMvbWVkaWE=', 'BG', '["96"]'),
 (77, 'backend/elf/init/cHVibGljL3VwbG9hZHMvbWVkaWE=', 'BG', NULL),
 (78, 'front/search', 'BG', '["79","80","175","169"]'),
@@ -629,7 +690,7 @@ CREATE TABLE IF NOT EXISTS `zcms_lang_misc` (
   `text` text COLLATE utf8_unicode_ci NOT NULL,
   `lang` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=177 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=193 ;
 
 --
 -- Dumping data for table `zcms_lang_misc`
@@ -804,7 +865,23 @@ INSERT INTO `zcms_lang_misc` (`id`, `lang_id`, `text`, `lang`) VALUES
 (173, 'BG', 'sign in now', NULL),
 (174, 'EN', 'by', NULL),
 (175, 'EN', 'Showing results for', NULL),
-(176, 'EN', 'There were no results found for your search.', NULL);
+(176, 'EN', 'There were no results found for your search.', NULL),
+(177, 'EN', 'Article', NULL),
+(178, 'EN', 'General', NULL),
+(179, 'EN', 'Form', NULL),
+(180, 'EN', 'Field', NULL),
+(181, 'EN', 'New form', NULL),
+(182, 'EN', 'Textarea', NULL),
+(183, 'EN', 'Dropdown', NULL),
+(184, 'EN', 'Options', NULL),
+(185, 'EN', 'Checkbox', NULL),
+(186, 'EN', 'Required', NULL),
+(187, 'EN', 'No', NULL),
+(188, 'EN', 'Yes', NULL),
+(189, 'EN', 'Enabled', NULL),
+(190, 'EN', 'Disabled', NULL),
+(191, 'EN', ' Disabled', NULL),
+(192, 'EN', 'The field %s is required.', 'The field %s is required.');
 
 -- --------------------------------------------------------
 
@@ -920,7 +997,7 @@ CREATE TABLE IF NOT EXISTS `zcms_menu` (
   `parent` int(11) NOT NULL,
   `icon` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=29 ;
 
 --
 -- Dumping data for table `zcms_menu`
@@ -944,7 +1021,8 @@ INSERT INTO `zcms_menu` (`id`, `controller`, `method`, `tail`, `order`, `access`
 (24, 'catalog', 'category_list', '', 0, 2, 20, ''),
 (25, 'content', 'news_list', '', 3, 2, 18, ''),
 (26, 'content', 'widgets_list', '', 5, 2, 18, ''),
-(27, 'content', 'slider_list', '', 4, 2, 18, '');
+(27, 'content', 'slider_list', '', 4, 2, 18, ''),
+(28, 'content', 'forms_list', '', 50, 2, 18, '');
 
 -- --------------------------------------------------------
 
@@ -959,7 +1037,7 @@ CREATE TABLE IF NOT EXISTS `zcms_menu_lang` (
   `label` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_` (`id_`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=42 ;
 
 --
 -- Dumping data for table `zcms_menu_lang`
@@ -983,7 +1061,8 @@ INSERT INTO `zcms_menu_lang` (`id`, `id_`, `lang_id`, `label`) VALUES
 (37, 24, 'EN', 'Categories'),
 (38, 25, 'EN', 'News'),
 (39, 26, 'EN', 'Widgets'),
-(40, 27, 'EN', 'Slider');
+(40, 27, 'EN', 'Slider'),
+(41, 28, 'EN', 'Forms');
 
 -- --------------------------------------------------------
 
@@ -1010,8 +1089,8 @@ INSERT INTO `zcms_pages` (`id`, `page_id`, `template`, `html`, `assets`, `module
 (1, 'zcms_404', 'pages', 'single_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top<br />{content/content_article:single_article,single_article?show_date=0&show_author=0&show_category=0}@pos_1_1</p>'),
 (15, 'home', 'pages', 'home_page_layout', '{js:carousel-init.js}', ' {menus/menus_recursive:top_menu,menus_recursive?menu=main}@top\r\n {content/content_slider:simple_slider,simple_slider?slider=simple_slider}@slider\r\n{content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_2_1 \r\n{content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_2_2 \r\n{content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_2_3 \r\n{content/content_article:single_article,single_article?article=lorem_ipsum}@pos_1_1'),
 (16, 'one_column_layout', 'pages', 'single_column_layout', '', '{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top<br />{content/content_article:single_article,single_article}@pos_1_1'),
-(17, 'two_column_layout', 'pages', 'two_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top {content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_1_1 {content/content_article:category_article,category_article}@pos_1_2</p>'),
-(19, 'three_column_layout', 'pages', 'three_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top {content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_1_1 {content/content_article:single_article,single_article}@pos_1_2{content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_1_3</p>'),
+(17, 'two_column_layout', 'pages', 'two_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top {menus/menus_recursive:side_menu,menus_recursive?menu=main}@pos_1_1 {content/content_article:category_article,category_article}@pos_1_2</p>'),
+(19, 'three_column_layout', 'pages', 'three_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top {content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_1_1 {content/content_forms:simple_form,simple_form?email_to=teodorklissarov@gmail.com&email_template=contact_us}@pos_1_2\r\n{menus/menus_recursive:side_menu,menus_recursive?menu=main}@pos_1_3</p>'),
 (20, 'search', 'pages', 'single_column_layout', '', '{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top\r\n{content/content_search:simple_search,simple_search}@pos_1_1');
 
 -- --------------------------------------------------------

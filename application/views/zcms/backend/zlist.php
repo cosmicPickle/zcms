@@ -84,7 +84,7 @@ $settings = $obj->get_setting();
                                    {
                                        foreach($item as $lbl)
                                            if($lbl->cond)
-                                               echo '<span class="label label-'.$lbl->type.'">'.$lbl->text.'</span>';
+                                               echo '<span class="label label-'.$lbl->type.'">'.$lbl->text.'</span> ';
 
                                        echo "&nbsp;";
                                    }

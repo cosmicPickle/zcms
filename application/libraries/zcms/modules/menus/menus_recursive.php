@@ -6,6 +6,7 @@ class Menus_Recursive extends Module_Base {
     protected $menu;
     protected $menu_table = "menus_frontend_menus";
     protected $menu_table_lang;
+    protected $general_type = "general";
     
     public function fetch()
     {
@@ -39,11 +40,27 @@ class Menus_Recursive extends Module_Base {
             
             if($parent_id)
                 foreach($menu as $item)
+                {
+                    //Loading the sublevel
                     $item->sublevel = $this->_load_menu($item->id_, $level);
+                }
             else
                 $menu->sublevel = $this->_load_menu($menu->id_, $level);
         }
         
+        if($parent_id)
+            foreach($menu as $item)
+            {
+                //Setting the params
+                $this->_set_params($item);
+            }
+        
         return $menu;
+    }
+    
+    protected function _set_params($item)
+    {
+        if($item->type != $this->general_type)
+            $item->params = $item->type."/".$item->{$item->type};
     }
 }

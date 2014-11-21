@@ -78,6 +78,9 @@ footer {
     color:#fff;
 }
 
+.has-error .help-block {
+    color: rgb(169,​ 68,​ 66);
+}
 /* Responsive Styles */
 
 @media(max-width:991px) {

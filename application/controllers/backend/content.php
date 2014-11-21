@@ -300,4 +300,49 @@ class Content extends CI_Controller {
             $this->interface->form->get_field('image')->delete_file($file);
             header("location: ". base_url('index.php/backend/content/slider_edit/'.$id)); 
         }
+        
+        public function forms_list($p = NULL, $ord = NULL, $dir = NULL)
+        {
+            $this->zcms->load_headers();
+            $this->zcms->load_js();
+            
+            $this->zcms->interface->load_interface('list');    
+            $this->zcms->interface->list
+                 ->set('page', $p)
+                 ->set('order_column', $ord)
+                 ->set('order_direction', $dir)
+                 ->set('search', $this->input->get('search'))
+                 ->init('content_forms')
+                 ->render();
+            
+            $this->zcms->load_footers();
+        }
+        
+        public function forms_edit($id = NULL)
+        {
+            $this->zcms->load_headers();
+            $this->zcms->load_js();
+            
+            $rel = $id ? (object)array("where" => array("t1.id" => $id)) : NULL;
+            $get_data = $id ? TRUE : FALSE;
+
+            $this->zcms->interface->load_interface('form'); 
+            $this->interface->form->init('content_forms', $rel, $get_data);
+
+            $this->interface->form->modify()
+                                  ->render();
+            
+            $this->zcms->load_footers();
+        }
+        
+        public function forms_delete($id) 
+        {
+            $this->load->library("zcms/zcms");
+            $this->zcms->init();
+
+            $this->zcms->interface->load_interface('form'); 
+            $this->interface->form->init('content_forms', NULL, FALSE);
+
+            $this->interface->form->delete(array('id' => $id), base_url('index.php/backend/content/forms_list/')); 
+        }
 }
