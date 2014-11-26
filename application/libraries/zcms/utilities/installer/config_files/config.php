@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/development/personal/zcms/v.0.4/';
+$config['base_url']	= '{config_base_url}';
 
 /*
 |--------------------------------------------------------------------------

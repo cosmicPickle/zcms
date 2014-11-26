@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2014 at 11:54 AM
+-- Generation Time: Nov 26, 2014 at 02:26 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -608,7 +608,7 @@ INSERT INTO `zcms_lang_cache` (`id`, `link`, `lang_id`, `ids`) VALUES
 (8, 'backend/dashboard', 'BG', '["1","42","92"]'),
 (9, 'backend/localisation/translations_list', 'BG', '["1","42","92","60","61","62","8","11","12","13","9","10"]'),
 (10, 'backend/content/pages_list', 'BG', '["1","42","92","14","15","8","11","12","13","9","10"]'),
-(11, 'backend/content/pages_edit/1', 'BG', '["94","95","96","98",121,"102",122,123,124,125,126,"103","104"]'),
+(11, 'backend/content/pages_edit/1', 'BG', '["1","42","92","14","18","15","25","19","33","88","74","28","29"]'),
 (12, 'backend/content/category_list', 'BG', '["1","42","92","4","5","35","36","8","12","13"]'),
 (13, 'backend/content/category_edit/2', 'BG', '["94","95","96","128",129,"102","122",130,131,"127","103","104"]'),
 (14, 'backend/content/category_edit/1', 'BG', '["94","95","96","128","129","102","122","130","131","127","103","104"]'),
@@ -690,7 +690,7 @@ CREATE TABLE IF NOT EXISTS `zcms_lang_misc` (
   `text` text COLLATE utf8_unicode_ci NOT NULL,
   `lang` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=193 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=198 ;
 
 --
 -- Dumping data for table `zcms_lang_misc`
@@ -881,7 +881,12 @@ INSERT INTO `zcms_lang_misc` (`id`, `lang_id`, `text`, `lang`) VALUES
 (189, 'EN', 'Enabled', NULL),
 (190, 'EN', 'Disabled', NULL),
 (191, 'EN', ' Disabled', NULL),
-(192, 'EN', 'The field %s is required.', 'The field %s is required.');
+(192, 'EN', 'The field %s is required.', 'The field %s is required.'),
+(193, 'EN', 'Installation', NULL),
+(194, 'EN', 'General Settings', NULL),
+(195, 'EN', 'Database Settings', NULL),
+(196, 'EN', 'ZCMS Settings', NULL),
+(197, 'EN', 'Install', NULL);
 
 -- --------------------------------------------------------
 

@@ -96,6 +96,10 @@ class ZCMS {
 
 	public function init()
         {
+            $this->load->library(self::UTILS_FOLDER."installer");
+            if($this->installer->check())
+                return NULL;
+            
             $this->load->library(self::UTILS_FOLDER."globals");
             $this->load->library(self::UTILS_FOLDER."sql");
             $this->load->library(self::UTILS_FOLDER."fetcher");
