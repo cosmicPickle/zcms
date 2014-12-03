@@ -35,6 +35,9 @@ class Content_Article extends Module_Base {
             
             $this->purifier->init();
             $this->purifier->create();
+            if($this->config->purifier_allowed_tags->value)
+                $this->purifier->set("HTML.Allowed", $this->config->purifier_allowed_tags->value);
+            
             $content = $this->purifier->clean($content);
         }
             

@@ -114,6 +114,9 @@ class Content_Search extends Module_Base {
         
         $this->purifier->init();
         $this->purifier->create();
+        if($this->config->purifier_allowed_tags->value)
+                $this->purifier->set("HTML.Allowed", $this->config->purifier_allowed_tags->value);
+        
         $val = $this->purifier->clean($val);
         
         return $val;

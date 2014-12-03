@@ -49,5 +49,10 @@
     "single_article_page" : {
         "value" : "default_single_article_page",
         "can_override" : 0
+    },
+    
+    "purifier_allowed_tags" : {
+        "value" : "a,p,br,b,i,font,span[class],div,strong",
+        "can_override" : 0
     }
 }

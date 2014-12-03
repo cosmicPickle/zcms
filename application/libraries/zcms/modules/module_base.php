@@ -111,9 +111,10 @@ class Module_base extends ZCMS {
             //First, overriding with parameters from the admin panel. Those can override everything
             if(isset($admin_overrides[$key]))
                 $this->config->{$key}->value = $admin_overrides[$key];
-            
+
             //Then we override from the URL. Only overrides values flagged as public in the config file
-            if($this->config->{$key}->can_override && $this->page->get_param($key) !== NULL)
+            if($this->config->{$key}->can_override && $this->page->get_param($key) !== NULL 
+               && (!isset($admin_overrides['disallow_url_override']) || !$admin_overrides['disallow_url_override']))
                 $this->config->{$key}->value = $this->page->get_param($key);
         }
     }
