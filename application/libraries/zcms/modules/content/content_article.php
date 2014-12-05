@@ -24,20 +24,48 @@ class Content_Article extends Module_Base {
     
     public function preview_content($content)
     {
+        $this->purifier->init();
+        $this->purifier->create();
+        $this->purifier->set("HTML.Allowed", "none");
+        
+
         if($this->config->preview->value
-           && mb_strlen($content) > $this->config->preview->value)
+           && mb_strlen($this->purifier->clean($content)) > $this->config->preview->value)
         {
+            $clean = "";
             $cut_at = $this->config->preview->value;
-            while($content[$cut_at] != ' ')
-                $cut_at ++;
+            $cut_at_tmp = $cut_at;
+            $final_cut = 0;
             
-            $content = mb_strcut($content,0,$cut_at). " ...";
+            $start_pos = 0;
+            while(mb_strlen($clean) < $cut_at)
+            {
+                while($content[$cut_at_tmp] != ' ')
+                    $cut_at_tmp ++;
+                
+                $final_cut += $cut_at_tmp;
+                
+                $clean .= $this->purifier->clean(mb_strcut($content,$start_pos,$cut_at_tmp));
+                
+                $start_pos = $final_cut;
+                $cut_at_tmp = $cut_at - mb_strlen($clean);
+                
+
+                if(mb_strlen($content) <= $start_pos + $cut_at_tmp)
+                    break;
+            }
+
+            while($content[$final_cut] != ' ')
+                $final_cut ++;
+            
+            $content = mb_strcut($content,0,$final_cut). " ...";
             
             $this->purifier->init();
             $this->purifier->create();
+            
             if($this->config->purifier_allowed_tags->value)
                 $this->purifier->set("HTML.Allowed", $this->config->purifier_allowed_tags->value);
-            
+
             $content = $this->purifier->clean($content);
         }
             
