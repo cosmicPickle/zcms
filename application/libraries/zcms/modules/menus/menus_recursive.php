@@ -7,6 +7,7 @@ class Menus_Recursive extends Module_Base {
     protected $menu_table = "menus_frontend_menus";
     protected $menu_table_lang;
     protected $general_type = "general";
+    protected $static_type = "static";
     
     public function fetch()
     {
@@ -60,7 +61,7 @@ class Menus_Recursive extends Module_Base {
     
     protected function _set_params($item)
     {
-        if($item->type != $this->general_type)
+        if($item->type != $this->general_type && $item->type != $this->static_type)
             $item->params = $item->type."/".$item->{$item->type};
     }
 }

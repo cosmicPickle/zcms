@@ -28,7 +28,8 @@
                 if(!isset($item->sublevel) || !$item->sublevel) :
                 ?>
                 <li> 
-                    <a href="<?php echo $this->zcms->page->link($item->page_id, $item->params); ?>">
+                    <a href="<?php echo ($item->type != 'static') ? $this->zcms->page->link($item->page_id, $item->params)
+                                                                  : $item->url; ?>" target="<?php echo $item->target; ?>">
                         <?php echo $item->label; ?>
                     </a>
                 <?php
@@ -42,7 +43,8 @@
                     <?php
                     foreach($item->sublevel as $sitem) :
                     ?>
-                        <li><a href="<?php echo $this->zcms->page->link($sitem->page_id, $sitem->params); ?>">
+                        <li><a href="<?php echo ($sitem->type != 'static') ? $this->zcms->page->link($sitem->page_id, $sitem->params)
+                                                                  : $sitem->url; ?>" target="<?php echo $sitem->target; ?>">
                             <?php echo $sitem->label; ?>
                         </a></li>
                     <?php

@@ -125,7 +125,7 @@ class Page extends ZCMS {
         else
             $uri = $params;
         
-        return $this->frontend().$page_id."/".$uri;
+        return $this->zcms->frontend().$page_id."/".$uri;
     }
     
     public function get_param($param)

@@ -206,14 +206,20 @@ class ZCMS {
  *  I refuse to comment the last two functions.
  */
         
-        public function backend()
+        public function backend($backend = NULL)
         {
-            return $this->backend;
+            if(!$backend)
+                return $this->backend;
+            else
+                $this->backend = $backend;
         }
         
-        public function frontend()
+        public function frontend($frontend = NULL)
         {
-            return $this->frontend;
+            if(!$frontend)
+                return $this->frontend;
+            else
+                $this->frontend = $frontend;
         }
 }
 

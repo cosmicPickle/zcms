@@ -49,6 +49,7 @@ class Menus_Frontend_Menus extends Interface_form {
                         'general' => $this->translate->t('General'),
                         'article' => $this->translate->t('Article'),
                         'category' => $this->translate->t('Category'),
+                        'static' => $this->translate->t('Static')
                     ),
                     'validation' => ''
                 ))
@@ -82,6 +83,22 @@ class Menus_Frontend_Menus extends Interface_form {
                     'label' => $this->translate->t('Params'),
                     'validation' => ''
                 ))
+                ->add_field('url',array(
+                    'type' => 'text',
+                    'disabled_on_update' => FALSE,
+                    'label' => $this->translate->t('Url'),
+                    'validation' => ''
+                ))
+                ->add_field('target',array(
+                    'type' => 'select',
+                    'disabled_on_update' => FALSE,
+                    'label' => $this->translate->t('Target'),
+                    'opt_val_pairs' => array(
+                        '_self' => $this->translate->t('Self'),
+                        '_blank' => $this->translate->t('Blank')
+                    ),
+                    'validation' => ''
+                ))
                 ->add_field('order',array(
                     'type' => 'text',
                     'disabled_on_update' => FALSE,
@@ -105,6 +122,12 @@ class Menus_Frontend_Menus extends Interface_form {
                     "target" => "params",
                     "observed_field" => "type",
                     "value" => "general"
+                ))
+                ->add_trigger(array(
+                    "action_type" => "display",
+                    "target" => "url",
+                    "observed_field" => "type",
+                    "value" => "static"
                 ))
                 ->add_submit(array(
                     'label' => $this->translate->t('Save'),
