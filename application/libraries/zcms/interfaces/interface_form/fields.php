@@ -22,10 +22,8 @@ class Fields extends Interface_form {
         'label' => NULL,
         'description' => NULL,
         'css_class' => NULL,
-        'css_id' => NULL,
-        
+        'css_id' => NULL, 
         'order' => NULL,
-        
         'script' => NULL,
         
         'id_' => NULL,
@@ -56,7 +54,13 @@ class Fields extends Interface_form {
         'disable_past' => NULL,
         
         'tiny_mce' => TRUE,
-        'elfinder_root' => NULL
+        'elfinder_root' => NULL,
+        
+        'group_columns' => array(),
+        'group_open' => "<div>",
+        'group_close' => "</div>",
+        'group_column_open' => "<div>",
+        'group_column_close' => "</div>"
     );
     
     protected $value = NULL;

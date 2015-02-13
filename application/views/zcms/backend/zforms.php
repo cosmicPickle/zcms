@@ -41,6 +41,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 <?php
+if($triggers) :
 foreach($triggers as $trigger) :
     if(!$trigger->display_on_load):
 ?>
@@ -61,6 +62,7 @@ foreach($triggers as $trigger) :
             $("[name='<?php echo $trigger->target; ?>']").parents(".form-group").hide(300);
     });
 <?php endforeach; ?>
+<?php endif; ?>
 });
 </script>
 
