@@ -30,7 +30,8 @@
                              </div>"; 
                 ?>
                 <div class="form-actions">
-                        <?php echo ($submit ? $submit->render() : NULL) ?>
+                    <?php echo ($submit ? $submit->render() : NULL) ?>
+                    <a href="<?php echo preg_replace("#edit(\/[0-9]*)?#", 'list', current_url()) ?>" class="btn btn-primary"><?php echo $this->translate->t("Cancel"); ?></a>
                 </div>
                 <?php
                     echo form_close();
