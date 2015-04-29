@@ -96,21 +96,41 @@ $(document).ready(function() {
        $('.grp-add').on('click', function(e){
             e.preventDefault();
             var control = $(this).siblings('.grp-control');
-            var next = control.data('next');
+            var next = parseInt(control.attr('data-next'));
             var last = next - 1;
             var next_name = control.data('name') + '[' + next + ']';
-            var last_name = control.data('name') + '[' + last + ']';
+            var last_name = new RegExp(control.data('name') + '\[[0-9]*\]');
             var new_row = $(this).siblings('.form-group').last().clone();
 
             new_row.children().children().each(function(){
                 var name = $(this).attr('name');
-                $(this).attr('name', name.replace(last_name, next_name));
-                $(this).val('');
+                if(name)
+                {
+                    $(this).attr('name', name.replace(last_name, next_name));
+                    $(this).val('');
+                }
             });
-
-            control.data('next', next + 1);
+            
+            control.attr('data-next', next + 1);
             $(this).last().siblings('.form-group').last().after(new_row);
             datepickerInit();
+        });
+        
+        $('.grp-close').each(function(){
+            $(this).parent().css({position : 'relative'});
+            $(this).css({
+                position : 'absolute',
+                top :0,
+                right:'20px',
+            });
+        });
+        
+        $(document).on('click', '.grp-close', function(e){
+            e.preventDefault();
+            var cont = $(this).parent();
+            var siblings = cont.siblings().length - 3;
+            if(siblings)
+                $(this).parent().remove();
         });
    };
    

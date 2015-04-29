@@ -1,6 +1,6 @@
 <?php
 
-class Product_Images extends Interface_form{
+class Catalog_Product_Docs extends Interface_form{
     
     public function setup($form)
     {
@@ -10,28 +10,15 @@ class Product_Images extends Interface_form{
                     'label' => $this->translate->t('Title'),
                     'validation' => ''
                 ))
-                ->add_field('main',array(
-                    'type' => 'checkbox',
-                    'disabled_on_update' => FALSE,
-                    'label' => $this->translate->t('Main'),
-                    'validation' => 'required'
-                ))
                 ->add_field('file',array(
-                    'type' => 'image',
+                    'type' => 'file',
                     'disabled_on_update' => FALSE,
                     'label' => $this->translate->t('Image'),
-                    'path' => 'products/images/',
-                    'thumbs' => array("249x180","249x364" , "116x87", "85x120"), //TO DO
+                    'path' => 'catalog/products/docs/',
                     'crop' => TRUE,
                     'size_limit' => 10,
                     'count_limit' => 1,
-                    'ext_limit' => 'png|jpg|jpeg',
-                    'validation' => ''
-                ))
-                ->add_field('alt',array(
-                    'type' => 'text',
-                    'disabled_on_update' => FALSE,
-                    'label' => $this->translate->t('Alt'),
+                    'ext_limit' => 'doc|docx|xls|xlsx|pdf',
                     'validation' => ''
                 ))
                 ->add_submit(array(

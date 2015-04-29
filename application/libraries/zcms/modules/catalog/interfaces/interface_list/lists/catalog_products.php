@@ -1,6 +1,6 @@
 <?php
 
-class Product_Products extends Interface_list {
+class Catalog_Products extends Interface_list {
     
     public function setup($list) {
         

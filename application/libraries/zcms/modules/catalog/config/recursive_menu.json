@@ -1,0 +1,10 @@
+{
+    "category": {
+        "value": "",
+        "can_override": 1
+    },
+    "cat_table": {
+        "value": "catalog_categories",
+        "can_override": 1
+    }
+}

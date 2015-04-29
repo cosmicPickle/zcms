@@ -23,7 +23,18 @@ body {
     opacity: 0.8;
 }
 
+a.active {
+    text-decoration:underline;
+}
+
+.spacer {
+    margin-top:10px;
+}
 /* Home Page Carousel */
+
+.pd-gallery-tb {
+    cursor:pointer;
+}
 
 div.carousel {
     height: 50%;

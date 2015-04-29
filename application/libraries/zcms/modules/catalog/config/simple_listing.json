@@ -1,0 +1,79 @@
+{
+    "category": {
+        "value": "",
+        "can_override": 1
+    },
+    "cat_table": {
+        "value": "catalog_categories",
+        "can_override": 0
+    },
+    "pd_table": {
+        "value": "catalog_products",
+        "can_override": 0
+    },
+    "pd_img_table": {
+        "value": "catalog_product_images",
+        "can_override": 0
+    },
+    "meta_use_keywords" : 
+    {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "meta_use_description": {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "meta_use_title" : {
+        "value" : 1,
+        "can_override" : 0
+    },
+    "show_category_title": {
+        "value": 1,
+        "can_override": 0
+    },
+    "show_category_desc": {
+        "value": 1,
+        "can_override": 0
+    },
+    "show_category_video": {
+        "value": 1,
+        "can_override": 0
+    },
+    "show_category_img": {
+        "value": 1,
+        "can_override": 0
+    },
+    "show_pds_in_parent": {
+        "value": 1,
+        "can_override": 0
+    },
+    "show_child_categories": {
+        "value": 1,
+        "can_override": 0
+    },
+    "pagination": {
+        "value": 1,
+        "can_override": 0
+    },
+    "page": {
+        "value": 1,
+        "can_override": 1
+    },
+    "items_per_page": {
+        "value": 6,
+        "can_override": 0
+    },
+    "use_filters": {
+        "value": 0,
+        "can_override": 0
+    },
+    "load_filters_from": {
+        "value": "session",
+        "can_override": 0
+    },
+    "product_view_page": {
+        "value": "product-test",
+        "can_override": 0
+    }
+}

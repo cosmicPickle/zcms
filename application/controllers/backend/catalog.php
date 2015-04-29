@@ -10,7 +10,7 @@ class Catalog extends CI_Controller {
             $this->zcms->init();
         }
         
-        public function product_list($p = NULL, $ord = NULL, $dir = NULL)
+        public function types_list($p = NULL, $ord = NULL, $dir = NULL)
         {
             $this->zcms->load_headers();
             $this->zcms->load_js();
@@ -21,13 +21,13 @@ class Catalog extends CI_Controller {
                  ->set('order_column', $ord)
                  ->set('order_direction', $dir)
                  ->set('search', $this->input->get('search'))
-                 ->init('product_products')
+                 ->init('catalog_types')
                  ->render();
             
             $this->zcms->load_footers();
         }
         
-        public function product_edit($id = NULL)
+        public function types_edit($id = NULL)
         {
             $this->zcms->load_headers();
             $this->zcms->load_js();
@@ -36,7 +36,7 @@ class Catalog extends CI_Controller {
             $get_data = $id ? TRUE : FALSE;
 
             $this->zcms->interface->load_interface('form'); 
-            $this->interface->form->init('product_products', $rel, $get_data);
+            $this->interface->form->init('catalog_types', $rel, $get_data);
 
             $this->interface->form->modify()
                                   ->render();
@@ -44,39 +44,15 @@ class Catalog extends CI_Controller {
             $this->zcms->load_footers();
         }
         
-        public function product_delete($id) 
+        public function types_delete($id) 
         {
             $this->load->library("zcms/zcms");
             $this->zcms->init();
 
             $this->zcms->interface->load_interface('form'); 
-            $this->interface->form->init('product_products', NULL, FALSE);
+            $this->interface->form->init('catalog_types', NULL, FALSE);
 
-            $this->interface->form->delete(array('id' => $id), base_url('index.php/backend/catalog/product_list')); 
-        }
-        
-        public function product_copy($id)
-        {
-            $this->load->library("zcms/zcms");
-            $this->zcms->init();
-
-            $this->zcms->interface->load_interface('form'); 
-            $this->interface->form->init('product_products', (object)array("where" => array('t1.id' => $id)));
-            
-            $this->interface->form->copy();
-            redirect(base_url('index.php/backend/catalog/product_list'));
-        }
-        
-        public function schematic_delete($id, $file)
-        {
-            $this->load->library("zcms/zcms");
-            $this->zcms->init();
-
-            $this->zcms->interface->load_interface('form'); 
-            $this->interface->form->init('product_products', (object)array("where" => array('t1.id' => $id)));
-            
-            $this->interface->form->get_field('schematic')->delete_file($file);
-            header("location: ". base_url('index.php/backend/catalog/product_edit/'.$id)); 
+            $this->interface->form->delete(array('id' => $id), base_url('index.php/backend/catalog/types_list/')); 
         }
         
         public function category_list($p = NULL, $ord = NULL, $dir = NULL)
@@ -90,7 +66,7 @@ class Catalog extends CI_Controller {
                  ->set('order_column', $ord)
                  ->set('order_direction', $dir)
                  ->set('search', $this->input->get('search'))
-                 ->init('product_categories')
+                 ->init('catalog_categories')
                  ->render();
             
             $this->zcms->load_footers();
@@ -105,7 +81,7 @@ class Catalog extends CI_Controller {
             $get_data = $id ? TRUE : FALSE;
 
             $this->zcms->interface->load_interface('form'); 
-            $this->interface->form->init('product_categories', $rel, $get_data);
+            $this->interface->form->init('catalog_categories', $rel, $get_data);
 
             $this->interface->form->modify()
                                   ->render();
@@ -119,9 +95,81 @@ class Catalog extends CI_Controller {
             $this->zcms->init();
 
             $this->zcms->interface->load_interface('form'); 
-            $this->interface->form->init('product_categories', NULL, FALSE);
+            $this->interface->form->init('catalog_categories', NULL, FALSE);
 
-            $this->interface->form->delete(array('id' => $id), base_url('index.php/backend/catalog/product_category_list/')); 
+            $this->interface->form->delete(array('id' => $id), base_url('index.php/backend/catalog/category_list/')); 
+        }
+        
+        public function category_delete_image($id, $file)
+        {
+            $this->load->library("zcms/zcms");
+            $this->zcms->init();
+
+            $this->zcms->interface->load_interface('form'); 
+            $this->interface->form->init('catalog_categories', (object)array('where' => array("t1.id" => $id)), TRUE);
+            
+            $this->interface->form
+                            ->get_field('image')
+                            ->delete_file($file); 
+
+            redirect(base_url('index.php/backend/catalog/category_edit/'.$id));
+        }
+        
+        public function product_list($p = NULL, $ord = NULL, $dir = NULL)
+        {
+            $this->zcms->load_headers();
+            $this->zcms->load_js();
+            
+            $this->zcms->interface->load_interface('list');    
+            $this->zcms->interface->list
+                 ->set('page', $p)
+                 ->set('order_column', $ord)
+                 ->set('order_direction', $dir)
+                 ->set('search', $this->input->get('search'))
+                 ->init('catalog_products')
+                 ->render();
+            
+            $this->zcms->load_footers();
+        }
+        
+        public function product_edit($id = NULL)
+        {
+            $this->zcms->load_headers();
+            $this->zcms->load_js();
+            
+            $rel = $id ? (object)array("where" => array("t1.id" => $id)) : NULL;
+            $get_data = $id ? TRUE : FALSE;
+
+            $this->zcms->interface->load_interface('form'); 
+            $this->interface->form->init('catalog_products', $rel, $get_data);
+
+            $this->interface->form->modify()
+                                  ->render();
+            
+            $this->zcms->load_footers();
+        }
+        
+        public function product_delete($id) 
+        {
+            $this->load->library("zcms/zcms");
+            $this->zcms->init();
+
+            $this->zcms->interface->load_interface('form'); 
+            $this->interface->form->init('catalog_products', NULL, FALSE);
+
+            $this->interface->form->delete(array('id' => $id), base_url('index.php/backend/catalog/product_list')); 
+        }
+        
+        public function product_copy($id)
+        {
+            $this->load->library("zcms/zcms");
+            $this->zcms->init();
+
+            $this->zcms->interface->load_interface('form'); 
+            $this->interface->form->init('catalog_products', (object)array("where" => array('t1.id' => $id)));
+            
+            $this->interface->form->copy();
+            redirect(base_url('index.php/backend/catalog/product_list'));
         }
         
         public function product_image_edit($id = NULL)
@@ -133,7 +181,7 @@ class Catalog extends CI_Controller {
             $get_data = $id ? TRUE : FALSE;
 
             $this->zcms->interface->load_interface('form'); 
-            $this->interface->form->init('product_images', $rel, $get_data);
+            $this->interface->form->init('catalog_product_images', $rel, $get_data);
 
             $this->interface->form->modify()
                                   ->render();
@@ -147,7 +195,7 @@ class Catalog extends CI_Controller {
             $this->zcms->init();
 
             $this->zcms->interface->load_interface('form'); 
-            $this->interface->form->init('product_images', NULL, FALSE);
+            $this->interface->form->init('catalog_product_images', NULL, FALSE);
 
             $this->interface->form->delete(array('id' => $id), base_url('index.php/backend/catalog/product_edit/'.$pd_id)); 
         }
@@ -161,7 +209,7 @@ class Catalog extends CI_Controller {
             $get_data = $id ? TRUE : FALSE;
 
             $this->zcms->interface->load_interface('form'); 
-            $this->interface->form->init('product_docs', $rel, $get_data);
+            $this->interface->form->init('catalog_product_docs', $rel, $get_data);
 
             $this->interface->form->modify()
                                   ->render();
@@ -175,7 +223,7 @@ class Catalog extends CI_Controller {
             $this->zcms->init();
 
             $this->zcms->interface->load_interface('form'); 
-            $this->interface->form->init('product_docs', NULL, FALSE);
+            $this->interface->form->init('catalog_product_docs', NULL, FALSE);
 
             $this->interface->form->delete(array('id' => $id), base_url('index.php/backend/catalog/product_edit/'.$pd_id)); 
         }

@@ -1,6 +1,6 @@
 <?php
 
-class Product_Categories extends Interface_list {
+class Catalog_Types extends Interface_list {
     
     public function setup($list) {
         
@@ -9,21 +9,17 @@ class Product_Categories extends Interface_list {
                     ->set('link_show_table', 0)
                     ->set('link_mode', "uri")
                     ->add_column(array(
-                        "name" => "category",
-                        "label" => $this->translate->t("Category"),
-                    ))
-                    ->add_column(array(
-                        "name" => "type",
+                        "name" => "label",
                         "label" => $this->translate->t("Type"),
                     ))
                     ->add_action(array(
-                        "link" => "catalog/categoriy_edit/{@id}",
+                        "link" => "catalog/types_edit/{@id}",
                         "label" => $this->translate->t("Edit")
                     ))
                     ->add_action(array(
-                        "link" => "catalog/category_delete/{@id}",
+                        "link" => "catalog/types_delete/{@id}",
                         "label" => $this->translate->t("Delete")
                     ))
-                    ->set_global_action("catalog/categoriy_edit/");
+                    ->set_global_action("catalog/types_edit/");
     }
 }
