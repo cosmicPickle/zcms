@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2014 at 02:26 PM
+-- Generation Time: Apr 29, 2015 at 03:58 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -19,6 +19,264 @@ SET time_zone = "+00:00";
 --
 -- Database: `zcms_v04`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `catalog_categories`
+--
+
+CREATE TABLE IF NOT EXISTS `catalog_categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `alias` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `video` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `parent` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `catalog_categories`
+--
+
+INSERT INTO `catalog_categories` (`id`, `alias`, `type`, `image`, `video`, `parent`) VALUES
+(1, 'category-1', '', '[]', 'http://www.youtube.com/watch?v=Eg8a6PHJP50', 0),
+(2, 'category-1-1', '', '', '', 1),
+(3, 'category-1-2', '', '', '', 1),
+(4, 'category-1-3', '', '', '', 1),
+(5, 'category-1-2-1', '', '', '', 3),
+(6, 'category-1-2-2', '', '', '', 3),
+(7, 'category-2', '', '', '', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `catalog_categories_lang`
+--
+
+CREATE TABLE IF NOT EXISTS `catalog_categories_lang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_` int(11) NOT NULL,
+  `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `keywords` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `meta_description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `category` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `catalog_categories_lang`
+--
+
+INSERT INTO `catalog_categories_lang` (`id`, `id_`, `lang_id`, `keywords`, `meta_description`, `category`, `description`) VALUES
+(1, 1, 'EN', 'category, test category, category 1', 'Category 1 is a test category', 'Category 1', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras commodo lacus vitae ipsum mattis, in gravida sem luctus. In bibendum, eros at condimentum mattis, nibh nibh vulputate est, eu facilisis tortor ligula lacinia erat. Nunc ullamcorper orci eget quam consequat, sit amet varius orci rhoncus. Cras sit amet orci pellentesque, pulvinar odio a, semper eros. Aliquam sem magna, pellentesque quis semper ut, efficitur in libero. Nulla purus leo, pulvinar et molestie et, pretium et mauris. Aenean nec nunc dictum, feugiat neque vel, tincidunt ligula. Donec ut ante felis. Etiam vel purus eros.</p>\r\n<p>&nbsp;</p>\r\n<p>Aenean a aliquam libero. Morbi at lorem magna. Morbi elementum elementum risus sed interdum. Curabitur ultricies lorem non lacinia pellentesque. Quisque ut convallis diam. Donec facilisis sodales maximus. Nulla ut laoreet nisl. In consequat, tortor vitae tristique porttitor, lorem leo ultrices ex, ac placerat nibh nunc et mi. Ut vel metus et lacus tincidunt tincidunt pellentesque ut urna. Quisque vulputate libero id imperdiet tincidunt. Proin ultrices libero eget lectus volutpat, et placerat nisl pellentesque. Sed vel lacinia libero. Nulla nisi ex, pharetra at felis vitae, tincidunt sagittis nulla. Suspendisse potenti. Aliquam facilisis iaculis sem, non blandit velit luctus ac.</p>'),
+(2, 2, 'EN', '', '', 'Category 1.1', ''),
+(3, 3, 'EN', '', '', 'Category 1.2', ''),
+(4, 4, 'EN', '', '', 'Category 1.3', ''),
+(5, 5, 'EN', '', '', 'Category 1.2.1', ''),
+(6, 6, 'EN', '', '', 'Category 1.2.2', ''),
+(7, 7, 'EN', '', '', 'Category 2', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `catalog_products`
+--
+
+CREATE TABLE IF NOT EXISTS `catalog_products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` int(11) NOT NULL,
+  `code` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `categories` text COLLATE utf8_unicode_ci NOT NULL,
+  `video` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `catalog_products`
+--
+
+INSERT INTO `catalog_products` (`id`, `type`, `code`, `categories`, `video`) VALUES
+(1, 2, '1233', '["","0","1","5","6","7"]', 'https://www.youtube.com/embed/Eg8a6PHJP50'),
+(2, 2, '1233', '["","0","1","5","6","7"]', ''),
+(3, 2, '1233', '["","0","1","5","6","7"]', ''),
+(4, 2, '1233', '["","0","1","5","6","7"]', ''),
+(5, 2, '1233', '["","0","1","5","6","7"]', ''),
+(6, 2, '1233', '["","0","1","5","6","7"]', ''),
+(7, 2, '1233', '["","0","1","5","6","7"]', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `catalog_products_lang`
+--
+
+CREATE TABLE IF NOT EXISTS `catalog_products_lang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_` int(11) NOT NULL,
+  `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `keywords` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `meta_description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `attributes` text COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_` (`id_`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `catalog_products_lang`
+--
+
+INSERT INTO `catalog_products_lang` (`id`, `id_`, `lang_id`, `keywords`, `meta_description`, `title`, `description`, `attributes`) VALUES
+(1, 1, 'EN', '', '', 'title', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pharetra justo ullamcorper nisi pharetra gravida. Pellentesque posuere blandit eros ac auctor. Donec arcu tortor, bibendum eu lacinia sit amet, luctus ut leo. Cras in tristique erat, eu tristique massa. Vivamus at enim id augue hendrerit fringilla a ornare neque. Pellentesque feugiat vitae justo id elementum. Maecenas a egestas enim. Etiam lobortis ullamcorper eleifend. Curabitur vulputate ipsum eget volutpat dapibus. Sed sodales lacinia felis, non scelerisque mauris tincidunt ac. Donec sit amet diam leo. Etiam vitae mi non elit tincidunt scelerisque.</p>\r\n<p>Phasellus ex nisi, convallis aliquet purus sed, tempor sagittis nisl. In ullamcorper mi risus. Aenean a quam vel libero iaculis viverra at faucibus ligula. Etiam id sem vulputate, faucibus velit ut, bibendum dolor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam consectetur, lacus quis commodo blandit, diam libero consequat purus, et mollis augue tellus ac sapien. Phasellus ut ex et risus pellentesque interdum. Nulla dignissim urna a venenatis vulputate.</p>', '{"memory":"2 GHz","processsor":"Dragon Quad Core 1.6 Ghz","hdd":"32 Gb","display_size":"5.2 inch","dimensions":"","weight":"120 g"}'),
+(2, 2, 'EN', '', '', 'title', '', '{"memory":"","processsor":"","hdd":"","display_size":"","dimensions":"","weight":""}'),
+(3, 3, 'EN', '', '', 'title', '', '{"memory":"","processsor":"","hdd":"","display_size":"","dimensions":"","weight":""}'),
+(4, 4, 'EN', '', '', 'title', '', '{"memory":"","processsor":"","hdd":"","display_size":"","dimensions":"","weight":""}'),
+(5, 5, 'EN', '', '', 'title', '', '{"memory":"","processsor":"","hdd":"","display_size":"","dimensions":"","weight":""}'),
+(6, 6, 'EN', '', '', 'title', '', '{"memory":"","processsor":"","hdd":"","display_size":"","dimensions":"","weight":""}'),
+(7, 7, 'EN', '', '', 'title', '', '{"memory":"","processsor":"","hdd":"","display_size":"","dimensions":"","weight":""}');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `catalog_product_docs`
+--
+
+CREATE TABLE IF NOT EXISTS `catalog_product_docs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rel_id` int(11) NOT NULL,
+  `file` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `rel_id` (`rel_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `catalog_product_docs`
+--
+
+INSERT INTO `catalog_product_docs` (`id`, `rel_id`, `file`) VALUES
+(1, 1, 'eaf-demo-mz-document-2.pdf');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `catalog_product_docs_lang`
+--
+
+CREATE TABLE IF NOT EXISTS `catalog_product_docs_lang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_` int(11) NOT NULL,
+  `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_` (`id_`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `catalog_product_docs_lang`
+--
+
+INSERT INTO `catalog_product_docs_lang` (`id`, `id_`, `lang_id`, `title`) VALUES
+(1, 1, 'EN', 'Test Pdf');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `catalog_product_images`
+--
+
+CREATE TABLE IF NOT EXISTS `catalog_product_images` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rel_id` int(11) NOT NULL,
+  `file` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `main` int(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `rel_id` (`rel_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
+
+--
+-- Dumping data for table `catalog_product_images`
+--
+
+INSERT INTO `catalog_product_images` (`id`, `rel_id`, `file`, `main`) VALUES
+(4, 1, 'maxresdefault.jpg', 1),
+(5, 1, 'maxresdefault1.jpg', 0),
+(6, 1, 'maxresdefault11.jpg', 0),
+(7, 1, 'maxresdefault2.jpg', 0),
+(8, 1, 'maxresdefault3.jpg', 0),
+(9, 1, 'maxresdefault4.jpg', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `catalog_product_images_lang`
+--
+
+CREATE TABLE IF NOT EXISTS `catalog_product_images_lang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_` int(11) NOT NULL,
+  `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `alt` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_` (`id_`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `catalog_product_images_lang`
+--
+
+INSERT INTO `catalog_product_images_lang` (`id`, `id_`, `lang_id`, `title`, `alt`) VALUES
+(3, 4, 'EN', '', ''),
+(4, 5, 'EN', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `catalog_types`
+--
+
+CREATE TABLE IF NOT EXISTS `catalog_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `alias` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `catalog_types`
+--
+
+INSERT INTO `catalog_types` (`id`, `alias`) VALUES
+(1, 'shoes'),
+(2, 'phones'),
+(3, 'no-attr-test');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `catalog_types_lang`
+--
+
+CREATE TABLE IF NOT EXISTS `catalog_types_lang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_` int(11) NOT NULL,
+  `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `label` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `attributes` text COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `catalog_types_lang`
+--
+
+INSERT INTO `catalog_types_lang` (`id`, `id_`, `lang_id`, `label`, `attributes`) VALUES
+(1, 1, 'EN', 'Shoes', '{"0":{"alias":"size","label":"Size"},"2":{"alias":"color","label":"Color"}}'),
+(2, 2, 'EN', 'Phones', '[{"alias":"memory","label":"Memory"},{"alias":"processsor","label":"Processsor"},{"alias":"hdd","label":"HDD"},{"alias":"display_size","label":"Display size"},{"alias":"dimensions","label":"Dimensions"},{"alias":"weight","label":"Weight"}]'),
+(3, 3, 'EN', 'No attributes test', '[{"alias":"","label":""}]');
 
 -- --------------------------------------------------------
 
@@ -301,6 +559,7 @@ CREATE TABLE IF NOT EXISTS `menus_frontend_menus` (
   `params` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `order` int(11) NOT NULL,
   `alias` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `target` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `page_id` (`page_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
@@ -309,13 +568,13 @@ CREATE TABLE IF NOT EXISTS `menus_frontend_menus` (
 -- Dumping data for table `menus_frontend_menus`
 --
 
-INSERT INTO `menus_frontend_menus` (`id`, `parent_id`, `page_id`, `type`, `article`, `category`, `params`, `order`, `alias`) VALUES
-(1, 0, '0', 'general', NULL, NULL, '', 0, 'main'),
-(2, 1, 'home', 'general', NULL, NULL, 'category/news', 0, ''),
-(3, 1, '0', 'general', NULL, NULL, '', 1, ''),
-(4, 3, 'one_column_layout', 'article', 'lorem_ipsum', 'news', 'article/lorem_ipsum', 0, ''),
-(5, 3, 'two_column_layout', 'general', NULL, NULL, 'category/news', 1, ''),
-(6, 3, 'three_column_layout', 'general', '0', '0', 'form/contact-us', 2, '');
+INSERT INTO `menus_frontend_menus` (`id`, `parent_id`, `page_id`, `type`, `article`, `category`, `params`, `order`, `alias`, `target`) VALUES
+(1, 0, '0', 'general', NULL, NULL, '', 0, 'main', ''),
+(2, 1, 'home', 'general', NULL, NULL, 'category/news', 0, '', ''),
+(3, 1, '0', 'general', NULL, NULL, '', 1, '', ''),
+(4, 3, 'one_column_layout', 'article', 'lorem_ipsum', 'news', 'article/lorem_ipsum', 0, '', ''),
+(5, 3, 'two_column_layout', 'general', NULL, NULL, 'category/news', 1, '', ''),
+(6, 3, 'three_column_layout', 'general', '0', '0', 'form/contact-us', 2, '', '');
 
 -- --------------------------------------------------------
 
@@ -348,141 +607,6 @@ INSERT INTO `menus_frontend_menus_lang` (`id`, `id_`, `lang_id`, `label`) VALUES
 (11, 4, 'BG', 'Изглед с една колона'),
 (12, 5, 'BG', 'Изглед с две колони'),
 (13, 6, 'BG', 'Изглед с три колони');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `product_categories`
---
-
-CREATE TABLE IF NOT EXISTS `product_categories` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `alias` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `product_categories_lang`
---
-
-CREATE TABLE IF NOT EXISTS `product_categories_lang` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_` int(11) NOT NULL,
-  `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
-  `category` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `product_docs`
---
-
-CREATE TABLE IF NOT EXISTS `product_docs` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `rel_id` int(11) NOT NULL,
-  `file` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `rel_id` (`rel_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `product_docs_lang`
---
-
-CREATE TABLE IF NOT EXISTS `product_docs_lang` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_` int(11) NOT NULL,
-  `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
-  `title` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_` (`id_`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `product_images`
---
-
-CREATE TABLE IF NOT EXISTS `product_images` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `rel_id` int(11) NOT NULL,
-  `file` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `main` int(1) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `rel_id` (`rel_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `product_images_lang`
---
-
-CREATE TABLE IF NOT EXISTS `product_images_lang` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_` int(11) NOT NULL,
-  `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
-  `title` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `alt` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_` (`id_`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `product_products`
---
-
-CREATE TABLE IF NOT EXISTS `product_products` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` int(11) NOT NULL,
-  `filters` text COLLATE utf8_unicode_ci NOT NULL,
-  `code` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `top_offer` tinyint(1) NOT NULL,
-  `categories` text COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `product_products`
---
-
-INSERT INTO `product_products` (`id`, `type`, `filters`, `code`, `top_offer`, `categories`) VALUES
-(1, 0, '', '1233', 1, '');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `product_products_lang`
---
-
-CREATE TABLE IF NOT EXISTS `product_products_lang` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_` int(11) NOT NULL,
-  `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
-  `title` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `short_description` text COLLATE utf8_unicode_ci NOT NULL,
-  `description` text COLLATE utf8_unicode_ci NOT NULL,
-  `technical_info` text COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_` (`id_`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `product_products_lang`
---
-
-INSERT INTO `product_products_lang` (`id`, `id_`, `lang_id`, `title`, `short_description`, `description`, `technical_info`) VALUES
-(1, 1, 'EN', 'title', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -598,7 +722,7 @@ CREATE TABLE IF NOT EXISTS `zcms_lang_cache` (
 --
 
 INSERT INTO `zcms_lang_cache` (`id`, `link`, `lang_id`, `ids`) VALUES
-(1, 'backend/catalog/product_edit/1', 'BG', '[94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109]'),
+(1, 'backend/catalog/product_edit/1', 'BG', '["1","42","92","34","203","55","68","204","205","14","26","51","214","15","28","29","30","31","32","35","36","198"]'),
 (2, 'front/home', 'BG', '[110,111,"136","137","138","139"]'),
 (3, 'front', 'BG', '["79","80","169","81","82","83"]'),
 (4, 'front/home/category/news', 'BG', '["79","80","169","81","82","83"]'),
@@ -614,13 +738,13 @@ INSERT INTO `zcms_lang_cache` (`id`, `link`, `lang_id`, `ids`) VALUES
 (14, 'backend/content/category_edit/1', 'BG', '["94","95","96","128","129","102","122","130","131","127","103","104"]'),
 (15, 'backend/content/articles_list', 'BG', '["1","42","92","14","15","67","8","11","12","13","9","10"]'),
 (16, 'backend/content/articles_edit/1', 'BG', '["94","95","96","98","129","132",133,134,"102","122",135,"103","104"]'),
-(17, 'backend/content/news_list', 'BG', '["94","95","96","98","102","132","115","116","117","118","119","120"]'),
+(17, 'backend/content/news_list', 'BG', '["1","42","92","14","15","67","8","11","12","13","9","10"]'),
 (18, 'backend/content/news_edit/2', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
-(19, 'backend/content/news_edit/3', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
+(19, 'backend/content/news_edit/3', 'BG', '["1","42","92","14","69","67","70","72","15","25","27","28","29","198"]'),
 (20, 'backend/content/pages_edit/15', 'BG', '["1","42","92","14","18","15","25","19","33","88","74","28","29"]'),
-(21, 'backend/content/pages_edit/16', 'BG', '["1","42","92","14","18","15","25","19","33","88","74","28","29"]'),
+(21, 'backend/content/pages_edit/16', 'BG', '["1","42","92","14","18","15","25","19","33","88","74","28","29","198"]'),
 (22, 'backend/content/pages_edit/19', 'BG', '["1","42","92","14","18","15","25","19","33","88","74","28","29"]'),
-(23, 'backend/content/pages_edit/17', 'BG', '["1","42","92","14","18","15","25","19","33","88","74","28","29"]'),
+(23, 'backend/content/pages_edit/17', 'BG', '["1","42","92","14","18","15","25","19","33","88","74","28","29","198"]'),
 (24, 'backend/content/news_edit/4', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
 (25, 'backend/content/news_edit/5', 'BG', '["94","95","96","98","129","132","133","134","102","122","135","103","104"]'),
 (26, 'backend/content/slider_list', 'BG', '["1","42","92","5","35","36","89","90","8","12","13"]'),
@@ -670,7 +794,7 @@ INSERT INTO `zcms_lang_cache` (`id`, `link`, `lang_id`, `ids`) VALUES
 (70, 'backend/localisation/translations_edit/167', 'BG', '["94","95","96","112","113","114","103","104"]'),
 (71, 'backend/localisation/translations_edit/168', 'BG', '["94","95","96","112","113","114","103","104"]'),
 (72, 'backend/localisation/translations_edit/138', 'BG', '["94","95","96","112","113","114","103","104"]'),
-(73, 'backend/catalog/product_list', 'BG', '["94","95","96","97","98","108","109",170,"115","116","117","118","119","120"]'),
+(73, 'backend/catalog/product_list', 'BG', '["1","42","92","34","14","35","36","37","8","11","12","13","9","10"]'),
 (74, 'backend/catalog/product_image_delete/28/1', 'BG', '["98",171,"144",172,"103"]'),
 (75, 'backend/authenticate/login', 'BG', '["1","57"]'),
 (76, 'backend/elf/index/1/cHVibGljL3VwbG9hZHMvbWVkaWE=', 'BG', '["96"]'),
@@ -690,7 +814,7 @@ CREATE TABLE IF NOT EXISTS `zcms_lang_misc` (
   `text` text COLLATE utf8_unicode_ci NOT NULL,
   `lang` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=198 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=217 ;
 
 --
 -- Dumping data for table `zcms_lang_misc`
@@ -886,7 +1010,26 @@ INSERT INTO `zcms_lang_misc` (`id`, `lang_id`, `text`, `lang`) VALUES
 (194, 'EN', 'General Settings', NULL),
 (195, 'EN', 'Database Settings', NULL),
 (196, 'EN', 'ZCMS Settings', NULL),
-(197, 'EN', 'Install', NULL);
+(197, 'EN', 'Install', NULL),
+(198, 'EN', 'Cancel', NULL),
+(199, 'EN', 'Atributes', NULL),
+(200, 'EN', 'Attribute alias', NULL),
+(201, 'EN', 'Attribute label', NULL),
+(202, 'EN', 'Add', NULL),
+(203, 'EN', 'Categories', NULL),
+(204, 'EN', 'Default', NULL),
+(205, 'EN', 'Please save in order to view/modify the new type''s attributes', NULL),
+(206, 'EN', 'Sub-categories', NULL),
+(207, 'EN', 'Products', NULL),
+(208, 'EN', 'There are no products in this category.', NULL),
+(209, 'EN', 'Navigation', NULL),
+(210, 'EN', 'You are trying to access a category that does not exist.', NULL),
+(211, 'EN', 'An error occured', NULL),
+(212, 'EN', 'You are trying to access a product that does not exist.', NULL),
+(213, 'EN', 'Additional Info', NULL),
+(214, 'EN', 'Video', NULL),
+(215, 'EN', 'Meta Keywords', NULL),
+(216, 'EN', 'Meta Description', NULL);
 
 -- --------------------------------------------------------
 
@@ -1002,7 +1145,7 @@ CREATE TABLE IF NOT EXISTS `zcms_menu` (
   `parent` int(11) NOT NULL,
   `icon` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=30 ;
 
 --
 -- Dumping data for table `zcms_menu`
@@ -1016,18 +1159,19 @@ INSERT INTO `zcms_menu` (`id`, `controller`, `method`, `tail`, `order`, `access`
 (8, 'menus', 'frontend_menu_list', '', 1, 2, 19, ''),
 (10, 'localisation', 'languages_list', '', 995, 2, 21, ''),
 (11, 'localisation', 'translations_list', '', 996, 2, 21, ''),
-(12, 'catalog', 'product_list', '', 1, 2, 20, ''),
+(12, 'catalog', 'product_list', '', 20, 2, 20, ''),
 (18, '', '', '', 0, 2, 0, 'fa-list-alt'),
 (19, '', '', '', 2, 2, 0, 'fa-link'),
 (20, '', '', '', 1, 1, 0, ' fa-cubes'),
 (21, '', '', '', 3, 2, 0, ' fa-flag'),
 (22, 'content', 'category_list', '', 1, 2, 18, ''),
 (23, 'content', 'articles_list', '', 2, 2, 18, ''),
-(24, 'catalog', 'category_list', '', 0, 2, 20, ''),
+(24, 'catalog', 'category_list', '', 10, 2, 20, ''),
 (25, 'content', 'news_list', '', 3, 2, 18, ''),
 (26, 'content', 'widgets_list', '', 5, 2, 18, ''),
 (27, 'content', 'slider_list', '', 4, 2, 18, ''),
-(28, 'content', 'forms_list', '', 50, 2, 18, '');
+(28, 'content', 'forms_list', '', 50, 2, 18, ''),
+(29, 'catalog', 'types_list', '', 0, 2, 20, '');
 
 -- --------------------------------------------------------
 
@@ -1042,7 +1186,7 @@ CREATE TABLE IF NOT EXISTS `zcms_menu_lang` (
   `label` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_` (`id_`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=42 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=43 ;
 
 --
 -- Dumping data for table `zcms_menu_lang`
@@ -1067,7 +1211,8 @@ INSERT INTO `zcms_menu_lang` (`id`, `id_`, `lang_id`, `label`) VALUES
 (38, 25, 'EN', 'News'),
 (39, 26, 'EN', 'Widgets'),
 (40, 27, 'EN', 'Slider'),
-(41, 28, 'EN', 'Forms');
+(41, 28, 'EN', 'Forms'),
+(42, 29, 'EN', 'Types');
 
 -- --------------------------------------------------------
 
@@ -1084,7 +1229,7 @@ CREATE TABLE IF NOT EXISTS `zcms_pages` (
   `modules` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `page_id` (`page_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=23 ;
 
 --
 -- Dumping data for table `zcms_pages`
@@ -1096,7 +1241,9 @@ INSERT INTO `zcms_pages` (`id`, `page_id`, `template`, `html`, `assets`, `module
 (16, 'one_column_layout', 'pages', 'single_column_layout', '', '{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top<br />{content/content_article:single_article,single_article}@pos_1_1'),
 (17, 'two_column_layout', 'pages', 'two_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top {menus/menus_recursive:side_menu,menus_recursive?menu=main}@pos_1_1 {content/content_article:category_article,category_article}@pos_1_2</p>'),
 (19, 'three_column_layout', 'pages', 'three_column_layout', '', '<p>{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top {content/content_widgets:simple_widget,simple_widget?widget=bootstrap}@pos_1_1 {content/content_forms:simple_form,simple_form?email_to=teodorklissarov@gmail.com&email_template=contact_us}@pos_1_2\r\n{menus/menus_recursive:side_menu,menus_recursive?menu=main}@pos_1_3</p>'),
-(20, 'search', 'pages', 'single_column_layout', '', '{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top\r\n{content/content_search:simple_search,simple_search}@pos_1_1');
+(20, 'search', 'pages', 'single_column_layout', '', '{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top\r\n{content/content_search:simple_search,simple_search}@pos_1_1'),
+(21, 'cat-test-page', 'pages', 'two_column_layout', '', '{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top \r\n{catalog/catalog_menu:recursive_menu,recursive_menu?category=category-1}@pos_1_1\r\n{catalog/catalog_listing:simple_listing,simple_listing?category=category-1}@pos_1_2'),
+(22, 'product-test', 'pages', 'single_column_layout', '{js:product_gallery.js}', '{menus/menus_recursive:top_menu,menus_recursive?menu=main}@top \r\n{catalog/catalog_view:simple_view,simple_view}@pos_1_1');
 
 -- --------------------------------------------------------
 
@@ -1112,7 +1259,7 @@ CREATE TABLE IF NOT EXISTS `zcms_pages_lang` (
   `id_` int(11) NOT NULL,
   `lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=26 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=28 ;
 
 --
 -- Dumping data for table `zcms_pages_lang`
@@ -1129,7 +1276,9 @@ INSERT INTO `zcms_pages_lang` (`id`, `title`, `keywords`, `description`, `id_`, 
 (22, 'Лейаут с три колони', '', '', 19, 'BG'),
 (23, 'Лейаут с две колони', '', '', 17, 'BG'),
 (24, '404 Страницата не е намерена', '', '', 1, 'BG'),
-(25, 'Search page', '', '', 20, 'EN');
+(25, 'Search page', '', '', 20, 'EN'),
+(26, 'Catalog Test Page', '', '', 21, 'EN'),
+(27, 'Product Test Page', '', '', 22, 'EN');
 
 --
 -- Constraints for dumped tables
