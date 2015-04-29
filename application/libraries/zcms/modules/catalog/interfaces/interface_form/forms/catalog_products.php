@@ -10,6 +10,12 @@ class Catalog_Products extends Interface_form{
                     'label' => $this->translate->t('Code'),
                     'validation' => 'required'
                 ))
+                ->add_field('alias',array(
+                    'type' => 'text',
+                    'disabled_on_update' => FALSE,
+                    'label' => $this->translate->t('Alias'),
+                    'validation' => 'required|is_unique'
+                ))
                 ->add_field('keywords',array(
                     'type' => 'text',
                     'disabled_on_update' => FALSE,

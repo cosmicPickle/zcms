@@ -58,7 +58,7 @@ else :
         <?php foreach($top->products as $pd) : ?>
             <div class="col-md-2">
                 <a href="<?php echo $this->page->link($module->get_config()->product_view_page->value, 
-                                                     array('product' => $pd->id), TRUE) ?>">
+                                                     array('product' => $pd->alias), TRUE) ?>">
                 <?php 
                     $img = isset($top->product_images[$pd->id_]) ? $top->product_images[$pd->id_] : NULL;
                     if(!$img)

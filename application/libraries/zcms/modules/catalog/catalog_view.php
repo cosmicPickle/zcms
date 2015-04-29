@@ -11,7 +11,7 @@ class Catalog_View extends Module_base {
         
         $this->db->from($this->config->pd_table->value.' as t1');
         $this->sql->add_lang_table($this->config->pd_table->value.$this->translate->get_table_sufix());
-        $this->product = $this->db->where('t1.id', $this->config->product->value)
+        $this->product = $this->db->where('t1.alias', $this->config->product->value)
                                   ->get()->row();
         
         if(!$this->product)
@@ -61,6 +61,8 @@ class Catalog_View extends Module_base {
     
     protected function _override_meta_info()
     {
+        if(!$this->config->product->value)
+            return NULL;
         if($this->config->meta_use_title->value)
             $this->page->set_title($this->product->title);
         if($this->config->meta_use_keywords->value)

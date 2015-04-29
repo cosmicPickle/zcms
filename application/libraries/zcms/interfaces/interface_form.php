@@ -571,6 +571,7 @@ class Interface_form extends Interface_base {
                        $check = $this->db->select('id')
                                          ->from($table)
                                          ->where($col,$inp)
+                                         ->where('id !=', $this->raw_data[0]->id)
                                          ->get()
                                          ->row();
                        

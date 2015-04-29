@@ -15,6 +15,7 @@ else :
 ?>
 <h1 class="page-header">
     <?php echo $pd->title; ?>
+    <a href="#" class="btn btn-default pull-right" onclick="window.history.back()"><?php echo $this->translate->t("Back"); ?></a>
 </h1>
 <?php
     $images = $pd->images;
@@ -57,7 +58,6 @@ else :
     </div>
 </div>
 <div class="col-md-6">
-    <?php echo $pd->description; ?>
     <?php if($module->get_config()->show_categories->value) :?>
     <h4><?php echo $this->translate->t('Categories')?></h4>
     <div class="breadcrumb">
@@ -74,7 +74,7 @@ else :
         ?>
     </div>
     <?php endif;?>
-    
+    <?php echo $pd->description; ?>
     <?php if($pd->attributes) : ?>
     <h4><?php echo $this->translate->t('Additional Info')?></h4>
     <table class="table table-bordered table-condensed">
