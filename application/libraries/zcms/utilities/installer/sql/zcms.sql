@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2015 at 03:58 PM
+-- Generation Time: May 07, 2015 at 10:16 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -87,6 +87,7 @@ INSERT INTO `catalog_categories_lang` (`id`, `id_`, `lang_id`, `keywords`, `meta
 
 CREATE TABLE IF NOT EXISTS `catalog_products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `alias` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `type` int(11) NOT NULL,
   `code` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
   `categories` text COLLATE utf8_unicode_ci NOT NULL,
@@ -98,14 +99,14 @@ CREATE TABLE IF NOT EXISTS `catalog_products` (
 -- Dumping data for table `catalog_products`
 --
 
-INSERT INTO `catalog_products` (`id`, `type`, `code`, `categories`, `video`) VALUES
-(1, 2, '1233', '["","0","1","5","6","7"]', 'https://www.youtube.com/embed/Eg8a6PHJP50'),
-(2, 2, '1233', '["","0","1","5","6","7"]', ''),
-(3, 2, '1233', '["","0","1","5","6","7"]', ''),
-(4, 2, '1233', '["","0","1","5","6","7"]', ''),
-(5, 2, '1233', '["","0","1","5","6","7"]', ''),
-(6, 2, '1233', '["","0","1","5","6","7"]', ''),
-(7, 2, '1233', '["","0","1","5","6","7"]', '');
+INSERT INTO `catalog_products` (`id`, `alias`, `type`, `code`, `categories`, `video`) VALUES
+(1, 'alias-1', 2, '1233', '["","0","1","5","6","7"]', 'https://www.youtube.com/embed/Eg8a6PHJP50'),
+(2, 'alias-2', 2, '1233', '["","0","1","5","6","7"]', ''),
+(3, 'alias-3', 2, '1233', '["","0","1","5","6","7"]', ''),
+(4, 'alias-4', 2, '1233', '["","0","1","5","6","7"]', ''),
+(5, 'alias-5', 2, '1233', '["","0","1","5","6","7"]', ''),
+(6, 'alias-6', 2, '1233', '["","0","1","5","6","7"]', ''),
+(7, 'alias-7', 2, '1233', '["","0","1","5","6","7"]', '');
 
 -- --------------------------------------------------------
 
@@ -722,7 +723,7 @@ CREATE TABLE IF NOT EXISTS `zcms_lang_cache` (
 --
 
 INSERT INTO `zcms_lang_cache` (`id`, `link`, `lang_id`, `ids`) VALUES
-(1, 'backend/catalog/product_edit/1', 'BG', '["1","42","92","34","203","55","68","204","205","14","26","51","214","15","28","29","30","31","32","35","36","198"]'),
+(1, 'backend/catalog/product_edit/1', 'BG', '["1","42","92","34","69","215","216","203","55","68","204","205","14","26","51","214","15","28","29","30","31","32","35","36","198"]'),
 (2, 'front/home', 'BG', '[110,111,"136","137","138","139"]'),
 (3, 'front', 'BG', '["79","80","169","81","82","83"]'),
 (4, 'front/home/category/news', 'BG', '["79","80","169","81","82","83"]'),

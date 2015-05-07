@@ -28,7 +28,7 @@ class Catalog_View extends Module_base {
         
         $this->db->from($this->config->pd_img_table->value.' as t1');
         $this->sql->add_lang_table($this->config->pd_img_table->value.$this->translate->get_table_sufix(), TRUE);
-        $this->product->images = $this->db->where('t1.rel_id', $this->product->id)
+        $this->product->images = $this->db->where('t1.rel_id', $this->product->id_)
                                           ->get()->result();
        
         $this->product->attr_labels = array();
