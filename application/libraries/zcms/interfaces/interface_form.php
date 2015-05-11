@@ -561,25 +561,28 @@ class Interface_form extends Interface_base {
                  
                  if($rule == "is_unique")
                  { 
-                       if(!$this->data_table_lang)
-                           $table = $this->data_table;
-                       else
-                           $table = in_array($fname, $this->db->list_fields($this->data_table_lang)) ? $this->data_table_lang : $this->data_table;
-                       
-                       
-                       $col = $fname;
-                       $check = $this->db->select('id')
-                                         ->from($table)
-                                         ->where($col,$inp)
-                                         ->where('id !=', $this->raw_data[0]->id)
-                                         ->get()
-                                         ->row();
-                       
-                       if($check)
-                       {
-                           $this->logs->log("INP_UNIQUE", array($fsettings->setting('label'), $table));
-                           $valid = FALSE;
-                       }
+                        if(!$this->data_table_lang)
+                            $table = $this->data_table;
+                        else
+                            $table = in_array($fname, $this->db->list_fields($this->data_table_lang)) ? $this->data_table_lang : $this->data_table;
+
+
+                        $col = $fname;
+                        $this->db->select('id')
+                                 ->from($table)
+                                 ->where($col,$inp);
+
+                        if($this->raw_data)
+                             $this->db->where('id !=', $this->raw_data[0]->id);
+
+                        $check = $this->db->get()
+                                          ->row();
+
+                        if($check)
+                        {
+                            $this->logs->log("INP_UNIQUE", array($fsettings->setting('label'), $table));
+                            $valid = FALSE;
+                        }
                  }
             }
         }       
