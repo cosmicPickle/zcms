@@ -24,6 +24,7 @@ class Module_base extends ZCMS {
     protected $position;
     protected $position_string;
     protected $html;
+    protected $module_pattern = "#\{([a-zA-Z0-9_/]*):([a-zA-Z0-9_-]*),([a-zA-Z0-9_-]*)(\?[a-zA-Zа-яА-Я0-9_\-@\.\&amp;\&\=\s]*)?\}@([a-zA-Z0-9_]*)#u";
     
     const MODULE_CONFIG_PATH = "config/";
     
@@ -131,6 +132,40 @@ class Module_base extends ZCMS {
     {
         $this->view_data['module'] = $this;
         $this->_load_view($this->view);
+    }
+    
+    public function load_module($str)
+    {
+        preg_match_all($this->module_pattern, $str, $matches);
+        
+        if(isset($matches[1]) && $matches[1])
+        {
+            $mod = NULL;
+            foreach($matches[1] as $key => $mod_path)
+            {
+                $this->load->library(self::MODULES_PATH.$mod_path);
+                $mod_name = end(explode('/',$mod_path));
+                
+                $mod = new $mod_name();
+                $mod->set_string($matches[0][$key]);
+                $mod->set_path($mod_path);
+                $mod->set_name($mod_name);
+                $mod->set_view($matches[2][$key]);
+                
+                $mod->set_config_file($matches[3][$key]);
+                $mod->load_config();
+                $mod->override_config($matches[4][$key]);
+                
+                $mod->set_position($matches[5][$key]);
+                $mod->set_position_string();
+            }
+            $mod->action();
+            $mod->fetch();
+            $mod->render();
+            
+            return $mod->get_html();
+        }
+        return NULL;
     }
     
     protected function _load_view($view)
